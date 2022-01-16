@@ -15,6 +15,7 @@ const Page: NextPage = () => {
           <div>
             Signed in as {session.user?.email} <br />
             <button onClick={() => signOut()}>Sign out</button>
+            <button onClick={() => signIn()}>Sign in again (to get new token)</button>
           </div>
         )}
         {!session && (
@@ -25,7 +26,7 @@ const Page: NextPage = () => {
         )}
       </header>
       <main>
-        <h1>Hello</h1>
+        <a href='/api/spotify'>API endpoint</a>
       </main>
     </>
   )
