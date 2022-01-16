@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useSession, signIn, signOut } from 'next-auth/react'
+import Link from 'next/link'
 
 const Page: NextPage = () => {
   const { data: session } = useSession()
@@ -26,7 +27,7 @@ const Page: NextPage = () => {
         )}
       </header>
       <main>
-        <a href='/api/spotify'>API endpoint</a>
+        <Link href='/api/spotify'>API endpoint</Link>
       </main>
     </>
   )
