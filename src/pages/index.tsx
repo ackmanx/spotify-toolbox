@@ -9,21 +9,12 @@ const Page: NextPage = () => {
   const { data: session, status } = useSession()
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      fetch('/api/spotify')
-        .then((result) => result.json())
-        .then((body) => console.log(777, body) /* delete */)
-    }
+    // if (status === 'authenticated') {
+    //   fetch('/api/spotify')
+    //     .then((result) => result.json())
+    //     .then((body) => console.log(777, body) /* delete */)
+    // }
   }, [status])
-
-  if (status === 'unauthenticated') {
-    return (
-      <div>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </div>
-    )
-  }
 
   return (
     <>
@@ -32,7 +23,6 @@ const Page: NextPage = () => {
       </Head>
       <Header />
       <main>
-        <Link href='/api/spotify'>API endpoint</Link>
       </main>
     </>
   )
