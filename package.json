@@ -9,6 +9,8 @@
     "prettier": "prettier --config ./prettier.config.js --write './**/*.{js,jsx,json,ts,tsx}'"
   },
   "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
     "@types/spotify-web-api-node": "^5.0.6",
     "next": "12.0.8",
     "next-auth": "^4.1.0",

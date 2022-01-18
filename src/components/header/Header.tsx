@@ -2,6 +2,12 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import menuIcon from './menu-icon.png'
 import { useState } from 'react'
+import styled from '@emotion/styled'
+
+const Header = styled.header`
+  display: flex;
+  margin: 0 10px;
+`
 
 const Component = () => {
   const { data: session } = useSession()
@@ -10,7 +16,7 @@ const Component = () => {
   const handleOpenMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
-    <header>
+    <Header>
       <Image src={menuIcon} width={50} height={50} onClick={handleOpenMenu} />
 
       {isMenuOpen && (
@@ -20,7 +26,7 @@ const Component = () => {
           <button onClick={() => signIn()}>Sign in again (to get new token)</button>
         </div>
       )}
-    </header>
+    </Header>
   )
 }
 
