@@ -14,17 +14,23 @@ type Data = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
 
-  if (session) {
-    // Trying out spotify-web-api-node library to manage requests
-    // This does not however manage token refresh or paging
-    const spotifyApi = new SpotifyWebApi()
-    spotifyApi.setAccessToken(session.accessToken as string)
-    const responseApi = await spotifyApi.getArtistAlbums('521qvhdobR0GzhvU6TFw76')
-
-    res.send(responseApi.body)
-  } else {
+  if (!session) {
     res.send({
       error: 'You must be sign in to view the protected content on this page.',
     })
+    return
   }
+
+  const spotifyApi = new SpotifyWebApi()
+  spotifyApi.setAccessToken(session.accessToken as string)
+
+  const resApi = await spotifyApi.getFollowedArtists({ limit: 50 })
+
+  // const body = resApi.body.artists.items.map((artist) => ({
+  //   id: artist.id,
+  //   name: artist.name,
+  //   coverArt: artist.images[0].url,
+  // }))
+
+  res.send(resApi.body)
 }

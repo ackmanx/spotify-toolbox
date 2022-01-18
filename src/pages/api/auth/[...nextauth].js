@@ -1,12 +1,28 @@
 import NextAuth from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
 
+const scope = [
+  'playlist-modify-public',
+  'playlist-read-private',
+  'streaming',
+  'user-follow-read',
+  'user-library-read',
+  'user-read-email',
+  'user-read-playback-state',
+  'user-read-private',
+  'user-modify-playback-state',
+].join(' ')
+
 export default async function auth(req, res) {
   return await NextAuth(req, res, {
     providers: [
       SpotifyProvider({
         clientId: process.env.SPOTIFY_CLIENT_ID,
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        authorization: {
+          url: 'https://accounts.spotify.com/authorize',
+          params: { scope },
+        },
       }),
     ],
     secret: process.env.SECRET,
