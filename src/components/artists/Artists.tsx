@@ -22,10 +22,14 @@ export const Artists = ({ artists }: Props) => {
     return null
   }
 
-  return artists.map((artist) => (
-    <Container$>
-      <Image src={artist.coverArt ?? ArtistPlaceholder} width={300} height={300} />
-      <h3>{artist.name}</h3>
-    </Container$>
-  ))
+  return (
+    <>
+      {artists.map((artist) => (
+        <Container$>
+          <Image src={artist.coverArt ?? ArtistPlaceholder} width={300} height={300} />
+          <h3>{artist.name}</h3>
+        </Container$>
+      ))}
+    </>
+  )
 }
