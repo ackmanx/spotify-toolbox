@@ -26,11 +26,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const resApi = await spotifyApi.getFollowedArtists({ limit: 50 })
 
-  // const body = resApi.body.artists.items.map((artist) => ({
-  //   id: artist.id,
-  //   name: artist.name,
-  //   coverArt: artist.images[0].url,
-  // }))
+  const body = resApi.body.artists.items.map((artist) => ({
+    id: artist.id,
+    name: artist.name,
+    coverArt: artist.images[0]?.url,
+  }))
 
-  res.send(resApi.body)
+  res.send(body)
 }

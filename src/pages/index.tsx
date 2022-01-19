@@ -1,30 +1,31 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useSession, signIn, signOut } from 'next-auth/react'
-import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 import Header from '../components/header/Header'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
+import { Artists } from '../components/artists/Artists'
 
-const Div = styled.div`
-  display: inline-block;
-  width: 300px;
-  height: 300px;
-  margin: 20px;
-`
-const Main = styled.main`
+export interface ArtistsInterface {
+  id: string
+  name: string
+  coverArt: string
+}
+
+const Main$ = styled.main`
   text-align: center;
 `
 
 const Page: NextPage = () => {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
+  const [followedArtists, setFollowedArtists] = useState<ArtistsInterface[]>([])
 
   useEffect(() => {
-    // if (status === 'authenticated') {
-    //   fetch('/api/spotify')
-    //     .then((result) => result.json())
-    //     .then((body) => console.log(777, body) /* delete */)
-    // }
+    if (status === 'authenticated') {
+      fetch('/api/spotify/followed-artists')
+        .then((result) => result.json())
+        .then((body) => setFollowedArtists(body))
+    }
   }, [status])
 
   return (
@@ -33,23 +34,9 @@ const Page: NextPage = () => {
         <title>Toolbox - Watcher</title>
       </Head>
       <Header />
-      <Main>
-        <Div>
-          <Image src='https://i.scdn.co/image/ab67616d00001e021974dc9afcee4773e1606278' width={300} height={300} />
-        </Div>
-        <Div>
-          <Image src='https://i.scdn.co/image/ab67616d00001e02ac15fab01ae304eea764f0b4' width={300} height={300} />
-        </Div>
-        <Div>
-          <Image src='https://i.scdn.co/image/ab67616d00001e029166e9897c6a6b415f70f0c4' width={300} height={300} />
-        </Div>
-        <Div>
-          <Image src='https://i.scdn.co/image/ab67616d00001e0273d8d28b27737c2c4847a2a9' width={300} height={300} />
-        </Div>
-        <Div>
-          <Image src='https://i.scdn.co/image/ab67616d00001e0288e6c324ff93e944bfcb682e' width={300} height={300} />
-        </Div>
-      </Main>
+      <Main$>
+        <Artists artists={followedArtists} />
+      </Main$>
     </>
   )
 }
