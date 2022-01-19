@@ -25,7 +25,7 @@ export const Artists = ({ artists }: Props) => {
   return (
     <>
       {artists.map((artist) => (
-        <Container$>
+        <Container$ key={artist.id}>
           <Image src={artist.coverArt ?? ArtistPlaceholder} width={300} height={300} />
           <h3>{artist.name}</h3>
         </Container$>
