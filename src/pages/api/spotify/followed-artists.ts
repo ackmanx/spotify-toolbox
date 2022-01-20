@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 import SpotifyWebApi from 'spotify-web-api-node'
+import dbConnect from '../../../lib/db'
 
 // This can be the type of the NextApiResponse<Data>
 type Data = {
@@ -20,6 +21,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
     return
   }
+
+  await dbConnect()
 
   const spotifyApi = new SpotifyWebApi()
   spotifyApi.setAccessToken(session.accessToken as string)
