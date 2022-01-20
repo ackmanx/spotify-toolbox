@@ -3,26 +3,20 @@ import { getSession } from 'next-auth/react'
 import SpotifyWebApi from 'spotify-web-api-node'
 import dbConnect from '../../../lib/db'
 
-// This can be the type of the NextApiResponse<Data>
-type Data = {
-  content?: string
-  error?: string
+type Response = {
+  id: string
+  name: string
+  coverArt: string
 }
 
-/*
- * This is an example of an API call to Spotify that requires authentication
- */
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Response[]>) {
   const session = await getSession({ req })
 
   if (!session) {
-    res.send({
-      error: 'You must be sign in to view the protected content on this page.',
-    })
-    return
+    return res.status(403)
   }
 
-  await dbConnect()
+  const db = await dbConnect()
 
   const spotifyApi = new SpotifyWebApi()
   spotifyApi.setAccessToken(session.accessToken as string)

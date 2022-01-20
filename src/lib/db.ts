@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { Model, Schema } from 'mongoose'
 
 const MONGODB_URI = process.env.MONGODB_URI ?? ''
 
@@ -25,14 +25,25 @@ async function dbConnect() {
   }
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    }
+    const opts = {}
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose)
   }
 
   cached.conn = await cached.promise
+
+  //todo majerus: this doesn't go here but it works yay
+  const ArtistSchema = new Schema({
+    id: String,
+    name: String,
+    coverArt: String,
+  })
+
+  const Artist: Model<{ id: string }> = mongoose.model('Artist', ArtistSchema)
+
+  const artist = new Artist({name: 'Eric'})
+
+  await artist.save()
 
   return cached.conn
 }
