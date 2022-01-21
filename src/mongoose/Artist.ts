@@ -1,13 +1,13 @@
 import mongoose, { Schema } from 'mongoose'
 
 export interface _Artist {
-  id: string
+  artistId: string
   name: string
   coverArt: string
 }
 
 const ArtistSchema = new Schema<_Artist>({
-  id: String,
+  artistId: String,
   name: String,
   coverArt: String,
 })

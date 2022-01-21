@@ -21,11 +21,11 @@ const Page: NextPage = () => {
   const [followedArtists, setFollowedArtists] = useState<ArtistsInterface[]>([])
 
   useEffect(() => {
-    if (status === 'authenticated') {
+      if (status === 'authenticated') {
       fetch('/api/followed-artists')
         .then((result) => result.json())
         .then((body) => setFollowedArtists(body))
-    }
+      }
   }, [status])
 
   return (

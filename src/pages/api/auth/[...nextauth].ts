@@ -1,5 +1,9 @@
 import NextAuth from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
+import dbConnect from '../../../lib/db'
+import { _Artist, Artist } from '../../../mongoose/Artist'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { _User, User } from '../../../mongoose/User'
 
 const scope = [
   'playlist-modify-public',
@@ -13,12 +17,12 @@ const scope = [
   'user-modify-playback-state',
 ].join(' ')
 
-export default async function auth(req, res) {
+export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   return await NextAuth(req, res, {
     providers: [
       SpotifyProvider({
-        clientId: process.env.SPOTIFY_CLIENT_ID,
-        clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        clientId: process.env.SPOTIFY_CLIENT_ID ?? '',
+        clientSecret: process.env.SPOTIFY_CLIENT_SECRET ?? '',
         authorization: {
           url: 'https://accounts.spotify.com/authorize',
           params: { scope },
@@ -45,6 +49,17 @@ export default async function auth(req, res) {
       async session({ session, token }) {
         session.accessToken = token.accessToken
         return session
+      },
+    },
+    events: {
+      signIn: async ({ user: loggedInUser }) => {
+        await dbConnect()
+        const result: _User | null = await User.findOne({ id: loggedInUser.id })
+
+        if (!result) {
+          const user = new User({ userId: loggedInUser.id })
+          await user.save()
+        }
       },
     },
   })
