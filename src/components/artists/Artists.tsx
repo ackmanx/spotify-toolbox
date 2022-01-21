@@ -1,11 +1,10 @@
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import styled from '@emotion/styled'
-import { ArtistsInterface } from '../../pages'
+import { _Artist } from '../../mongoose/Artist'
 import ArtistPlaceholder from './artist-placeholder.png'
 
 interface Props {
-  artists: ArtistsInterface[]
+  artists: _Artist[]
 }
 
 const Container$ = styled.div`
@@ -16,8 +15,6 @@ const Container$ = styled.div`
 `
 
 export const Artists = ({ artists }: Props) => {
-  const { data: session } = useSession()
-
   if (!artists.length) {
     return null
   }
@@ -25,8 +22,8 @@ export const Artists = ({ artists }: Props) => {
   return (
     <>
       {artists.map((artist) => (
-        <Container$ key={artist.id}>
-          <Image src={artist.coverArt ?? ArtistPlaceholder} width={300} height={300} />
+        <Container$ key={artist.artistId}>
+          <Image src={artist.coverArt || ArtistPlaceholder} width={300} height={300} />
           <h3>{artist.name}</h3>
         </Container$>
       ))}
