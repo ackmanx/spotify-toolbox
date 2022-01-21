@@ -32,19 +32,6 @@ async function dbConnect() {
 
   cached.conn = await cached.promise
 
-  //todo majerus: this doesn't go here but it works yay
-  const ArtistSchema = new Schema({
-    id: String,
-    name: String,
-    coverArt: String,
-  })
-
-  const Artist: Model<{ id: string }> = mongoose.model('Artist', ArtistSchema)
-
-  const artist = new Artist({name: 'Eric'})
-
-  await artist.save()
-
   return cached.conn
 }
 

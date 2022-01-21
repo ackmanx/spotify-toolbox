@@ -17,12 +17,12 @@ const Main$ = styled.main`
 `
 
 const Page: NextPage = () => {
-  const { status } = useSession()
+  const { data, status } = useSession()
   const [followedArtists, setFollowedArtists] = useState<ArtistsInterface[]>([])
 
   useEffect(() => {
     if (status === 'authenticated') {
-      fetch('/api/spotify/followed-artists')
+      fetch('/api/followed-artists')
         .then((result) => result.json())
         .then((body) => setFollowedArtists(body))
     }

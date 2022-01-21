@@ -21,6 +21,7 @@
 *.iml
 .idea
 *.code-workspace
+.junk
 
 # debug
 npm-debug.log*
