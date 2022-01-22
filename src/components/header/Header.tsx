@@ -1,4 +1,4 @@
-import { signIn, signOut } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import menuIcon from './menu-icon.png'
 import signInIcon from './sign-in.png'
@@ -21,6 +21,7 @@ const DivImageContainer = styled.div`
 `
 
 const Component = () => {
+  const { data } = useSession()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleOpenMenu = () => setIsMenuOpen(!isMenuOpen)
@@ -31,12 +32,15 @@ const Component = () => {
 
       {isMenuOpen && (
         <DivImageContainer>
-          <div>
-            <Image src={signOutIcon} width={40} height={40} onClick={() => signOut()} />
-          </div>
-          <div>
-            <Image src={signInIcon} width={40} height={40} onClick={() => signIn()} />
-          </div>
+          {data ? (
+            <div>
+              <Image src={signOutIcon} width={40} height={40} onClick={() => signOut()} />
+            </div>
+          ) : (
+            <div>
+              <Image src={signInIcon} width={40} height={40} onClick={() => signIn()} />
+            </div>
+          )}
         </DivImageContainer>
       )}
     </Header>
