@@ -7,21 +7,21 @@ import styled from '@emotion/styled'
 import { Artists } from '../components/artists/Artists'
 import { _Artist } from '../mongoose/Artist'
 
-const Main$ = styled.main`
+const Main = styled.main`
   text-align: center;
 `
 
 const Page: NextPage = () => {
-  const { status } = useSession()
+  const { data } = useSession()
   const [followedArtists, setFollowedArtists] = useState<_Artist[]>([])
 
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (data) {
       fetch('/api/followed-artists')
         .then((result) => result.json())
         .then((body) => setFollowedArtists(body))
     }
-  }, [status])
+  }, [data])
 
   return (
     <>
@@ -29,9 +29,9 @@ const Page: NextPage = () => {
         <title>Toolbox - Watcher</title>
       </Head>
       <Header />
-      <Main$>
+      <Main>
         <Artists artists={followedArtists} />
-      </Main$>
+      </Main>
     </>
   )
 }

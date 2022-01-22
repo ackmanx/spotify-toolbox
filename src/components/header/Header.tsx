@@ -1,4 +1,4 @@
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
 import Image from 'next/image'
 import menuIcon from './menu-icon.png'
 import signInIcon from './sign-in.png'
@@ -9,7 +9,6 @@ import styled from '@emotion/styled'
 const Header = styled.header`
   display: flex;
   padding: 10px 20px;
-  background-color: ${(props) => (props.hasActiveToken ? 'none' : '#c00')};
 
   img {
     cursor: pointer;
@@ -22,7 +21,6 @@ const DivImageContainer = styled.div`
 `
 
 const Component = () => {
-  const { data: session } = useSession()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleOpenMenu = () => setIsMenuOpen(!isMenuOpen)
