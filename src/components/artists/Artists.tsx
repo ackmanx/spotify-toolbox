@@ -14,6 +14,20 @@ const Div = styled.div`
   margin: 20px;
 `
 
+const DivSpacer = styled.div`
+  height: 50px;
+`
+
+const H2 = styled.h2`
+  padding: 0 20px;
+  margin: 0;
+  text-align: left;
+  color: #ebebeb;
+  font-size: 72px;
+  position: absolute;
+  width: 100%;
+`
+
 export const Artists = ({ artists }: Props) => {
   if (!artists.length) {
     return null
@@ -21,6 +35,8 @@ export const Artists = ({ artists }: Props) => {
 
   return (
     <>
+      <H2>Industrial Metal</H2>
+      <DivSpacer />
       {artists.map((artist) => (
         <Div key={artist.artistId}>
           <Image src={artist.coverArt || ArtistPlaceholder} width={300} height={300} />

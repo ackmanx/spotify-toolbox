@@ -28,7 +28,9 @@ const Component = () => {
 
   return (
     <Header>
-      <Image src={menuIcon} width={60} height={60} onClick={handleOpenMenu} />
+      <div>
+        <Image src={menuIcon} width={60} height={60} onClick={handleOpenMenu} />
+      </div>
 
       {isMenuOpen && (
         <DivImageContainer>
