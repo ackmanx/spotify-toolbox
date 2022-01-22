@@ -1,4 +1,4 @@
-import mongoose, { HydratedDocument, Model, Schema } from 'mongoose'
+import mongoose, { Model, Schema } from 'mongoose'
 
 export interface _User {
   userId: string
