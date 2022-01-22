@@ -37,6 +37,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
        */
       async jwt({ token, account }) {
         if (account) {
+          token.userId = token.sub
           token.accessToken = account.access_token
         }
 
@@ -47,6 +48,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
        * To add more data to the session, you need to explicitly make it available here due to security reasons
        */
       async session({ session, token }) {
+        session.userId = token.userId
         session.accessToken = token.accessToken
         return session
       },

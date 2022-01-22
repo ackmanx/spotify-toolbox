@@ -1,13 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../lib/db'
 import { _Artist, Artist } from '../../mongoose/Artist'
+import { _User, User } from '../../mongoose/User'
+import { getSession } from 'next-auth/react'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<_Artist[]>) {
+  const session = await getSession({ req })
   await dbConnect()
 
-  const result: _Artist[] = await Artist.find()
+  const user: _User = (await User.find({ userId: session?.userId }))[0]
+  const artists: _Artist[] = await Artist.find({ artistId: { $in: user.followedArtists } })
 
-  res.send(result)
+  res.send(artists)
 }
 
 // a.forEach(artist => {
