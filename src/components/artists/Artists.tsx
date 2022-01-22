@@ -7,7 +7,7 @@ interface Props {
   artists: _Artist[]
 }
 
-const Container$ = styled.div`
+const Div = styled.div`
   display: inline-block;
   width: 300px;
   height: 300px;
@@ -22,10 +22,10 @@ export const Artists = ({ artists }: Props) => {
   return (
     <>
       {artists.map((artist) => (
-        <Container$ key={artist.artistId}>
+        <Div key={artist.artistId}>
           <Image src={artist.coverArt || ArtistPlaceholder} width={300} height={300} />
           <h3>{artist.name}</h3>
-        </Container$>
+        </Div>
       ))}
     </>
   )
