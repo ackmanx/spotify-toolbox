@@ -5,6 +5,7 @@ import signInIcon from './sign-in.png'
 import signOutIcon from './sign-out.png'
 import { useState } from 'react'
 import styled from '@emotion/styled'
+import { ButtonImage } from '../shared/Image'
 
 const Header = styled.header`
   display: flex;
@@ -28,20 +29,14 @@ const Component = () => {
 
   return (
     <Header>
-      <div>
-        <Image src={menuIcon} width={60} height={60} onClick={handleOpenMenu} />
-      </div>
+      <ButtonImage src={menuIcon} width={60} height={60} onClick={handleOpenMenu} />
 
       {isMenuOpen && (
         <DivImageContainer>
           {data ? (
-            <div>
-              <Image src={signOutIcon} width={40} height={40} onClick={() => signOut()} />
-            </div>
+            <ButtonImage src={signOutIcon} width={40} height={40} onClick={() => signOut()} />
           ) : (
-            <div>
-              <Image src={signInIcon} width={40} height={40} onClick={() => signIn()} />
-            </div>
+            <ButtonImage src={signInIcon} width={40} height={40} onClick={() => signIn()} />
           )}
         </DivImageContainer>
       )}
