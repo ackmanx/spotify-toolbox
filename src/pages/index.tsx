@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { Artists } from '../components/artists/Artists'
 import { _Artist } from '../mongoose/Artist'
+import { Genres } from "../components/genres/Genres";
 
 const Main = styled.main`
   text-align: center;
@@ -30,6 +31,7 @@ const Page: NextPage = () => {
       </Head>
       <Header />
       <Main>
+        <Genres artists={followedArtists} />
         <Artists artists={followedArtists} />
       </Main>
     </>
