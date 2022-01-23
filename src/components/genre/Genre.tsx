@@ -44,7 +44,11 @@ export const Genre = ({ name }: Props) => {
 
   const handleRefresh = async () => {
     setRefreshButton('processing')
-    setTimeout(() => setRefreshButton('hidden'), 2000)
+
+    const response = await fetch(`/api/refresh/${name}`)
+    console.log(777, await response.json()) /* delete */
+
+    setRefreshButton('hidden')
   }
 
   return (

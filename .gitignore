@@ -22,6 +22,7 @@
 .idea
 *.code-workspace
 .junk
+.eslintcache
 
 # debug
 npm-debug.log*
