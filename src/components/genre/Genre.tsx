@@ -17,7 +17,11 @@ const Div = styled.div`
   padding: 0 20px;
 
   &:hover {
-    background-color: #efefef;
+    background-color: black;
+
+    & img {
+      filter: invert();
+    }
 
     & h2 {
       color: white;
