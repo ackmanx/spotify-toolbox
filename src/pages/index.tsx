@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { Artists } from '../components/artists/Artists'
 import { _Artist } from '../mongoose/Artist'
-import { Genres } from "../components/genres/Genres";
+import { Genres } from '../components/genres/Genres'
 
 const Main = styled.main`
   text-align: center;
@@ -14,13 +14,13 @@ const Main = styled.main`
 
 const Page: NextPage = () => {
   const { data } = useSession()
-  const [followedArtists, setFollowedArtists] = useState<_Artist[]>([])
+  const [artists, setArtists] = useState<_Artist[]>([])
 
   useEffect(() => {
     if (data) {
-      fetch('/api/followed-artists')
+      fetch('/api/artists')
         .then((result) => result.json())
-        .then((body) => setFollowedArtists(body))
+        .then((body) => setArtists(body))
     }
   }, [data])
 
@@ -31,8 +31,8 @@ const Page: NextPage = () => {
       </Head>
       <Header />
       <Main>
-        <Genres artists={followedArtists} />
-        <Artists artists={followedArtists} />
+        <Genres artists={artists} />
+        <Artists artists={artists} />
       </Main>
     </>
   )
