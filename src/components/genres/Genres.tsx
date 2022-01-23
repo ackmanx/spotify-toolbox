@@ -1,12 +1,14 @@
 import styled from '@emotion/styled'
 import { _Artist } from '../../mongoose/Artist'
 import { useState } from 'react'
-import { Image } from '../shared/Image'
+import { ButtonImage } from '../shared/Image'
 import refreshIcon from './refresh-icon.png'
 
 interface Props {
   artists: _Artist[]
 }
+
+type RefreshStatus = 'hidden' | 'visible' | 'processing'
 
 const Div = styled.div`
   display: flex;
@@ -34,7 +36,12 @@ const H2 = styled.h2`
 `
 
 export const Genres = ({ artists }: Props) => {
-  const [showRefreshButton, setShowRefreshButton] = useState(false)
+  const [refreshButton, setRefreshButton] = useState<RefreshStatus>('hidden')
+
+  const handleRefresh = async () => {
+    setRefreshButton('processing')
+    setTimeout(() => setRefreshButton('hidden'), 2000)
+  }
 
   if (!artists.length) {
     return null
@@ -42,11 +49,17 @@ export const Genres = ({ artists }: Props) => {
 
   return (
     <Div
-      onMouseEnter={() => setShowRefreshButton(true)}
-      onMouseLeave={() => setShowRefreshButton(false)}
+      onMouseEnter={() =>
+        setRefreshButton(refreshButton === 'processing' ? 'processing' : 'visible')
+      }
+      onMouseLeave={() =>
+        setRefreshButton(refreshButton === 'processing' ? 'processing' : 'hidden')
+      }
     >
       <H2>Industrial Metal</H2>
-      {showRefreshButton && <Image src={refreshIcon} width={40} height={40} />}
+      {(refreshButton === 'visible' || refreshButton === 'processing') && (
+        <ButtonImage src={refreshIcon} width={40} height={40} onClick={handleRefresh} />
+      )}
     </Div>
   )
 }
