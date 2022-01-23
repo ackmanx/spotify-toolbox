@@ -5,7 +5,7 @@ import { ButtonImage } from '../shared/Image'
 import refreshIcon from './refresh-icon.png'
 
 interface Props {
-  artists: _Artist[]
+  name: string
 }
 
 type RefreshStatus = 'hidden' | 'visible' | 'processing'
@@ -35,16 +35,12 @@ const H2 = styled.h2`
   font-size: 72px;
 `
 
-export const Genres = ({ artists }: Props) => {
+export const Genre = ({ name }: Props) => {
   const [refreshButton, setRefreshButton] = useState<RefreshStatus>('hidden')
 
   const handleRefresh = async () => {
     setRefreshButton('processing')
     setTimeout(() => setRefreshButton('hidden'), 2000)
-  }
-
-  if (!artists.length) {
-    return null
   }
 
   return (
@@ -56,7 +52,7 @@ export const Genres = ({ artists }: Props) => {
         setRefreshButton(refreshButton === 'processing' ? 'processing' : 'hidden')
       }
     >
-      <H2>Industrial Metal</H2>
+      <H2>{name}</H2>
       {(refreshButton === 'visible' || refreshButton === 'processing') && (
         <ButtonImage src={refreshIcon} width={40} height={40} onClick={handleRefresh} />
       )}
