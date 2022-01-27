@@ -23,12 +23,14 @@ export const getSpotifyWebApi = async (req: NextApiRequest) => {
 }
 
 export const GetAll = {
-  followedArtists: async (
-    spotifyResponse: SpotifyWebApiResponse<SpotifyApi.UsersFollowedArtistsResponse>,
-    spotifyWebApi: any
-  ) => {
+  followedArtists: async (req: NextApiRequest) => {
     const limit = 50
+
+    const spotifyWebApi = await getSpotifyWebApi(req)
+    const spotifyResponse = await spotifyWebApi.getFollowedArtists({ limit })
+
     const results: ArtistObjectFull[] = []
+
     let afterCursor = spotifyResponse.body.artists.cursors.after
 
     results.push(...spotifyResponse.body.artists.items)
@@ -36,7 +38,7 @@ export const GetAll = {
     while (afterCursor) {
       const response = await spotifyWebApi.getFollowedArtists({ limit, after: afterCursor })
       afterCursor = response.body.artists.cursors.after
-      results.push(response.body)
+      results.push(...response.body.artists.items)
     }
 
     return results
