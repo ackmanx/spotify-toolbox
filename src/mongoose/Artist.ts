@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { Model, Schema } from 'mongoose'
 
 export interface _Artist {
   artistId: string
@@ -14,4 +14,5 @@ const ArtistSchema = new Schema<_Artist>({
   genre: String,
 })
 
-export const Artist = mongoose.models.Artist ?? mongoose.model('Artist', ArtistSchema)
+export const Artist: Model<_Artist> =
+  mongoose.models.Artist ?? mongoose.model('Artist', ArtistSchema)
