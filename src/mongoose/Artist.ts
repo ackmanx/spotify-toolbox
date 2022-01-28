@@ -1,7 +1,6 @@
 import mongoose, { Model, Schema } from 'mongoose'
 
 export interface _Artist {
-  _id: string
   id: string
   name: string
   coverArt?: string
@@ -26,7 +25,6 @@ const AlbumSchema = new Schema<_Album>({
 })
 
 const ArtistSchema = new Schema<_Artist>({
-  _id: String,
   id: String,
   name: String,
   coverArt: String,
