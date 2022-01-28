@@ -3,15 +3,33 @@ import mongoose, { Model, Schema } from 'mongoose'
 export interface _Artist {
   artistId: string
   name: string
-  coverArt: string
+  coverArt?: string
   genre: string
+  albums: _Album[]
 }
+
+interface _Album {
+  id: string
+  type: string
+  name: string
+  releaseDate: string
+  coverArt?: string
+}
+
+const AlbumSchema = new Schema<_Album>({
+  id: String,
+  type: String,
+  name: String,
+  releaseDate: String,
+  coverArt: String,
+})
 
 const ArtistSchema = new Schema<_Artist>({
   artistId: String,
   name: String,
   coverArt: String,
   genre: String,
+  albums: [AlbumSchema],
 })
 
 export const Artist: Model<_Artist> =

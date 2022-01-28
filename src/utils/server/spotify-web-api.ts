@@ -2,6 +2,7 @@ import SpotifyWebApi from 'spotify-web-api-node'
 import { NextApiRequest } from 'next'
 import { getSession } from 'next-auth/react'
 import ArtistObjectFull = SpotifyApi.ArtistObjectFull
+import AlbumObjectSimplified = SpotifyApi.AlbumObjectSimplified
 
 interface SpotifyWebApiResponse<T> {
   body: T
@@ -54,18 +55,18 @@ export const GetAll = {
       country: 'US',
     })
 
-    // const results: ArtistObjectFull[] = []
-    //
-    // let afterCursor = spotifyResponse.body.artists.cursors.after
-    //
-    // results.push(...spotifyResponse.body.artists.items)
-    //
-    // while (afterCursor) {
-    //   const response = await spotifyWebApi.getFollowedArtists({ limit, after: afterCursor })
-    //   afterCursor = response.body.artists.cursors.after
-    //   results.push(...response.body.artists.items)
-    // }
+    const results: AlbumObjectSimplified[] = []
 
-    return spotifyResponse
+    results.push(...spotifyResponse.body.items)
+
+    const numPages = Math.floor(spotifyResponse.body.total / spotifyResponse.body.limit)
+
+    for (let currentPage = 0; currentPage < numPages; currentPage++) {
+      const offset = currentPage * limit
+      const response = await spotifyWebApi.getArtistAlbums(artistId, { limit, offset })
+      results.push(...response.body.items)
+    }
+
+    return results
   },
 }

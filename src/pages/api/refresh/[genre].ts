@@ -20,31 +20,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const artistsNotInDB: HydratedDocument<_Artist>[] = spotifyFollowedArtists
     // Filter out all artists that we've already got in the database
     .filter((spotifyArtist) => !artistIDs.includes(spotifyArtist.id))
-    .map(
-      (artist) =>
-        new Artist({
-          id: artist.id,
-          name: artist.name,
-          coverArt: artist.images.find((image) => image.width === image.height),
-          genre: guessGenre(artist.genres),
-        })
-    )
+    .map((artist) => {
+      const model = new Artist()
+
+      model.id = artist.id
+      model.name = artist.name
+      model.coverArt = artist.images.find((image) => image.width === image.height)?.url
+      model.genre = guessGenre(artist.genres)
+
+      return model
+    })
 
   const genreFilteredArtists = artists
     .concat(artistsNotInDB)
     .filter((artist) => artist.genre === genreToRefresh)
 
-  let artistResponse = []
+  let artistResponse: HydratedDocument<_Artist>[] = []
 
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
-    artistResponse.push(await GetAll.albumsForArtist(req, artist.artistId))
+    const albums = await GetAll.albumsForArtist(req, artist.artistId)
+
+    artist.albums = albums.map((album) => ({
+      id: album.id,
+      type: album.type,
+      name: album.name,
+      releaseDate: album.release_date,
+      coverArt: album.images.find((image) => image.width === image.height)?.url,
+    }))
+
+    artistResponse.push(artist)
   }
 
-  //todo majerus: then we need to get all albums for each artist
-
   // Save all newly populated artists with their albums to the database
-  await Artist.bulkSave(genreFilteredArtists)
+  await Artist.bulkSave(artistResponse)
 
   //todo majerus: filter out seen ones
   //todo majerus: if there are new ones, run them through the same-name filter
