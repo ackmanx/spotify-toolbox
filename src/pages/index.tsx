@@ -50,7 +50,7 @@ const Page: NextPage = () => {
             <div key={genre}>
               <Genre name={genre} />
               {genres[genre].map((artist) => (
-                <Artist key={artist.artistId} artist={artist} />
+                <Artist key={artist.id} artist={artist} />
               ))}
             </div>
           ))}

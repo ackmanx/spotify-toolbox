@@ -13,9 +13,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const spotifyFollowedArtistsIDs = spotifyFollowedArtists.map((artist) => artist.id)
 
   const artists: HydratedDocument<_Artist>[] = await Artist.find({
-    artistId: { $in: spotifyFollowedArtistsIDs },
+    id: { $in: spotifyFollowedArtistsIDs },
   })
-  const artistIDs = artists.map((artist) => artist.artistId)
+  const artistIDs = artists.map((artist) => artist.id)
 
   const artistsNotInDB: HydratedDocument<_Artist>[] = spotifyFollowedArtists
     // Filter out all artists that we've already got in the database
@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
-    const albums = await GetAll.albumsForArtist(req, artist.artistId)
+    const albums = await GetAll.albumsForArtist(req, artist.id)
 
     artist.albums = albums.map((album) => ({
       id: album.id,
