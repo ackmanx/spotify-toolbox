@@ -43,4 +43,29 @@ export const GetAll = {
 
     return results
   },
+  albumsForArtist: async (req: NextApiRequest, artistId: string) => {
+    console.log(777, 'Getting albums for:', artistId) /* delete */
+    const limit = 50
+
+    const spotifyWebApi = await getSpotifyWebApi(req)
+    const spotifyResponse = await spotifyWebApi.getArtistAlbums(artistId, {
+      include_groups: 'single,album',
+      limit,
+      country: 'US',
+    })
+
+    // const results: ArtistObjectFull[] = []
+    //
+    // let afterCursor = spotifyResponse.body.artists.cursors.after
+    //
+    // results.push(...spotifyResponse.body.artists.items)
+    //
+    // while (afterCursor) {
+    //   const response = await spotifyWebApi.getFollowedArtists({ limit, after: afterCursor })
+    //   afterCursor = response.body.artists.cursors.after
+    //   results.push(...response.body.artists.items)
+    // }
+
+    return spotifyResponse
+  },
 }

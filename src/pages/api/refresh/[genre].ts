@@ -34,6 +34,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     .concat(artistsNotInDB)
     .filter((artist) => artist.genre === genreToRefresh)
 
+  let artistResponse = []
+
+  console.log(777, 'Need to get albums for', genreFilteredArtists.length, 'artists') /* delete */
+  console.log(777, genreFilteredArtists) /* delete */
+
+  for (let i = 0; i < genreFilteredArtists.length; i++) {
+    const artist = genreFilteredArtists[i]
+    artistResponse.push(await GetAll.albumsForArtist(req, artist.artistId))
+  }
+
   //todo majerus: then we need to get all albums for each artist
   //todo majerus: save all artists into db
   //todo majerus: filter out seen ones
@@ -41,5 +51,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   //todo majerus: I can't do this until I update viewed albums list to include album name because expired albums that are republished are removed from spotify i think
   //todo majerus: finally, the remaining are what's new, return the artists that have new albums
 
-  res.send(genreFilteredArtists)
+  res.send(artistResponse)
 }
