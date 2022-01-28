@@ -40,7 +40,7 @@ const Page: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Toolbox - Watcher</title>
+        <title>Toolbox</title>
       </Head>
       <Header />
       <Main>

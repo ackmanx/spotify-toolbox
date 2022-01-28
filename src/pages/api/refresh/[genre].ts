@@ -1,11 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../../lib/db'
 import { _Artist, Artist } from '../../../mongoose/Artist'
-import { _User, User } from '../../../mongoose/User'
-import { getSession } from 'next-auth/react'
-import { FindOne } from '../../../mongoose/types'
-import { GetAll, getSpotifyWebApi } from '../../../utils/server/spotify-web-api'
+import { GetAll } from '../../../utils/server/spotify-web-api'
 import { guessGenre } from '../../../utils/server/guess-genre'
+import { HydratedDocument } from 'mongoose'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const genreToRefresh = req.query.genre
@@ -14,10 +12,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const spotifyFollowedArtists = await GetAll.followedArtists(req)
   const spotifyFollowedArtistsIDs = spotifyFollowedArtists.map((artist) => artist.id)
 
-  const artists: _Artist[] = await Artist.find({ artistId: { $in: spotifyFollowedArtistsIDs } })
+  const artists: HydratedDocument<_Artist>[] = await Artist.find({
+    artistId: { $in: spotifyFollowedArtistsIDs },
+  })
   const artistIDs = artists.map((artist) => artist.artistId)
 
-  const artistsNotInDB: _Artist[] = spotifyFollowedArtists
+  const artistsNotInDB: HydratedDocument<_Artist>[] = spotifyFollowedArtists
     // Filter out all artists that we've already got in the database
     .filter((spotifyArtist) => !artistIDs.includes(spotifyArtist.id))
     .map(
@@ -36,16 +36,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   let artistResponse = []
 
-  console.log(777, 'Need to get albums for', genreFilteredArtists.length, 'artists') /* delete */
-  console.log(777, genreFilteredArtists) /* delete */
-
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
     artistResponse.push(await GetAll.albumsForArtist(req, artist.artistId))
   }
 
   //todo majerus: then we need to get all albums for each artist
-  //todo majerus: save all artists into db
+
+  // Save all newly populated artists with their albums to the database
+  await Artist.bulkSave(genreFilteredArtists)
+
   //todo majerus: filter out seen ones
   //todo majerus: if there are new ones, run them through the same-name filter
   //todo majerus: I can't do this until I update viewed albums list to include album name because expired albums that are republished are removed from spotify i think
