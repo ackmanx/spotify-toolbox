@@ -33,9 +33,7 @@ const Page: NextPage = () => {
       setGenres(genres)
 
       const defaultHiddenGenres: Record<string, boolean> = {}
-
       Object.keys(genres).forEach((genre) => (defaultHiddenGenres[genre] = true))
-
       setHiddenGenre(defaultHiddenGenres)
     }
 

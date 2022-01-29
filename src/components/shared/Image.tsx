@@ -7,13 +7,9 @@ const Button = styled.button`
   border: none;
 `
 
-export const Image = (props: ImageProps) => (
-  <div>
-    <NextImage {...props} />
-  </div>
-)
+type Props = ImageProps & { onClick(event: any): void }
 
-export const ButtonImage = ({ onClick, ...props }: ImageProps & { onClick(): void }) => (
+export const ButtonImage = ({ onClick, ...props }: Props) => (
   <Button onClick={onClick}>
     <NextImage {...props} />
   </Button>

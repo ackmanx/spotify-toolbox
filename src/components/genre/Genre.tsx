@@ -32,7 +32,10 @@ const H2 = styled.h2`
 export const Genre = ({ name, onClick }: Props) => {
   const [refreshButton, setRefreshButton] = useState<RefreshStatus>('hidden')
 
-  const handleRefresh = async () => {
+  const handleRefresh = async (event: any) => {
+    // The containing div has a click handler to hide/close the genre
+    event.stopPropagation()
+
     setRefreshButton('processing')
 
     const response = await fetch(`/api/refresh/${name}`)
