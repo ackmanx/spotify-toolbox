@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
 import dbConnect from '../../../lib/db'
-import { _Artist, Artist } from '../../../mongoose/Artist'
+import { _Artist, Artist, buildArtist } from '../../../mongoose/Artist'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { _User, User } from '../../../mongoose/User'
 import { GetAll } from '../../../utils/server/spotify-web-api'
@@ -71,14 +71,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           const followedArtistsIDs: string[] = []
 
           followedArtists.forEach((artist) => {
-            const model = new Artist()
-
-            model.id = artist.id
-            model.name = artist.name
-            model.coverArt = artist.images.find((image) => image.width === image.height)?.url
-            model.genre = guessGenre(artist.genres)
-
-            artists.push(model)
+            artists.push(buildArtist(artist))
             followedArtistsIDs.push(artist.id)
           })
 

@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../../lib/db'
-import { _Artist, Artist } from '../../../mongoose/Artist'
+import { _Artist, Artist, buildArtist } from '../../../mongoose/Artist'
 import { GetAll } from '../../../utils/server/spotify-web-api'
-import { guessGenre } from '../../../utils/server/guess-genre'
 import { HydratedDocument } from 'mongoose'
 import { getSession } from 'next-auth/react'
 import { FindOne } from '../../../mongoose/types'
@@ -26,7 +25,7 @@ export default async function handler(
   const spotifyFollowedArtistsIDs = spotifyFollowedArtists.map((artist) => artist.id)
 
   user.followedArtists = spotifyFollowedArtistsIDs
-  user.save()
+  await user.save()
 
   const artists: HydratedDocument<_Artist>[] = await Artist.find({
     id: { $in: spotifyFollowedArtistsIDs },
@@ -36,16 +35,7 @@ export default async function handler(
   const artistsNotInDB: HydratedDocument<_Artist>[] = spotifyFollowedArtists
     // Filter out all artists that we've already got in the database
     .filter((spotifyArtist) => !artistIDs.includes(spotifyArtist.id))
-    .map((artist) => {
-      const model = new Artist()
-
-      model.id = artist.id
-      model.name = artist.name
-      model.coverArt = artist.images.find((image) => image.width === image.height)?.url
-      model.genre = guessGenre(artist.genres)
-
-      return model
-    })
+    .map(buildArtist)
 
   const genreFilteredArtists = artists
     .concat(artistsNotInDB)

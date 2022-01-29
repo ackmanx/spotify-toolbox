@@ -1,4 +1,6 @@
 import mongoose, { Model, Schema } from 'mongoose'
+import ArtistObjectFull = SpotifyApi.ArtistObjectFull
+import { guessGenre } from '../utils/server/guess-genre'
 
 export interface _Artist {
   id: string
@@ -34,3 +36,14 @@ const ArtistSchema = new Schema<_Artist>({
 
 export const Artist: Model<_Artist> =
   mongoose.models.Artist ?? mongoose.model('Artist', ArtistSchema)
+
+export const buildArtist = (artist: ArtistObjectFull) => {
+  const model = new Artist()
+
+  model.id = artist.id
+  model.name = artist.name
+  model.coverArt = artist.images.find((image) => image.width === image.height)?.url
+  model.genre = guessGenre(artist.genres)
+
+  return model
+}
