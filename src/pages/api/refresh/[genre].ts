@@ -4,8 +4,15 @@ import { _Artist, Artist } from '../../../mongoose/Artist'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 import { guessGenre } from '../../../utils/server/guess-genre'
 import { HydratedDocument } from 'mongoose'
+import { getSession } from 'next-auth/react'
+import { FindOne } from '../../../mongoose/types'
+import { _User, User } from '../../../mongoose/User'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<HydratedDocument<_Artist>[]>
+) {
+  const session = await getSession({ req })
   const genreToRefresh = req.query.genre
   await dbConnect()
 
@@ -35,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     .concat(artistsNotInDB)
     .filter((artist) => artist.genre === genreToRefresh)
 
-  let artistResponse: HydratedDocument<_Artist>[] = []
+  let genreFilteredArtistsWithAlbums: HydratedDocument<_Artist>[] = []
 
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
@@ -49,16 +56,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       coverArt: album.images.find((image) => image.width === image.height)?.url,
     }))
 
-    artistResponse.push(artist)
+    genreFilteredArtistsWithAlbums.push(artist)
   }
 
-  // Save all newly populated artists with their albums to the database
-  await Artist.bulkSave(artistResponse)
+  // Save all refreshed artists with their albums to the database
+  await Artist.bulkSave(genreFilteredArtistsWithAlbums)
 
-  //todo majerus: filter out seen ones
-  //todo majerus: if there are new ones, run them through the same-name filter
-  //todo majerus: I can't do this until I update viewed albums list to include album name because expired albums that are republished are removed from spotify i think
-  //todo majerus: finally, the remaining are what's new, return the artists that have new albums
+  const user: FindOne<_User> = await User.findOne({ userId: session?.userId })
+  const artistsWithFreshAlbums: HydratedDocument<_Artist>[] = []
 
-  res.send(artistResponse)
+  genreFilteredArtistsWithAlbums.forEach((artistWithAlbums) => {
+    artistWithAlbums.albums.some((album) => {
+      if (!user?.viewedAlbums.includes(album.id)) {
+        //todo majerus: check for republished albums here
+        artistsWithFreshAlbums.push(artistWithAlbums)
+        return true
+      }
+    })
+  })
+
+  res.send(artistsWithFreshAlbums)
 }

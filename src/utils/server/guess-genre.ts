@@ -1,6 +1,6 @@
 export const guessGenre = (overlySpecificGenreList: string[]) => {
   const guessedGenre = Object.keys(GENRES).find((key) =>
-    GENRES[key].find((subGenre) => overlySpecificGenreList.includes(subGenre))
+    GENRES[key].some((subGenre) => overlySpecificGenreList.includes(subGenre))
   )
 
   return guessedGenre ? guessedGenre : 'unknown'
