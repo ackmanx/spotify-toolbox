@@ -4,6 +4,9 @@ import dbConnect from '../../../lib/db'
 import { _Artist, Artist } from '../../../mongoose/Artist'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { _User, User } from '../../../mongoose/User'
+import { GetAll } from '../../../utils/server/spotify-web-api'
+import { guessGenre } from '../../../utils/server/guess-genre'
+import { HydratedDocument } from 'mongoose'
 
 const scope = [
   'playlist-modify-public',
@@ -54,13 +57,37 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       },
     },
     events: {
-      signIn: async ({ user: loggedInUser }) => {
+      /*
+       * Check if this is the first time the user has logged in and seed the DB if it is
+       */
+      signIn: async ({ user: loggedInUser, account }) => {
         await dbConnect()
         const result: _User | null = await User.findOne({ id: loggedInUser.id })
 
         if (!result) {
-          const user = new User({ userId: loggedInUser.id })
+          const followedArtists = await GetAll.followedArtists(account.access_token ?? '')
+
+          const artists: HydratedDocument<_Artist>[] = []
+          const followedArtistsIDs: string[] = []
+
+          followedArtists.forEach((artist) => {
+            const model = new Artist()
+
+            model.id = artist.id
+            model.name = artist.name
+            model.coverArt = artist.images.find((image) => image.width === image.height)?.url
+            model.genre = guessGenre(artist.genres)
+
+            artists.push(model)
+            followedArtistsIDs.push(artist.id)
+          })
+
+          const user = new User()
+          user.userId = loggedInUser.id
+          user.followedArtists = followedArtistsIDs
+
           await user.save()
+          await Artist.bulkSave(artists)
         }
       },
     },

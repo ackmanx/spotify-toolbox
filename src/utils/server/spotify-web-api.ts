@@ -10,24 +10,31 @@ interface SpotifyWebApiResponse<T> {
   statusCode: number
 }
 
-export const getSpotifyWebApi = async (req: NextApiRequest) => {
-  const session = await getSession({ req })
+export const getSpotifyWebApi = async (reqOrAccessToken: NextApiRequest | string) => {
+  let accessToken: string
+
+  if (typeof reqOrAccessToken !== 'string') {
+    const session = await getSession({ req: reqOrAccessToken })
+    accessToken = session?.accessToken as string
+  } else {
+    accessToken = reqOrAccessToken
+  }
 
   const spotifyWebApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
   })
 
-  spotifyWebApi.setAccessToken(session?.accessToken as string)
+  spotifyWebApi.setAccessToken(accessToken)
 
   return spotifyWebApi
 }
 
 export const GetAll = {
-  followedArtists: async (req: NextApiRequest) => {
+  followedArtists: async (reqOrAccessToken: NextApiRequest | string) => {
     const limit = 50
 
-    const spotifyWebApi = await getSpotifyWebApi(req)
+    const spotifyWebApi = await getSpotifyWebApi(reqOrAccessToken)
     const spotifyResponse = await spotifyWebApi.getFollowedArtists({ limit })
 
     const results: ArtistObjectFull[] = []
