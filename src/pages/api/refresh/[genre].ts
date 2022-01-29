@@ -16,8 +16,17 @@ export default async function handler(
   const genreToRefresh = req.query.genre
   await dbConnect()
 
+  const user: FindOne<_User> = await User.findOne({ userId: session?.userId })
+
+  if (!user) {
+    throw new Error('User not found in database. How are you even logged in?')
+  }
+
   const spotifyFollowedArtists = await GetAll.followedArtists(req)
   const spotifyFollowedArtistsIDs = spotifyFollowedArtists.map((artist) => artist.id)
+
+  user.followedArtists = spotifyFollowedArtistsIDs
+  user.save()
 
   const artists: HydratedDocument<_Artist>[] = await Artist.find({
     id: { $in: spotifyFollowedArtistsIDs },
@@ -62,7 +71,6 @@ export default async function handler(
   // Save all refreshed artists with their albums to the database
   await Artist.bulkSave(genreFilteredArtistsWithAlbums)
 
-  const user: FindOne<_User> = await User.findOne({ userId: session?.userId })
   const artistsWithFreshAlbums: HydratedDocument<_Artist>[] = []
 
   genreFilteredArtistsWithAlbums.forEach((artistWithAlbums) => {
