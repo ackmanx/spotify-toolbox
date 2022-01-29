@@ -15,6 +15,7 @@ const Main = styled.main`
 const Page: NextPage = () => {
   const { data } = useSession()
   const [genres, setGenres] = useState<Record<string, _Artist[]>>({})
+  const [hiddenGenre, setHiddenGenre] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     async function doStuff() {
@@ -30,12 +31,24 @@ const Page: NextPage = () => {
       }, {})
 
       setGenres(genres)
+
+      const defaultHiddenGenres: Record<string, boolean> = {}
+
+      Object.keys(genres).forEach((genre) => (defaultHiddenGenres[genre] = true))
+
+      setHiddenGenre(defaultHiddenGenres)
     }
 
     if (data) {
       doStuff()
     }
   }, [data])
+
+  const handleGenreHide = (genre: string) =>
+    setHiddenGenre((prevState) => ({
+      ...prevState,
+      [genre]: !prevState[genre],
+    }))
 
   return (
     <>
@@ -48,10 +61,10 @@ const Page: NextPage = () => {
           .sort()
           .map((genre) => (
             <div key={genre}>
-              <Genre name={genre} />
-              {genres[genre].map((artist) => (
-                <Artist key={artist.id} artist={artist} />
-              ))}
+              <Genre name={genre} onClick={() => handleGenreHide(genre)} />
+
+              {hiddenGenre[genre] &&
+                genres[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
             </div>
           ))}
       </Main>

@@ -6,6 +6,7 @@ import refreshIcon from './refresh-icon.png'
 
 interface Props {
   name: string
+  onClick(): void
 }
 
 type RefreshStatus = 'hidden' | 'visible' | 'processing'
@@ -16,18 +17,7 @@ const Div = styled.div`
   align-items: center;
   padding: 0 20px;
 
-  &:hover {
-    background-color: black;
-
-    & img {
-      filter: invert();
-    }
-
-    & h2 {
-      color: white;
-    }
-  }
-
+  &:hover,
   & img:hover {
     cursor: pointer;
   }
@@ -39,7 +29,7 @@ const H2 = styled.h2`
   font-size: 72px;
 `
 
-export const Genre = ({ name }: Props) => {
+export const Genre = ({ name, onClick }: Props) => {
   const [refreshButton, setRefreshButton] = useState<RefreshStatus>('hidden')
 
   const handleRefresh = async () => {
@@ -59,6 +49,7 @@ export const Genre = ({ name }: Props) => {
       onMouseLeave={() =>
         setRefreshButton(refreshButton === 'processing' ? 'processing' : 'hidden')
       }
+      onClick={onClick}
     >
       <H2>{name}</H2>
       {(refreshButton === 'visible' || refreshButton === 'processing') && (
