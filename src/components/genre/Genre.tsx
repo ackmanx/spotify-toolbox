@@ -18,7 +18,7 @@ const Div = styled.div`
   padding: 0 20px;
 
   &:hover,
-  & img:hover {
+  & svg:hover {
     cursor: pointer;
   }
 `
@@ -81,7 +81,7 @@ export const Genre = ({ name, onClick }: Props) => {
         in={refreshStatus === 'processing'}
         timeout={99999}
       >
-        <Button onClick={handleRefresh}>
+        <Button onClick={handleRefresh} disabled={refreshStatus === 'processing'}>
           <RefreshIcon ref={refreshRef} key='key' />
         </Button>
       </CSSTransition>
