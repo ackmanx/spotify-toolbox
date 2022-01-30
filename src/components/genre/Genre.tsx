@@ -32,6 +32,8 @@ const H2 = styled.h2`
 const Button = styled.button`
   background-color: transparent;
   border: none;
+  position: relative;
+  top: 5px;
 `
 
 export const Genre = ({ name, onClick }: Props) => {
@@ -75,16 +77,18 @@ export const Genre = ({ name, onClick }: Props) => {
     >
       <H2>{name}</H2>
 
-      <CSSTransition
-        nodeRef={refreshRef}
-        classNames='refresh_icon'
-        in={refreshStatus === 'processing'}
-        timeout={99999}
-      >
-        <Button onClick={handleRefresh} disabled={refreshStatus === 'processing'}>
-          <RefreshIcon ref={refreshRef} key='key' />
-        </Button>
-      </CSSTransition>
+      {(refreshStatus === 'visible' || refreshStatus === 'processing') && (
+        <CSSTransition
+          nodeRef={refreshRef}
+          classNames='refresh_icon'
+          in={refreshStatus === 'processing'}
+          timeout={99999}
+        >
+          <Button onClick={handleRefresh} disabled={refreshStatus === 'processing'}>
+            <RefreshIcon ref={refreshRef} key='key' />
+          </Button>
+        </CSSTransition>
+      )}
     </Div>
   )
 }
