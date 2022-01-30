@@ -15,8 +15,13 @@ const DivRoot = styled.div`
 `
 
 const DivImageContainer = styled.div`
+  scale: 100%;
+  transition: scale 200ms;
+  cursor: pointer;
+
   &:hover {
-    scale: 110%;
+    scale: 108%;
+    transition: scale 200ms;
   }
 `
 
