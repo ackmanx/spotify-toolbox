@@ -9,13 +9,14 @@ import { _Artist } from '../mongoose/Artist'
 import { Genre } from '../components/genre/Genre'
 import { toast, ToastContainer } from 'react-toastify'
 import { InitResponse } from './api/init'
+import { NotLoggedInImage } from '../components/images/NotLoggedInImage'
 
 const Main = styled.main`
   text-align: center;
 `
 
 const Page: NextPage = () => {
-  const { data } = useSession()
+  const { data, status } = useSession()
   const [genres, setGenres] = useState<Record<string, _Artist[]>>({})
   const [accessTokenExpires, setAccessTokenExpires] = useState<number>()
   const [hiddenGenre, setHiddenGenre] = useState<Record<string, boolean>>({})
@@ -75,6 +76,8 @@ const Page: NextPage = () => {
       [genre]: artists,
     }))
 
+  const genresSorted = Object.keys(genres).sort()
+
   return (
     <>
       <Head>
@@ -83,20 +86,19 @@ const Page: NextPage = () => {
       <ToastContainer />
       <Header />
       <Main>
-        {Object.keys(genres)
-          .sort()
-          .map((genre) => (
-            <div key={genre}>
-              <Genre
-                name={genre}
-                onClick={() => handleGenreHide(genre)}
-                onRefresh={handleGenreRefresh}
-              />
+        {status === 'unauthenticated' && <NotLoggedInImage />}
+        {genresSorted.map((genre) => (
+          <div key={genre}>
+            <Genre
+              name={genre}
+              onClick={() => handleGenreHide(genre)}
+              onRefresh={handleGenreRefresh}
+            />
 
-              {hiddenGenre[genre] &&
-                genres[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
-            </div>
-          ))}
+            {hiddenGenre[genre] &&
+              genres[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
+          </div>
+        ))}
       </Main>
     </>
   )
