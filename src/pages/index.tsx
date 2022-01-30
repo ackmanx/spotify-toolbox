@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import { Artist } from '../components/artists/Artist'
 import { _Artist } from '../mongoose/Artist'
 import { Genre } from '../components/genre/Genre'
+import { ToastContainer } from 'react-toastify'
 
 const Main = styled.main`
   text-align: center;
@@ -53,6 +54,7 @@ const Page: NextPage = () => {
       <Head>
         <title>Toolbox</title>
       </Head>
+      <ToastContainer />
       <Header />
       <Main>
         {Object.keys(genres)

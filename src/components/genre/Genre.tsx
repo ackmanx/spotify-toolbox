@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { useRef, useState } from 'react'
 import RefreshIcon from './RefreshIcon'
 import { CSSTransition } from 'react-transition-group'
+import { toast } from 'react-toastify'
 
 interface Props {
   name: string
@@ -43,10 +44,23 @@ export const Genre = ({ name, onClick }: Props) => {
 
     setRefreshStatus('processing')
 
-    const response = await fetch(`/api/refresh/${name}`)
-    console.log(777, await response.json()) /* delete */
+    try {
+      const response = await fetch(`/api/refresh/${name}`)
 
-    setRefreshStatus('hidden')
+      if (!response.ok) {
+        toast.error(
+          <>
+            <p>Your access token probably expired.</p>
+            <p>Sign out then back in to get a new one.</p>
+          </>,
+          { position: 'top-center' }
+        )
+      }
+    } catch (error: any) {
+      toast.error(error.message, { position: 'top-center' })
+    } finally {
+      setRefreshStatus('hidden')
+    }
   }
 
   return (
