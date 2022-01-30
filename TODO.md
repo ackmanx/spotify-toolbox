@@ -1,9 +1,3 @@
-# Access token expired
-
-- First try to refresh automatically
-  - https://next-auth.js.org/tutorials/refresh-token-rotation
-- If that doesn't work send them to /signin and they'll get a new token
-
 # Rate limiting
 
 - Can check headers in web api response
@@ -38,7 +32,5 @@
 # UI mode - view all albums from artist
 
 - in this mode, can mark an overlay on an album to show that it's new
-
-# Page when not signed in should show something
 
 # Style the sign in page?

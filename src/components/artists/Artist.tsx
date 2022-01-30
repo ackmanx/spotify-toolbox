@@ -7,20 +7,26 @@ interface Props {
   artist: _Artist
 }
 
-const Div = styled.div`
+const DivRoot = styled.div`
   display: inline-block;
   width: 300px;
   height: 300px;
   margin: 20px;
 `
 
+const DivImageContainer = styled.div`
+  &:hover {
+    scale: 110%;
+  }
+`
+
 export const Artist = ({ artist }: Props) => {
   return (
-    <>
-      <Div>
+    <DivRoot>
+      <DivImageContainer>
         <Image src={artist.coverArt || ArtistPlaceholder} width={300} height={300} />
-        <h3>{artist.name}</h3>
-      </Div>
-    </>
+      </DivImageContainer>
+      <h3>{artist.name}</h3>
+    </DivRoot>
   )
 }
