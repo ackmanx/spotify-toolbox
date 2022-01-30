@@ -49,6 +49,12 @@ const Page: NextPage = () => {
       [genre]: !prevState[genre],
     }))
 
+  const handleGenreRefresh = (genre: string, artists: _Artist[]) =>
+    setGenres((prevState) => ({
+      ...prevState,
+      [genre]: artists,
+    }))
+
   return (
     <>
       <Head>
@@ -61,7 +67,11 @@ const Page: NextPage = () => {
           .sort()
           .map((genre) => (
             <div key={genre}>
-              <Genre name={genre} onClick={() => handleGenreHide(genre)} />
+              <Genre
+                name={genre}
+                onClick={() => handleGenreHide(genre)}
+                onRefresh={handleGenreRefresh}
+              />
 
               {hiddenGenre[genre] &&
                 genres[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}

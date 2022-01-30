@@ -3,10 +3,12 @@ import { useRef, useState } from 'react'
 import RefreshIcon from './RefreshIcon'
 import { CSSTransition } from 'react-transition-group'
 import { toast } from 'react-toastify'
+import { _Artist } from '../../mongoose/Artist'
 
 interface Props {
   name: string
   onClick(): void
+  onRefresh(genre: string, artists: _Artist[]): void
 }
 
 type RefreshStatus = 'hidden' | 'visible' | 'processing'
@@ -33,10 +35,10 @@ const Button = styled.button`
   background-color: transparent;
   border: none;
   position: relative;
-  top: 5px;
+  top: 10px;
 `
 
-export const Genre = ({ name, onClick }: Props) => {
+export const Genre = ({ name, onClick, onRefresh }: Props) => {
   const [refreshStatus, setRefreshStatus] = useState<RefreshStatus>('hidden')
   const refreshRef = useRef(null)
 
@@ -57,7 +59,10 @@ export const Genre = ({ name, onClick }: Props) => {
           </>,
           { position: 'top-center' }
         )
+        return
       }
+
+      onRefresh(name, await response.json())
     } catch (error: any) {
       toast.error(error.message, { position: 'top-center' })
     } finally {
