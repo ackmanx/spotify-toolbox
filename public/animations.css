@@ -1,0 +1,16 @@
+/* refresh_icon is in Genre component */
+.refresh_icon-enter-active {
+  animation: changecolor infinite 1000ms;
+}
+
+@keyframes changecolor {
+  from {
+    fill: #000;
+  }
+  50% {
+    fill: #b13232;
+  }
+  to {
+    fill: #000;
+  }
+}

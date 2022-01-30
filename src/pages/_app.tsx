@@ -1,4 +1,5 @@
 import '../../public/globals.css'
+import '../../public/animations.css'
 import { SessionProvider } from 'next-auth/react'
 import type { AppProps } from 'next/app'
 
