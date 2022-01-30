@@ -7,7 +7,8 @@ import styled from '@emotion/styled'
 import { Artist } from '../components/artists/Artist'
 import { _Artist } from '../mongoose/Artist'
 import { Genre } from '../components/genre/Genre'
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
+import { InitResponse } from './api/init'
 
 const Main = styled.main`
   text-align: center;
@@ -16,14 +17,17 @@ const Main = styled.main`
 const Page: NextPage = () => {
   const { data } = useSession()
   const [genres, setGenres] = useState<Record<string, _Artist[]>>({})
+  const [accessTokenExpires, setAccessTokenExpires] = useState<number>()
   const [hiddenGenre, setHiddenGenre] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     async function doStuff() {
-      const response = await fetch('/api/artists')
-      const body: _Artist[] = await response.json()
+      const response = await fetch('/api/init')
+      const body: InitResponse = await response.json()
 
-      const genres = body.reduce((genres: Record<string, _Artist[]>, artist) => {
+      setAccessTokenExpires(body.user?.accessTokenExpires)
+
+      const genres = body.artists.reduce((genres: Record<string, _Artist[]>, artist) => {
         if (!genres[artist.genre]) genres[artist.genre] = []
 
         genres[artist.genre].push(artist)
@@ -42,6 +46,22 @@ const Page: NextPage = () => {
       doStuff()
     }
   }, [data])
+
+  useEffect(() => {
+    if (accessTokenExpires) {
+      const expirationTimeInMs = accessTokenExpires * 1000 - new Date().getTime()
+
+      setTimeout(() => {
+        toast.error(
+          <>
+            <p>Access token has expired</p>
+            <p>Sign in again to get a new one</p>
+          </>,
+          { position: 'top-center', autoClose: false, hideProgressBar: true, theme: 'colored' }
+        )
+      }, expirationTimeInMs)
+    }
+  }, [accessTokenExpires])
 
   const handleGenreHide = (genre: string) =>
     setHiddenGenre((prevState) => ({

@@ -54,10 +54,10 @@ export const Genre = ({ name, onClick, onRefresh }: Props) => {
       if (!response.ok) {
         toast.error(
           <>
-            <p>Your access token probably expired.</p>
-            <p>Sign out then back in to get a new one.</p>
+            <p>Access token probably expired</p>
+            <p>Sign in again to get a new one</p>
           </>,
-          { position: 'top-center' }
+          { position: 'top-center', theme: 'colored' }
         )
         return
       }

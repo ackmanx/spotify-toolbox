@@ -4,8 +4,6 @@
   - https://next-auth.js.org/tutorials/refresh-token-rotation
 - If that doesn't work send them to /signin and they'll get a new token
 
-# Provide UI indicator if token is expired so user doesn't need to find out on their own
-
 # Rate limiting
 
 - Can check headers in web api response
@@ -28,6 +26,11 @@
 
 # Show any sort of stats anywhere?
 
+- maybe put in the menu drawer?
+- followed artists
+- access token expires
+- username
+
 # UI mode - view all followed artists
 
 - in this mode, can mark an overlay on an artist to show that it's got new albums
@@ -35,3 +38,7 @@
 # UI mode - view all albums from artist
 
 - in this mode, can mark an overlay on an album to show that it's new
+
+# Page when not signed in should show something
+
+# Style the sign in page?

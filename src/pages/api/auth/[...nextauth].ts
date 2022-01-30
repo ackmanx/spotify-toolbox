@@ -5,7 +5,6 @@ import { _Artist, Artist, buildArtist } from '../../../mongoose/Artist'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { _User, User } from '../../../mongoose/User'
 import { GetAll } from '../../../utils/server/spotify-web-api'
-import { guessGenre } from '../../../utils/server/guess-genre'
 import { HydratedDocument } from 'mongoose'
 
 const scope = [
@@ -62,9 +61,12 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
        */
       signIn: async ({ user: loggedInUser, account }) => {
         await dbConnect()
-        const result: _User | null = await User.findOne({ id: loggedInUser.id })
+        const userInDB: HydratedDocument<_User> | null = await User.findOne({ id: loggedInUser.id })
 
-        if (!result) {
+        if (userInDB) {
+          userInDB.accessTokenExpires = account.expires_at ?? 0
+          await userInDB.save()
+        } else {
           const followedArtists = await GetAll.followedArtists(account.access_token ?? '')
 
           const artists: HydratedDocument<_Artist>[] = []
@@ -78,6 +80,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           const user = new User()
           user.userId = loggedInUser.id
           user.followedArtists = followedArtistsIDs
+          user.accessTokenExpires = account.expires_at ?? 0
 
           await user.save()
           await Artist.bulkSave(artists)
