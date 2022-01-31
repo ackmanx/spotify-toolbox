@@ -40,3 +40,8 @@
 - Maybe a custom hook that registers?
 
 # Use session `status` for auth considerations over `data`?
+
+# Have user icon in upper right for log-in/out and user status?
+
+- Show a profile pic
+- Have it be a menu

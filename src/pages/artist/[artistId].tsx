@@ -6,11 +6,38 @@ import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { _Album, _Artist } from '../../mongoose/Artist'
+import NextImage from 'next/image'
+import AlbumPlaceholder from '../../components/album/album-placeholder.png'
 
 type AlbumsByReleaseType = Record<string, _Album[]>
 
 const Main = styled.main`
   text-align: center;
+`
+
+const DivAlbumType = styled.div`
+  text-align: left;
+  padding: 0 20px;
+`
+
+const H2 = styled.h2`
+  margin: 0;
+  color: #ebebeb;
+  font-size: 72px;
+`
+
+const DivRoot = styled.div`
+  display: inline-block;
+  width: 300px;
+  margin: 10px 20px;
+  overflow: hidden;
+`
+
+const H3 = styled.h3`
+  margin: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `
 
 const ArtistPage: NextPage = () => {
@@ -51,15 +78,26 @@ const ArtistPage: NextPage = () => {
       </Head>
       <Header />
       <Main>
-        <h1>{artist.name}</h1>
-        <h2>Albums</h2>
+        <DivAlbumType>
+          <H2>albums</H2>
+        </DivAlbumType>
         {albums.album.map((album) => (
-          <h3 key={album.id}>{album.name}</h3>
+          <DivRoot key={album.id}>
+            <NextImage src={album.coverArt || AlbumPlaceholder} width={300} height={300} />
+            <H3>{album.name}</H3>
+            <p>{album.releaseDate}</p>
+          </DivRoot>
         ))}
 
-        <h2>Singles</h2>
+        <DivAlbumType>
+          <H2>singles</H2>
+        </DivAlbumType>
         {albums.single.map((album) => (
-          <h3 key={album.id}>{album.name}</h3>
+          <DivRoot key={album.id}>
+            <NextImage src={album.coverArt || AlbumPlaceholder} width={300} height={300} />
+            <H3>{album.name}</H3>
+            <p>{album.releaseDate}</p>
+          </DivRoot>
         ))}
       </Main>
     </>
