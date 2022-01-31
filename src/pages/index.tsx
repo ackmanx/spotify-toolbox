@@ -10,6 +10,7 @@ import { Genre } from '../components/genre/Genre'
 import { toast, ToastContainer } from 'react-toastify'
 import { InitResponse } from './api/init'
 import { NotLoggedInImage } from '../components/images/NotLoggedInImage'
+import { useRouter } from 'next/router'
 
 const Main = styled.main`
   text-align: center;
@@ -17,6 +18,7 @@ const Main = styled.main`
 
 const RootPage: NextPage = () => {
   const { data, status } = useSession()
+  const router = useRouter()
   const [genres, setGenres] = useState<Record<string, _Artist[]>>({})
   const [accessTokenExpires, setAccessTokenExpires] = useState<number>()
   const [hiddenGenre, setHiddenGenre] = useState<Record<string, boolean>>({})
@@ -58,11 +60,17 @@ const RootPage: NextPage = () => {
             <p>Access token has expired</p>
             <p>Sign in again to get a new one</p>
           </>,
-          { position: 'top-center', autoClose: false, hideProgressBar: true, theme: 'colored' }
+          {
+            position: 'top-center',
+            autoClose: false,
+            hideProgressBar: true,
+            theme: 'colored',
+            onClick: () => router.push('/api/auth/signin'),
+          }
         )
       }, expirationTimeInMs)
     }
-  }, [accessTokenExpires])
+  }, [router, accessTokenExpires])
 
   const handleGenreHide = (genre: string) =>
     setHiddenGenre((prevState) => ({
