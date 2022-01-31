@@ -1,9 +1,9 @@
 import NextAuth from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
 import dbConnect from '../../../lib/db'
-import { _Artist, Artist, buildArtist } from '../../../mongoose/Artist'
+import { _Artist, mArtist, buildArtist } from '../../../mongoose/Artist'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { _User, User } from '../../../mongoose/User'
+import { _User, mUser } from '../../../mongoose/User'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 import { HydratedDocument } from 'mongoose'
 
@@ -61,7 +61,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
        */
       signIn: async ({ user: loggedInUser, account }) => {
         await dbConnect()
-        const userInDB: HydratedDocument<_User> | null = await User.findOne({ id: loggedInUser.id })
+        const userInDB: HydratedDocument<_User> | null = await mUser.findOne({
+          id: loggedInUser.id,
+        })
 
         if (userInDB) {
           userInDB.accessTokenExpires = account.expires_at ?? 0
@@ -77,13 +79,13 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             followedArtistsIDs.push(artist.id)
           })
 
-          const user = new User()
+          const user = new mUser()
           user.userId = loggedInUser.id
           user.followedArtists = followedArtistsIDs
           user.accessTokenExpires = account.expires_at ?? 0
 
           await user.save()
-          await Artist.bulkSave(artists)
+          await mArtist.bulkSave(artists)
         }
       },
     },

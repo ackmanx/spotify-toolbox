@@ -34,11 +34,11 @@ const ArtistSchema = new Schema<_Artist>({
   albums: [AlbumSchema],
 })
 
-export const Artist: Model<_Artist> =
+export const mArtist: Model<_Artist> =
   mongoose.models.Artist ?? mongoose.model('Artist', ArtistSchema)
 
 export const buildArtist = (artist: ArtistObjectFull) => {
-  const model = new Artist()
+  const model = new mArtist()
 
   model.id = artist.id
   model.name = artist.name

@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../../lib/db'
-import { _Artist, Artist, buildArtist } from '../../../mongoose/Artist'
+import { _Artist, mArtist, buildArtist } from '../../../mongoose/Artist'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 import { HydratedDocument } from 'mongoose'
 import { getSession } from 'next-auth/react'
 import { FindOne } from '../../../mongoose/types'
-import { _User, User } from '../../../mongoose/User'
+import { _User, mUser } from '../../../mongoose/User'
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,7 +15,7 @@ export default async function handler(
   const genreToRefresh = req.query.genre
   await dbConnect()
 
-  const user: FindOne<_User> = await User.findOne({ userId: session?.userId })
+  const user: FindOne<_User> = await mUser.findOne({ userId: session?.userId })
 
   if (!user) {
     throw new Error('User not found in database. How are you even logged in?')
@@ -27,7 +27,7 @@ export default async function handler(
   user.followedArtists = spotifyFollowedArtistsIDs
   await user.save()
 
-  const artists: HydratedDocument<_Artist>[] = await Artist.find({
+  const artists: HydratedDocument<_Artist>[] = await mArtist.find({
     id: { $in: spotifyFollowedArtistsIDs },
   })
   const artistIDs = artists.map((artist) => artist.id)
@@ -59,7 +59,7 @@ export default async function handler(
   }
 
   // Save all refreshed artists with their albums to the database
-  await Artist.bulkSave(genreFilteredArtistsWithAlbums)
+  await mArtist.bulkSave(genreFilteredArtistsWithAlbums)
 
   const artistsWithFreshAlbums: HydratedDocument<_Artist>[] = []
 

@@ -14,4 +14,4 @@ const UserSchema = new Schema<_User>({
   viewedAlbums: [String],
 })
 
-export const User: Model<_User> = mongoose.models.User ?? mongoose.model('User', UserSchema)
+export const mUser: Model<_User> = mongoose.models.User ?? mongoose.model('User', UserSchema)
