@@ -34,3 +34,9 @@
 - in this mode, can mark an overlay on an album to show that it's new
 
 # Style the sign in page?
+
+# Access token expired notification code re-use for any page
+
+- Maybe a custom hook that registers?
+
+# Use session `status` for auth considerations over `data`?

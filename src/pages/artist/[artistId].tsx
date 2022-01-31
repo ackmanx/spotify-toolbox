@@ -47,7 +47,7 @@ const ArtistPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Toolbox - Artist</title>
+        <title>Toolbox - {artist.name}</title>
       </Head>
       <Header />
       <Main>
