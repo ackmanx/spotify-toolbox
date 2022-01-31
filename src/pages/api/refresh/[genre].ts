@@ -49,7 +49,7 @@ export default async function handler(
 
     artist.albums = albums.map((album) => ({
       id: album.id,
-      type: album.type,
+      type: album.album_type,
       name: album.name,
       releaseDate: album.release_date,
       coverArt: album.images.find((image) => image.width === image.height)?.url,

@@ -10,7 +10,7 @@ export interface _Artist {
   albums: _Album[]
 }
 
-interface _Album {
+export interface _Album {
   id: string
   type: string
   name: string

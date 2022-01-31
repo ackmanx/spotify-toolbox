@@ -15,7 +15,7 @@ const Main = styled.main`
   text-align: center;
 `
 
-const Page: NextPage = () => {
+const RootPage: NextPage = () => {
   const { data, status } = useSession()
   const [genres, setGenres] = useState<Record<string, _Artist[]>>({})
   const [accessTokenExpires, setAccessTokenExpires] = useState<number>()
@@ -104,4 +104,4 @@ const Page: NextPage = () => {
   )
 }
 
-export default Page
+export default RootPage
