@@ -9,10 +9,13 @@ import { ButtonImage } from '../shared/Image'
 
 const Header = styled.header`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px 20px;
 
   img {
     cursor: pointer;
+    border-radius: 100%;
   }
 `
 const DivImageContainer = styled.div`
@@ -27,6 +30,8 @@ const Component = () => {
 
   const handleOpenMenu = () => setIsMenuOpen(!isMenuOpen)
 
+  if (!data) return null
+
   return (
     <Header>
       <ButtonImage src={menuIcon} width={60} height={60} onClick={handleOpenMenu} />
@@ -40,6 +45,15 @@ const Component = () => {
           )}
         </DivImageContainer>
       )}
+
+      <h3>Oh boy</h3>
+
+      <ButtonImage
+        src={data?.user?.image ?? ''}
+        width={40}
+        height={40}
+        onClick={() => console.log(777, 'click') /* delete */}
+      />
     </Header>
   )
 }

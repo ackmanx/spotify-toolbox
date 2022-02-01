@@ -12,7 +12,8 @@ type ButtonImageProps = ImageProps & { onClick(event: any): void }
 
 export const ButtonImage = ({ onClick, ...props }: ButtonImageProps) => (
   <Button onClick={onClick}>
-    <NextImage {...props} />
+    {/* Using the loader prop lets you bypass NextJS' external domain requirement in next.config.ts */}
+    <NextImage {...props} loader={({ src }) => src} />
   </Button>
 )
 
