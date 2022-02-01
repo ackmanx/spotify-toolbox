@@ -1,54 +1,37 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 import Header from '../components/header/Header'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { Artist } from '../components/artists/Artist'
-import { _Artist } from '../mongoose/Artist'
+import { _Artist, mArtist } from '../mongoose/Artist'
 import { Genre } from '../components/genre/Genre'
 import { toast, ToastContainer } from 'react-toastify'
-import { InitResponse } from './api/init'
 import { NotLoggedInImage } from '../components/images/NotLoggedInImage'
 import { useRouter } from 'next/router'
+import dbConnect from '../lib/db'
+import { FindOne } from '../mongoose/types'
+import { _User, mUser } from '../mongoose/User'
+import { forceSerialization } from '../utils/force-serialization'
+
+interface Props {
+  artistsByGenre: Record<string, _Artist[]>
+  defaultHiddenGenres: Record<string, boolean>
+  user: _User | null
+}
 
 const Main = styled.main`
   text-align: center;
 `
 
-const RootPage: NextPage = () => {
+const RootPage: NextPage<Props> = ({ user, artistsByGenre, defaultHiddenGenres }) => {
   const { data, status } = useSession()
   const router = useRouter()
-  const [genres, setGenres] = useState<Record<string, _Artist[]>>({})
-  const [accessTokenExpires, setAccessTokenExpires] = useState<number>()
-  const [hiddenGenre, setHiddenGenre] = useState<Record<string, boolean>>({})
+  const [genres, setGenres] = useState<Record<string, _Artist[]>>(artistsByGenre)
+  const [hiddenGenre, setHiddenGenre] = useState<Record<string, boolean>>(defaultHiddenGenres)
 
-  useEffect(() => {
-    async function doStuff() {
-      const response = await fetch('/api/init')
-      const body: InitResponse = await response.json()
-
-      setAccessTokenExpires(body.user?.accessTokenExpires)
-
-      const genres = body.artists.reduce((genres: Record<string, _Artist[]>, artist) => {
-        if (!genres[artist.genre]) genres[artist.genre] = []
-
-        genres[artist.genre].push(artist)
-
-        return genres
-      }, {})
-
-      setGenres(genres)
-
-      const defaultHiddenGenres: Record<string, boolean> = {}
-      Object.keys(genres).forEach((genre) => (defaultHiddenGenres[genre] = true))
-      setHiddenGenre(defaultHiddenGenres)
-    }
-
-    if (data) {
-      doStuff()
-    }
-  }, [data])
+  const accessTokenExpires = user?.accessTokenExpires ?? 0
 
   useEffect(() => {
     if (accessTokenExpires) {
@@ -113,3 +96,34 @@ const RootPage: NextPage = () => {
 }
 
 export default RootPage
+
+interface ServerSideProps {
+  props: {
+    artistsByGenre: Record<string, _Artist[]>
+    defaultHiddenGenres: Record<string, boolean>
+    user: _User | null
+  }
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req }): Promise<ServerSideProps> => {
+  const session = await getSession({ req })
+  await dbConnect()
+
+  const user: FindOne<_User> = await mUser.findOne({ userId: session?.userId })
+  const artists: _Artist[] = await mArtist.find({ id: { $in: user?.followedArtists } })
+
+  const artistsByGenre = artists.reduce((genres: Record<string, _Artist[]>, artist) => {
+    if (!genres[artist.genre]) genres[artist.genre] = []
+
+    genres[artist.genre].push(artist)
+
+    return genres
+  }, {})
+
+  const defaultHiddenGenres: Record<string, boolean> = {}
+  Object.keys(artistsByGenre).forEach((genre) => (defaultHiddenGenres[genre] = true))
+
+  return {
+    props: forceSerialization({ user, artistsByGenre, defaultHiddenGenres }),
+  }
+}
