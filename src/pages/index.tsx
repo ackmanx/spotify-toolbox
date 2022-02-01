@@ -17,23 +17,22 @@ import { ToastContainer } from 'react-toastify'
 
 interface Props {
   artistsByGenre: Record<string, _Artist[]>
-  defaultHiddenGenres: Record<string, boolean>
 }
 
 const Main = styled.main`
   text-align: center;
 `
 
-const RootPage: NextPage<Props> = ({ artistsByGenre, defaultHiddenGenres }) => {
+const RootPage: NextPage<Props> = ({ artistsByGenre }) => {
   useAccessTokenTimer()
   const { status } = useSession()
   const [genres, setGenres] = useState<Record<string, _Artist[]>>(artistsByGenre)
-  const [hiddenGenre, setHiddenGenre] = useState<Record<string, boolean>>(defaultHiddenGenres)
+  const [visibleGenres, setVisibleGenres] = useState<Record<string, boolean | undefined>>({})
 
   const handleGenreHide = (genre: string) =>
-    setHiddenGenre((prevState) => ({
+    setVisibleGenres((prevState) => ({
       ...prevState,
-      [genre]: !prevState[genre],
+      [genre]: prevState[genre] == null ? false : !prevState[genre],
     }))
 
   const handleGenreRefresh = (genre: string, artists: _Artist[]) =>
@@ -61,7 +60,7 @@ const RootPage: NextPage<Props> = ({ artistsByGenre, defaultHiddenGenres }) => {
               onRefresh={handleGenreRefresh}
             />
 
-            {hiddenGenre[genre] &&
+            {(visibleGenres[genre] || visibleGenres[genre] == null) &&
               genres[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
           </div>
         ))}
@@ -91,10 +90,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }): Promise<S
     return genres
   }, {})
 
-  const defaultHiddenGenres: Record<string, boolean> = {}
-  Object.keys(artistsByGenre).forEach((genre) => (defaultHiddenGenres[genre] = true))
-
   return {
-    props: forceSerialization({ artistsByGenre, defaultHiddenGenres }),
+    props: forceSerialization({ artistsByGenre }),
   }
 }
