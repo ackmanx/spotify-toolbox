@@ -41,6 +41,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         if (account) {
           token.userId = token.sub
           token.accessToken = account.access_token
+          token.expiresAt = account.expires_at //access token expiration date in seconds
         }
 
         return token
@@ -52,6 +53,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       async session({ session, token }) {
         session.userId = token.userId
         session.accessToken = token.accessToken
+        session.expiresAt = token.expiresAt
+
         return session
       },
     },
@@ -61,14 +64,12 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
        */
       signIn: async ({ user: loggedInUser, account }) => {
         await dbConnect()
+
         const userInDB: HydratedDocument<_User> | null = await mUser.findOne({
           id: loggedInUser.id,
         })
 
-        if (userInDB) {
-          userInDB.accessTokenExpires = account.expires_at ?? 0
-          await userInDB.save()
-        } else {
+        if (!userInDB) {
           const followedArtists = await GetAll.followedArtists(account.access_token ?? '')
 
           const artists: HydratedDocument<_Artist>[] = []
@@ -82,7 +83,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           const user = new mUser()
           user.userId = loggedInUser.id
           user.followedArtists = followedArtistsIDs
-          user.accessTokenExpires = account.expires_at ?? 0
 
           await user.save()
           await mArtist.bulkSave(artists)

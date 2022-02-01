@@ -2,58 +2,33 @@ import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import { getSession, useSession } from 'next-auth/react'
 import Header from '../components/header/Header'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { Artist } from '../components/artists/Artist'
 import { _Artist, mArtist } from '../mongoose/Artist'
 import { Genre } from '../components/genre/Genre'
-import { toast, ToastContainer } from 'react-toastify'
 import { NotLoggedInImage } from '../components/images/NotLoggedInImage'
-import { useRouter } from 'next/router'
 import dbConnect from '../lib/db'
 import { FindOne } from '../mongoose/types'
 import { _User, mUser } from '../mongoose/User'
 import { forceSerialization } from '../utils/force-serialization'
+import { useAccessTokenTimer } from '../hooks/useAccessTokenTimer'
+import { ToastContainer } from 'react-toastify'
 
 interface Props {
   artistsByGenre: Record<string, _Artist[]>
   defaultHiddenGenres: Record<string, boolean>
-  user: _User | null
 }
 
 const Main = styled.main`
   text-align: center;
 `
 
-const RootPage: NextPage<Props> = ({ user, artistsByGenre, defaultHiddenGenres }) => {
-  const { data, status } = useSession()
-  const router = useRouter()
+const RootPage: NextPage<Props> = ({ artistsByGenre, defaultHiddenGenres }) => {
+  useAccessTokenTimer()
+  const { status } = useSession()
   const [genres, setGenres] = useState<Record<string, _Artist[]>>(artistsByGenre)
   const [hiddenGenre, setHiddenGenre] = useState<Record<string, boolean>>(defaultHiddenGenres)
-
-  const accessTokenExpires = user?.accessTokenExpires ?? 0
-
-  useEffect(() => {
-    if (accessTokenExpires) {
-      const expirationTimeInMs = accessTokenExpires * 1000 - new Date().getTime()
-
-      setTimeout(() => {
-        toast.error(
-          <>
-            <p>Access token has expired</p>
-            <p>Sign in again to get a new one</p>
-          </>,
-          {
-            position: 'top-center',
-            autoClose: false,
-            hideProgressBar: true,
-            theme: 'colored',
-            onClick: () => router.push('/api/auth/signin'),
-          }
-        )
-      }, expirationTimeInMs)
-    }
-  }, [router, accessTokenExpires])
 
   const handleGenreHide = (genre: string) =>
     setHiddenGenre((prevState) => ({
@@ -98,11 +73,7 @@ const RootPage: NextPage<Props> = ({ user, artistsByGenre, defaultHiddenGenres }
 export default RootPage
 
 interface ServerSideProps {
-  props: {
-    artistsByGenre: Record<string, _Artist[]>
-    defaultHiddenGenres: Record<string, boolean>
-    user: _User | null
-  }
+  props: Props
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }): Promise<ServerSideProps> => {
@@ -124,6 +95,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }): Promise<S
   Object.keys(artistsByGenre).forEach((genre) => (defaultHiddenGenres[genre] = true))
 
   return {
-    props: forceSerialization({ user, artistsByGenre, defaultHiddenGenres }),
+    props: forceSerialization({ artistsByGenre, defaultHiddenGenres }),
   }
 }

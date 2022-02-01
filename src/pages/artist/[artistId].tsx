@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react'
 import { _Album, _Artist } from '../../mongoose/Artist'
 import NextImage from 'next/image'
 import AlbumPlaceholder from '../../components/album/album-placeholder.png'
+import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
+import { ToastContainer } from 'react-toastify'
 
 type AlbumsByReleaseType = Record<string, _Album[]>
 
@@ -41,6 +43,7 @@ const H3 = styled.h3`
 `
 
 const ArtistPage: NextPage = () => {
+  useAccessTokenTimer()
   const router = useRouter()
   const { artistId } = router.query
   const { data, status } = useSession()
@@ -78,6 +81,7 @@ const ArtistPage: NextPage = () => {
       </Head>
       <Header />
       <Main>
+        <ToastContainer />
         <DivAlbumType>
           <H2>albums</H2>
         </DivAlbumType>
