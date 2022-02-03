@@ -1,15 +1,21 @@
 import type { NextPage } from 'next'
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
-import { useSession } from 'next-auth/react'
 import Header from '../../components/header/Header'
 import styled from '@emotion/styled'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { _Album, _Artist } from '../../mongoose/Artist'
+import { _Album, _Artist, mArtist } from '../../mongoose/Artist'
 import NextImage from 'next/image'
 import AlbumPlaceholder from '../../components/album/album-placeholder.png'
 import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
 import { ToastContainer } from 'react-toastify'
+import dbConnect from '../../lib/db'
+import { FindOne } from '../../mongoose/types'
+import { forceSerialization } from '../../utils/force-serialization'
+
+interface Props {
+  artist: _Artist
+  albums: AlbumsByReleaseType
+}
 
 type AlbumsByReleaseType = Record<string, _Album[]>
 
@@ -42,35 +48,8 @@ const H3 = styled.h3`
   overflow: hidden;
 `
 
-const ArtistPage: NextPage = () => {
+const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
   useAccessTokenTimer()
-  const router = useRouter()
-  const { artistId } = router.query
-  const { data, status } = useSession()
-  const [artist, setArtist] = useState<_Artist>()
-  const [albums, setAlbums] = useState<AlbumsByReleaseType>()
-
-  useEffect(() => {
-    async function doStuff() {
-      const response: Response = await fetch(`/api/artist/${artistId}`)
-      const bodyArtist: _Artist = await response.json()
-
-      setArtist(bodyArtist)
-      setAlbums(
-        bodyArtist.albums.reduce(
-          (acc: AlbumsByReleaseType, curr: _Album) => {
-            acc[curr.type].push(curr)
-            return acc
-          },
-          { single: [], album: [] }
-        )
-      )
-    }
-
-    if (data) {
-      doStuff()
-    }
-  }, [artistId, data])
 
   if (!albums || !artist) return null
 
@@ -109,3 +88,27 @@ const ArtistPage: NextPage = () => {
 }
 
 export default ArtistPage
+
+interface ServerSideProps {
+  props: Props
+}
+
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+}): Promise<ServerSideProps> => {
+  await dbConnect()
+
+  const artist: FindOne<_Artist> = await mArtist.findOne({ id: query.artistId })
+
+  const albums = artist?.albums.reduce(
+    (acc: AlbumsByReleaseType, curr: _Album) => {
+      acc[curr.type].push(curr)
+      return acc
+    },
+    { single: [], album: [] }
+  )
+
+  return {
+    props: forceSerialization({ artist, albums }),
+  }
+}
