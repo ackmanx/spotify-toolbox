@@ -6,6 +6,7 @@ import signOutIcon from './sign-out.png'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { ButtonImage } from '../shared/Image'
+import { useRouter } from 'next/router'
 
 const Header = styled.header`
   display: flex;
@@ -25,6 +26,7 @@ const DivImageContainer = styled.div`
 `
 
 const Component = () => {
+  const router = useRouter()
   const { data } = useSession()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -34,7 +36,7 @@ const Component = () => {
 
   return (
     <Header>
-      <ButtonImage src={menuIcon} width={60} height={60} onClick={handleOpenMenu} />
+      <ButtonImage src={menuIcon} width={60} height={60} onClick={() => router.push('/')} />
 
       {isMenuOpen && (
         <DivImageContainer>
@@ -48,12 +50,7 @@ const Component = () => {
 
       <h3>Oh boy</h3>
 
-      <ButtonImage
-        src={data?.user?.image ?? ''}
-        width={40}
-        height={40}
-        onClick={() => console.log(777, 'click') /* delete */}
-      />
+      <ButtonImage src={data?.user?.image ?? ''} width={40} height={40} onClick={handleOpenMenu} />
     </Header>
   )
 }
