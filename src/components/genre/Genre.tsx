@@ -23,6 +23,10 @@ const Div = styled.div`
   & svg:hover {
     cursor: pointer;
   }
+
+  &:hover h2:first-letter {
+    color: #000;
+  }
 `
 
 const H2 = styled.h2`

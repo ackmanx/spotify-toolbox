@@ -58,7 +58,7 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
       <Head>
         <title>Toolbox - {artist.name}</title>
       </Head>
-      <Header />
+      <Header artist={artist} />
       <Main>
         <ToastContainer />
         <DivAlbumType>

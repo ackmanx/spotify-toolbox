@@ -1,12 +1,17 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
-import Image from 'next/image'
 import menuIcon from './menu-icon.png'
 import signInIcon from './sign-in.png'
 import signOutIcon from './sign-out.png'
+import backIcon from './back.png'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { ButtonImage } from '../shared/Image'
 import { useRouter } from 'next/router'
+import { _Artist } from '../../mongoose/Artist'
+
+interface Props {
+  artist?: _Artist
+}
 
 const Header = styled.header`
   display: flex;
@@ -19,13 +24,14 @@ const Header = styled.header`
     border-radius: 100%;
   }
 `
+
 const DivImageContainer = styled.div`
   display: flex;
   align-items: center;
   margin-left: 10px;
 `
 
-const Component = () => {
+const Component = ({ artist }: Props) => {
   const router = useRouter()
   const { data } = useSession()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -48,7 +54,12 @@ const Component = () => {
         </DivImageContainer>
       )}
 
-      <h3>Oh boy</h3>
+      {artist && (
+        <h3>
+          <ButtonImage src={backIcon} width={25} height={25} onClick={() => router.back()} />
+          {artist.name}
+        </h3>
+      )}
 
       <ButtonImage src={data?.user?.image ?? ''} width={40} height={40} onClick={handleOpenMenu} />
     </Header>

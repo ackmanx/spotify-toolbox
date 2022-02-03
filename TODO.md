@@ -6,7 +6,6 @@
 # Clicking artist opens artist page with albums
 
 - Albums should already be in the db, but if not need to fetch
-- Provide way to go back
 
 # Filter out viewed albums from album view on artist
 
