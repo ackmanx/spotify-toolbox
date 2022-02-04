@@ -2,20 +2,16 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '../../../lib/db'
 import { _Artist, mArtist, buildArtist } from '../../../mongoose/Artist'
 import { GetAll } from '../../../utils/server/spotify-web-api'
-import { HydratedDocument } from 'mongoose'
 import { getSession } from 'next-auth/react'
-import { FindOne } from '../../../mongoose/types'
+import { Many, One } from '../../../mongoose/types'
 import { _User, mUser } from '../../../mongoose/User'
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<HydratedDocument<_Artist>[]>
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Many<_Artist>>) {
   const session = await getSession({ req })
   const genreToRefresh = req.query.genre
   await dbConnect()
 
-  const user: FindOne<_User> = await mUser.findOne({ userId: session?.userId })
+  const user: One<_User> = await mUser.findOne({ userId: session?.userId })
 
   if (!user) {
     throw new Error('User not found in database. How are you even logged in?')
@@ -27,12 +23,12 @@ export default async function handler(
   user.followedArtists = spotifyFollowedArtistsIDs
   await user.save()
 
-  const artists: HydratedDocument<_Artist>[] = await mArtist.find({
+  const artists: Many<_Artist> = await mArtist.find({
     id: { $in: spotifyFollowedArtistsIDs },
   })
   const artistIDs = artists.map((artist) => artist.id)
 
-  const artistsNotInDB: HydratedDocument<_Artist>[] = spotifyFollowedArtists
+  const artistsNotInDB: Many<_Artist> = spotifyFollowedArtists
     // Filter out all artists that we've already got in the database
     .filter((spotifyArtist) => !artistIDs.includes(spotifyArtist.id))
     .map(buildArtist)
@@ -41,7 +37,7 @@ export default async function handler(
     .concat(artistsNotInDB)
     .filter((artist) => artist.genre === genreToRefresh)
 
-  let genreFilteredArtistsWithAlbums: HydratedDocument<_Artist>[] = []
+  let genreFilteredArtistsWithAlbums: Many<_Artist> = []
 
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
@@ -61,7 +57,7 @@ export default async function handler(
   // Save all refreshed artists with their albums to the database
   await mArtist.bulkSave(genreFilteredArtistsWithAlbums)
 
-  const artistsWithFreshAlbums: HydratedDocument<_Artist>[] = []
+  const artistsWithFreshAlbums: Many<_Artist> = []
 
   genreFilteredArtistsWithAlbums.forEach((artistWithAlbums) => {
     artistWithAlbums.albums.some((album) => {

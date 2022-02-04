@@ -9,7 +9,7 @@ import { _Artist, mArtist } from '../mongoose/Artist'
 import { Genre } from '../components/genre/Genre'
 import { NotLoggedInImage } from '../components/images/NotLoggedInImage'
 import dbConnect from '../lib/db'
-import { FindOne } from '../mongoose/types'
+import { Many, One } from '../mongoose/types'
 import { _User, mUser } from '../mongoose/User'
 import { forceSerialization } from '../utils/force-serialization'
 import { useAccessTokenTimer } from '../hooks/useAccessTokenTimer'
@@ -99,10 +99,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req }): Promise<S
   const session = await getSession({ req })
   await dbConnect()
 
-  const user: FindOne<_User> = await mUser.findOne({ userId: session?.userId })
-  const artists: _Artist[] = await mArtist.find({ id: { $in: user?.followedArtists } })
+  const user: One<_User> = await mUser.findOne({ userId: session?.userId })
+  const artists: Many<_Artist> = await mArtist.find({
+    id: { $in: user?.followedArtists },
+  })
 
-  const artistsByGenre = artists.reduce((genres: Record<string, _Artist[]>, artist) => {
+  const artistsByGenre = artists.reduce((genres: Record<string, Many<_Artist>>, artist) => {
     if (!genres[artist.genre]) genres[artist.genre] = []
 
     genres[artist.genre].push(artist)

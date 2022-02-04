@@ -9,7 +9,7 @@ import AlbumPlaceholder from '../../components/album/album-placeholder.png'
 import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
 import { ToastContainer } from 'react-toastify'
 import dbConnect from '../../lib/db'
-import { FindOne } from '../../mongoose/types'
+import { One } from '../../mongoose/types'
 import { forceSerialization } from '../../utils/force-serialization'
 import { _User, mUser } from '../../mongoose/User'
 import { getSession } from 'next-auth/react'
@@ -110,16 +110,14 @@ export const getServerSideProps: GetServerSideProps = async ({
   const session = await getSession({ req })
   await dbConnect()
 
-  const user: FindOne<_User> = await mUser.findOne({ id: session?.userId })
-  const artist: FindOne<_Artist> = await mArtist.findOne({ id: query.artistId })
+  const user: One<_User> = await mUser.findOne({ id: session?.userId })
+  const artist: One<_Artist> = await mArtist.findOne({ id: query.artistId })
+  const artistPojo = artist?.toObject()
 
-  const albums = artist?.albums.reduce(
-    (albums: AlbumsByReleaseType, album: _Album) => {
+  const albums = artistPojo?.albums.reduce(
+    (albums: AlbumsByReleaseType, album) => {
       const isViewed = user?.viewedAlbums.includes(album.id) ?? false
-      //todo majerus: this works but types are wrong
-      //todo majerus: i'm using ts interface I made for model even though this is actually a HydratedDocument<_Album>
-      // @ts-ignore
-      albums[album.type].push({ ...album.toObject(), isViewed })
+      albums[album.type].push({ ...album, isViewed })
       return albums
     },
     { single: [], album: [] }

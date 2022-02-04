@@ -6,6 +6,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { _User, mUser } from '../../../mongoose/User'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 import { HydratedDocument } from 'mongoose'
+import { Many } from '../../../mongoose/types'
 
 const scope = [
   'playlist-modify-public',
@@ -72,7 +73,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         if (!userInDB) {
           const followedArtists = await GetAll.followedArtists(account.access_token ?? '')
 
-          const artists: HydratedDocument<_Artist>[] = []
+          const artists: Many<_Artist> = []
           const followedArtistsIDs: string[] = []
 
           followedArtists.forEach((artist) => {
