@@ -11,13 +11,17 @@ import { ToastContainer } from 'react-toastify'
 import dbConnect from '../../lib/db'
 import { FindOne } from '../../mongoose/types'
 import { forceSerialization } from '../../utils/force-serialization'
+import { _User, mUser } from '../../mongoose/User'
+import { getSession } from 'next-auth/react'
+
+type AlbumWithViewed = _Album & { isViewed: boolean }
 
 interface Props {
   artist: _Artist
   albums: AlbumsByReleaseType
 }
 
-type AlbumsByReleaseType = Record<string, _Album[]>
+type AlbumsByReleaseType = Record<string, AlbumWithViewed[]>
 
 const Main = styled.main`
   text-align: center;
@@ -64,24 +68,30 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
         <DivAlbumType>
           <H2>albums</H2>
         </DivAlbumType>
-        {albums.album.map((album) => (
-          <DivRoot key={album.id}>
-            <NextImage src={album.coverArt || AlbumPlaceholder} width={300} height={300} />
-            <H3>{album.name}</H3>
-            <p>{album.releaseDate}</p>
-          </DivRoot>
-        ))}
+        {albums.album.map(
+          (album) =>
+            !album.isViewed && (
+              <DivRoot key={album.id}>
+                <NextImage src={album.coverArt || AlbumPlaceholder} width={300} height={300} />
+                <H3>{album.name}</H3>
+                <p>{album.releaseDate}</p>
+              </DivRoot>
+            )
+        )}
 
         <DivAlbumType>
           <H2>singles</H2>
         </DivAlbumType>
-        {albums.single.map((album) => (
-          <DivRoot key={album.id}>
-            <NextImage src={album.coverArt || AlbumPlaceholder} width={300} height={300} />
-            <H3>{album.name}</H3>
-            <p>{album.releaseDate}</p>
-          </DivRoot>
-        ))}
+        {albums.single.map(
+          (single) =>
+            !single.isViewed && (
+              <DivRoot key={single.id}>
+                <NextImage src={single.coverArt || AlbumPlaceholder} width={300} height={300} />
+                <H3>{single.name}</H3>
+                <p>{single.releaseDate}</p>
+              </DivRoot>
+            )
+        )}
       </Main>
     </>
   )
@@ -95,15 +105,22 @@ interface ServerSideProps {
 
 export const getServerSideProps: GetServerSideProps = async ({
   query,
+  req,
 }): Promise<ServerSideProps> => {
+  const session = await getSession({ req })
   await dbConnect()
 
+  const user: FindOne<_User> = await mUser.findOne({ id: session?.userId })
   const artist: FindOne<_Artist> = await mArtist.findOne({ id: query.artistId })
 
   const albums = artist?.albums.reduce(
-    (acc: AlbumsByReleaseType, curr: _Album) => {
-      acc[curr.type].push(curr)
-      return acc
+    (albums: AlbumsByReleaseType, album: _Album) => {
+      const isViewed = user?.viewedAlbums.includes(album.id) ?? false
+      //todo majerus: this works but types are wrong
+      //todo majerus: i'm using ts interface I made for model even though this is actually a HydratedDocument<_Album>
+      // @ts-ignore
+      albums[album.type].push({ ...album.toObject(), isViewed })
+      return albums
     },
     { single: [], album: [] }
   )

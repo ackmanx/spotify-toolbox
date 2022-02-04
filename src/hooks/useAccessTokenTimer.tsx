@@ -22,7 +22,6 @@ export const useAccessTokenTimer = () => {
             position: 'top-center',
             autoClose: false,
             hideProgressBar: true,
-            theme: 'colored',
             onClick: () => router.push('/api/auth/signin'),
           }
         )
