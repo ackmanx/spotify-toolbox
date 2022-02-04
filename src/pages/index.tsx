@@ -2,7 +2,7 @@ import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import { getSession, useSession } from 'next-auth/react'
 import Header from '../components/header/Header'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { Artist } from '../components/artists/Artist'
 import { _Artist, mArtist } from '../mongoose/Artist'
@@ -19,6 +19,8 @@ interface Props {
   artistsByGenre: Record<string, _Artist[]>
 }
 
+type VisibleGenres = Record<string, boolean | undefined>
+
 const Main = styled.main`
   text-align: center;
 `
@@ -27,13 +29,31 @@ const RootPage: NextPage<Props> = ({ artistsByGenre }) => {
   useAccessTokenTimer()
   const { status } = useSession()
   const [genres, setGenres] = useState<Record<string, _Artist[]>>(artistsByGenre)
-  const [visibleGenres, setVisibleGenres] = useState<Record<string, boolean | undefined>>({})
+  const [visibleGenres, setVisibleGenres] = useState<VisibleGenres>({})
+
+  useEffect(() => {
+    const visibleGenres: VisibleGenres = {}
+
+    Object.keys(genres).forEach((genre) => {
+      visibleGenres[genre] = localStorage.getItem(genre) === 'true'
+    })
+
+    setVisibleGenres(visibleGenres)
+  }, [genres])
+
+  console.log(777, 'render', visibleGenres) /* delete */
 
   const handleGenreHide = (genre: string) =>
-    setVisibleGenres((prevState) => ({
-      ...prevState,
-      [genre]: prevState[genre] == null ? false : !prevState[genre],
-    }))
+    setVisibleGenres((prevState) => {
+      const isGenreVisible = prevState[genre] == null ? false : !prevState[genre]
+
+      localStorage.setItem(genre, isGenreVisible.toString())
+
+      return {
+        ...prevState,
+        [genre]: isGenreVisible,
+      }
+    })
 
   const handleGenreRefresh = (genre: string, artists: _Artist[]) =>
     setGenres((prevState) => ({
