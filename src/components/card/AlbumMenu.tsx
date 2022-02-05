@@ -31,9 +31,11 @@ export const AlbumMenu = ({ albumId, className, onClick }: Props) => {
         src={MarkAsViewedIcon}
         width={50}
         height={50}
-        onClick={(event) => {
+        onClick={async (event) => {
           event.stopPropagation()
-          console.log('albumId', albumId)
+          //todo majerus: should be a POST probably
+          const response = await fetch(`/api/viewed/${albumId}`)
+          console.log(777, await response.json()) /* delete */
         }}
       />
     </div>
