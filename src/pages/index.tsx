@@ -41,8 +41,6 @@ const RootPage: NextPage<Props> = ({ artistsByGenre }) => {
     setVisibleGenres(visibleGenres)
   }, [genres])
 
-  console.log(777, 'render', visibleGenres) /* delete */
-
   const handleGenreHide = (genre: string) =>
     setVisibleGenres((prevState) => {
       const isGenreVisible = prevState[genre] == null ? false : !prevState[genre]

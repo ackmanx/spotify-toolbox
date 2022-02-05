@@ -54,12 +54,7 @@ const Component = ({ artist }: Props) => {
         </DivImageContainer>
       )}
 
-      {artist && (
-        <h3>
-          <ButtonImage src={backIcon} width={25} height={25} onClick={() => router.back()} />
-          {artist.name}
-        </h3>
-      )}
+      {artist && <h3>{artist.name}</h3>}
 
       <ButtonImage src={data?.user?.image ?? ''} width={40} height={40} onClick={handleOpenMenu} />
     </Header>
