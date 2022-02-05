@@ -20,9 +20,10 @@ import { forceSerialization } from '../utils/force-serialization'
 
 interface Props {
   artistsByGenre: Record<string, _Artist[]>
+  viewedAlbums: string[]
 }
 
-const RootNextPage: NextPage<Props> = ({ artistsByGenre }) => {
+const RootNextPage: NextPage<Props> = ({ artistsByGenre, viewedAlbums }) => {
   useAccessTokenTimer()
   const { status } = useSession()
 
@@ -39,7 +40,7 @@ const RootNextPage: NextPage<Props> = ({ artistsByGenre }) => {
         `}
       >
         {status === 'unauthenticated' && <NotLoggedInImage />}
-        <RootPage artistsByGenre={artistsByGenre} />
+        <RootPage artistsByGenre={artistsByGenre} viewedAlbums={viewedAlbums} />
       </main>
     </>
   )
@@ -56,8 +57,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req }): Promise<S
   await dbConnect()
 
   const user: One<_User> = await mUser.findOne({ userId: session?.userId })
+
+  if (!user) {
+    throw new Error('User not found in DB')
+  }
+
   const artists: Many<_Artist> = await mArtist.find({
-    id: { $in: user?.followedArtists },
+    id: { $in: user.followedArtists },
   })
 
   const artistsByGenre = artists.reduce((genres: Record<string, Many<_Artist>>, artist) => {
@@ -69,6 +75,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }): Promise<S
   }, {})
 
   return {
-    props: forceSerialization({ artistsByGenre }),
+    props: forceSerialization<Props>({ artistsByGenre, viewedAlbums: user.viewedAlbums }),
   }
 }

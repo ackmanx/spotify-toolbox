@@ -63,11 +63,16 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const user: One<_User> = await mUser.findOne({ id: session?.userId })
   const artist: One<_Artist> = await mArtist.findOne({ id: query.artistId })
-  const artistPojo = artist?.toObject()
 
-  const albums = artistPojo?.albums.reduce(
+  if (!user || !artist) {
+    throw new Error('User or artist not found in DB')
+  }
+
+  const artistPojo = artist.toObject()
+
+  const albums = artistPojo.albums.reduce(
     (albums: AlbumsByReleaseType, album) => {
-      const isViewed = user?.viewedAlbums.includes(album.id) ?? false
+      const isViewed = user.viewedAlbums.includes(album.id) ?? false
       albums[album.type].push({ ...album, isViewed })
       return albums
     },
@@ -75,6 +80,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   )
 
   return {
-    props: forceSerialization({ artist, albums }),
+    props: forceSerialization<Props>({ artist, albums }),
   }
 }

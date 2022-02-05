@@ -6,11 +6,12 @@ import { Genre } from '../genre/Genre'
 
 interface Props {
   artistsByGenre: Record<string, _Artist[]>
+  viewedAlbums: string[]
 }
 
 type VisibleGenres = Record<string, boolean | undefined>
 
-export const RootPage = ({ artistsByGenre }: Props) => {
+export const RootPage = ({ artistsByGenre, viewedAlbums }: Props) => {
   const [genres, setGenres] = useState<Record<string, _Artist[]>>(artistsByGenre)
   const [visibleGenres, setVisibleGenres] = useState<VisibleGenres>({})
 
@@ -55,7 +56,13 @@ export const RootPage = ({ artistsByGenre }: Props) => {
           />
 
           {(visibleGenres[genre] || visibleGenres[genre] == null) &&
-            genres[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
+            genres[genre].map((artist) => {
+              const hasUnviewedAlbums = artist.albums.some(
+                (album) => !viewedAlbums.includes(album.id)
+              )
+
+              return hasUnviewedAlbums ? <Artist key={artist.id} artist={artist} /> : null
+            })}
         </div>
       ))}
     </div>
