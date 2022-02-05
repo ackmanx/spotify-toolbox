@@ -82,7 +82,9 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
         {albums.album.map((album) => (
           <DivCardContainer key={album.id}>
             <Card album={album} onClick={() => showAlbumMenu(album.id)} />
-            {albumMenus[album.id] && <AlbumMenu$ albumId={album.id} />}
+            {albumMenus[album.id] && (
+              <AlbumMenu$ albumId={album.id} onClick={() => showAlbumMenu(album.id)} />
+            )}
           </DivCardContainer>
         ))}
 
@@ -92,7 +94,9 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
         {albums.single.map((single) => (
           <DivCardContainer key={single.id}>
             <Card album={single} onClick={() => showAlbumMenu(single.id)} />
-            {albumMenus[single.id] && <AlbumMenu$ albumId={single.id} />}
+            {albumMenus[single.id] && (
+              <AlbumMenu$ albumId={single.id} onClick={() => showAlbumMenu(single.id)} />
+            )}
           </DivCardContainer>
         ))}
       </Main>
