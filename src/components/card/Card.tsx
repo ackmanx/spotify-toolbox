@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import NextImage from 'next/image'
 
 import { AlbumWithViewed } from '../../pages/artist/[artistId]'
-import AlbumPlaceholder from './album-placeholder.png'
+import AlbumPlaceholder from './images/album-placeholder.png'
 
 interface Props {
   album: AlbumWithViewed
@@ -17,6 +17,7 @@ const styles = {
     overflow: hidden;
 
     & img {
+      cursor: pointer;
       border-radius: 5px;
     }
   `,
