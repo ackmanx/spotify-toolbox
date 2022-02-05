@@ -1,6 +1,7 @@
-import SpotifyWebApi from 'spotify-web-api-node'
 import { NextApiRequest } from 'next'
 import { getSession } from 'next-auth/react'
+import SpotifyWebApi from 'spotify-web-api-node'
+
 import ArtistObjectFull = SpotifyApi.ArtistObjectFull
 import AlbumObjectSimplified = SpotifyApi.AlbumObjectSimplified
 

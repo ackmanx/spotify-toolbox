@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 export const useAccessTokenTimer = () => {
   const { data } = useSession()

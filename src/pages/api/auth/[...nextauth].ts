@@ -1,12 +1,13 @@
+import { HydratedDocument } from 'mongoose'
+import { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
+
 import dbConnect from '../../../lib/db'
-import { _Artist, mArtist, buildArtist } from '../../../mongoose/Artist'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
 import { _User, mUser } from '../../../mongoose/User'
-import { GetAll } from '../../../utils/server/spotify-web-api'
-import { HydratedDocument } from 'mongoose'
 import { Many } from '../../../mongoose/types'
+import { GetAll } from '../../../utils/server/spotify-web-api'
 
 const scope = [
   'playlist-modify-public',

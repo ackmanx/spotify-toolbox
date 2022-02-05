@@ -1,6 +1,8 @@
 import mongoose, { Model, Schema } from 'mongoose'
-import ArtistObjectFull = SpotifyApi.ArtistObjectFull
+
 import { guessGenre } from '../utils/server/guess-genre'
+
+import ArtistObjectFull = SpotifyApi.ArtistObjectFull
 
 export interface _Artist {
   id: string

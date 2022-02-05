@@ -1,10 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import dbConnect from '../../../lib/db'
-import { _Artist, mArtist, buildArtist } from '../../../mongoose/Artist'
-import { GetAll } from '../../../utils/server/spotify-web-api'
 import { getSession } from 'next-auth/react'
-import { Many, One } from '../../../mongoose/types'
+
+import dbConnect from '../../../lib/db'
+import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
 import { _User, mUser } from '../../../mongoose/User'
+import { Many, One } from '../../../mongoose/types'
+import { GetAll } from '../../../utils/server/spotify-web-api'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Many<_Artist>>) {
   const session = await getSession({ req })

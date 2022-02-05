@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { useRef, useState } from 'react'
-import RefreshIcon from './RefreshIcon'
-import { CSSTransition } from 'react-transition-group'
-import { toast } from 'react-toastify'
-import { _Artist } from '../../mongoose/Artist'
 import { css } from '@emotion/react'
+import { useRef, useState } from 'react'
+import { toast } from 'react-toastify'
+import { CSSTransition } from 'react-transition-group'
+
+import { _Artist } from '../../mongoose/Artist'
+import RefreshIcon from './RefreshIcon'
 
 interface Props {
   name: string

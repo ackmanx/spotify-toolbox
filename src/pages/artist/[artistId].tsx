@@ -2,19 +2,20 @@
 import { css } from '@emotion/react'
 import type { NextPage } from 'next'
 import { GetServerSideProps } from 'next'
+import { getSession } from 'next-auth/react'
 import Head from 'next/head'
-import Header from '../../components/header/Header'
-import { _Album, _Artist, mArtist } from '../../mongoose/Artist'
-import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
+import { useState } from 'react'
 import { ToastContainer } from 'react-toastify'
+
+import { AlbumMenu } from '../../components/card/AlbumMenu'
+import { Card } from '../../components/card/Card'
+import Header from '../../components/header/Header'
+import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
 import dbConnect from '../../lib/db'
+import { _Album, _Artist, mArtist } from '../../mongoose/Artist'
+import { _User, mUser } from '../../mongoose/User'
 import { One } from '../../mongoose/types'
 import { forceSerialization } from '../../utils/force-serialization'
-import { _User, mUser } from '../../mongoose/User'
-import { getSession } from 'next-auth/react'
-import { Card } from '../../components/card/Card'
-import { useState } from 'react'
-import { AlbumMenu } from '../../components/card/AlbumMenu'
 
 export type AlbumWithViewed = _Album & { isViewed: boolean }
 

@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import NextImage from 'next/image'
-import AlbumPlaceholder from './album-placeholder.png'
-import { AlbumWithViewed } from '../../pages/artist/[artistId]'
 import { css } from '@emotion/react'
+import NextImage from 'next/image'
+
+import { AlbumWithViewed } from '../../pages/artist/[artistId]'
+import AlbumPlaceholder from './album-placeholder.png'
 
 interface Props {
   album: AlbumWithViewed
