@@ -1,20 +1,22 @@
+/** @jsxImportSource @emotion/react */
 import NextImage from 'next/image'
 import { ImageProps } from 'next/dist/client/image'
-import styled from '@emotion/styled'
 import Link from 'next/link'
-
-const Button = styled.button`
-  background-color: transparent;
-  border: none;
-`
+import { css } from '@emotion/react'
 
 type ButtonImageProps = ImageProps & { onClick(event: any): void }
 
 export const ButtonImage = ({ onClick, ...props }: ButtonImageProps) => (
-  <Button onClick={onClick}>
+  <button
+    css={css`
+      background-color: transparent;
+      border: none;
+    `}
+    onClick={onClick}
+  >
     {/* Using the loader prop lets you bypass NextJS' external domain requirement in next.config.ts */}
     <NextImage {...props} loader={({ src }) => src} />
-  </Button>
+  </button>
 )
 
 interface ImageLinkProps {

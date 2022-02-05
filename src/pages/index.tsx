@@ -1,9 +1,9 @@
+/** @jsxImportSource @emotion/react */
 import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import { getSession, useSession } from 'next-auth/react'
 import Header from '../components/header/Header'
 import { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
 import { Artist } from '../components/artists/Artist'
 import { _Artist, mArtist } from '../mongoose/Artist'
 import { Genre } from '../components/genre/Genre'
@@ -14,16 +14,13 @@ import { _User, mUser } from '../mongoose/User'
 import { forceSerialization } from '../utils/force-serialization'
 import { useAccessTokenTimer } from '../hooks/useAccessTokenTimer'
 import { ToastContainer } from 'react-toastify'
+import { css } from '@emotion/react'
 
 interface Props {
   artistsByGenre: Record<string, _Artist[]>
 }
 
 type VisibleGenres = Record<string, boolean | undefined>
-
-const Main = styled.main`
-  text-align: center;
-`
 
 const RootPage: NextPage<Props> = ({ artistsByGenre }) => {
   useAccessTokenTimer()
@@ -68,7 +65,11 @@ const RootPage: NextPage<Props> = ({ artistsByGenre }) => {
       </Head>
       <ToastContainer />
       <Header />
-      <Main>
+      <main
+        css={css`
+          text-align: center;
+        `}
+      >
         {status === 'unauthenticated' && <NotLoggedInImage />}
         {genresSorted.map((genre) => (
           <div key={genre}>
@@ -82,7 +83,7 @@ const RootPage: NextPage<Props> = ({ artistsByGenre }) => {
               genres[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
           </div>
         ))}
-      </Main>
+      </main>
     </>
   )
 }

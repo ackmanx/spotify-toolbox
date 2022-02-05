@@ -1,8 +1,9 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import type { NextPage } from 'next'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Header from '../../components/header/Header'
-import styled from '@emotion/styled'
 import { _Album, _Artist, mArtist } from '../../mongoose/Artist'
 import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
 import { ToastContainer } from 'react-toastify'
@@ -24,35 +25,34 @@ interface Props {
 
 type AlbumsByReleaseType = Record<string, AlbumWithViewed[]>
 
-const Main = styled.main`
-  text-align: center;
-`
+const styles = {
+  main: css`
+    text-align: center;
+  `,
+  header: css`
+    text-align: left;
+    padding: 0 20px;
 
-const AlbumTypeHeader = styled.div`
-  text-align: left;
-  padding: 0 20px;
-
-  h2 {
-    margin: 0;
-    color: #ebebeb;
-    font-size: 72px;
-  }
-`
-
-const DivCardContainer = styled.div`
-  display: inline-block;
-  position: relative;
-`
-
-const AlbumMenu$ = styled(AlbumMenu)`
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  margin: 10px 20px;
-  width: 290px;
-  height: 290px;
-  background-color: white;
-`
+    h2 {
+      margin: 0;
+      color: #ebebeb;
+      font-size: 72px;
+    }
+  `,
+  albumContainer: css`
+    display: inline-block;
+    position: relative;
+  `,
+  menu: css`
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    margin: 10px 20px;
+    width: 290px;
+    height: 290px;
+    background-color: white;
+  `,
+}
 
 const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
   useAccessTokenTimer()
@@ -87,41 +87,43 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
         <title>Toolbox - {artist.name}</title>
       </Head>
       <Header artist={artist} />
-      <Main>
+      <main css={styles.main}>
         <ToastContainer />
 
-        <AlbumTypeHeader>
+        <div css={styles.header}>
           <h2>albums</h2>
-        </AlbumTypeHeader>
+        </div>
         {albums.album.map((album) => (
-          <DivCardContainer key={album.id}>
+          <div key={album.id} css={styles.albumContainer}>
             <Card album={album} onClick={() => showAlbumMenu(album.id)} />
             {albumMenus[album.id] && (
-              <AlbumMenu$
+              <AlbumMenu
+                css={styles.menu}
                 className={animations}
                 albumId={album.id}
                 onClick={() => showAlbumMenu(album.id)}
               />
             )}
-          </DivCardContainer>
+          </div>
         ))}
 
-        <AlbumTypeHeader>
+        <div css={styles.header}>
           <h2>singles</h2>
-        </AlbumTypeHeader>
+        </div>
         {albums.single.map((single) => (
-          <DivCardContainer key={single.id}>
+          <div key={single.id} css={styles.albumContainer}>
             <Card album={single} onClick={() => showAlbumMenu(single.id)} />
             {albumMenus[single.id] && (
-              <AlbumMenu$
+              <AlbumMenu
+                css={styles.menu}
                 className={animations}
                 albumId={single.id}
                 onClick={() => showAlbumMenu(single.id)}
               />
             )}
-          </DivCardContainer>
+          </div>
         ))}
-      </Main>
+      </main>
     </>
   )
 }

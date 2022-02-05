@@ -1,9 +1,10 @@
-import styled from '@emotion/styled'
+/** @jsxImportSource @emotion/react */
 import { useRef, useState } from 'react'
 import RefreshIcon from './RefreshIcon'
 import { CSSTransition } from 'react-transition-group'
 import { toast } from 'react-toastify'
 import { _Artist } from '../../mongoose/Artist'
+import { css } from '@emotion/react'
 
 interface Props {
   name: string
@@ -13,34 +14,34 @@ interface Props {
 
 type RefreshStatus = 'hidden' | 'visible' | 'processing'
 
-const Div = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
+const styles = {
+  root: css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
 
-  &:hover,
-  & svg:hover {
-    cursor: pointer;
-  }
+    &:hover,
+    & svg:hover {
+      cursor: pointer;
+    }
 
-  &:hover h2:first-letter {
-    color: #000;
-  }
-`
-
-const H2 = styled.h2`
-  margin: 0;
-  color: #ebebeb;
-  font-size: 72px;
-`
-
-const Button = styled.button`
-  background-color: transparent;
-  border: none;
-  position: relative;
-  top: 10px;
-`
+    &:hover h2:first-letter {
+      color: #000;
+    }
+  `,
+  header: css`
+    margin: 0;
+    color: #ebebeb;
+    font-size: 72px;
+  `,
+  button: css`
+    background-color: transparent;
+    border: none;
+    position: relative;
+    top: 10px;
+  `,
+}
 
 export const Genre = ({ name, onClick, onRefresh }: Props) => {
   const [refreshStatus, setRefreshStatus] = useState<RefreshStatus>('hidden')
@@ -75,7 +76,8 @@ export const Genre = ({ name, onClick, onRefresh }: Props) => {
   }
 
   return (
-    <Div
+    <div
+      css={styles.root}
       onMouseEnter={() =>
         setRefreshStatus(refreshStatus === 'processing' ? 'processing' : 'visible')
       }
@@ -84,7 +86,7 @@ export const Genre = ({ name, onClick, onRefresh }: Props) => {
       }
       onClick={onClick}
     >
-      <H2>{name}</H2>
+      <h2 css={styles.header}>{name}</h2>
 
       {(refreshStatus === 'visible' || refreshStatus === 'processing') && (
         <CSSTransition
@@ -93,11 +95,15 @@ export const Genre = ({ name, onClick, onRefresh }: Props) => {
           in={refreshStatus === 'processing'}
           timeout={99999}
         >
-          <Button onClick={handleRefresh} disabled={refreshStatus === 'processing'}>
+          <button
+            css={styles.button}
+            onClick={handleRefresh}
+            disabled={refreshStatus === 'processing'}
+          >
             <RefreshIcon ref={refreshRef} key='key' />
-          </Button>
+          </button>
         </CSSTransition>
       )}
-    </Div>
+    </div>
   )
 }

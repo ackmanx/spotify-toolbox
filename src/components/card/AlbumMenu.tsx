@@ -1,6 +1,6 @@
 interface Props {
   albumId: string
-  className?: string //styled-components
+  className?: string //css prop
   onClick(): void
 }
 
