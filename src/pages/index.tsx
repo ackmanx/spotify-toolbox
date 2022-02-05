@@ -10,6 +10,7 @@ import { Artist } from '../components/artists/Artist'
 import { Genre } from '../components/genre/Genre'
 import Header from '../components/header/Header'
 import { NotLoggedInImage } from '../components/images/NotLoggedInImage'
+import { RootPage } from '../components/pages/RootPage'
 import { useAccessTokenTimer } from '../hooks/useAccessTokenTimer'
 import dbConnect from '../lib/db'
 import { _Artist, mArtist } from '../mongoose/Artist'
@@ -21,43 +22,9 @@ interface Props {
   artistsByGenre: Record<string, _Artist[]>
 }
 
-type VisibleGenres = Record<string, boolean | undefined>
-
-const RootPage: NextPage<Props> = ({ artistsByGenre }) => {
+const RootNextPage: NextPage<Props> = ({ artistsByGenre }) => {
   useAccessTokenTimer()
   const { status } = useSession()
-  const [genres, setGenres] = useState<Record<string, _Artist[]>>(artistsByGenre)
-  const [visibleGenres, setVisibleGenres] = useState<VisibleGenres>({})
-
-  useEffect(() => {
-    const visibleGenres: VisibleGenres = {}
-
-    Object.keys(genres).forEach((genre) => {
-      visibleGenres[genre] = localStorage.getItem(genre) === 'true'
-    })
-
-    setVisibleGenres(visibleGenres)
-  }, [genres])
-
-  const handleGenreHide = (genre: string) =>
-    setVisibleGenres((prevState) => {
-      const isGenreVisible = prevState[genre] == null ? false : !prevState[genre]
-
-      localStorage.setItem(genre, isGenreVisible.toString())
-
-      return {
-        ...prevState,
-        [genre]: isGenreVisible,
-      }
-    })
-
-  const handleGenreRefresh = (genre: string, artists: _Artist[]) =>
-    setGenres((prevState) => ({
-      ...prevState,
-      [genre]: artists,
-    }))
-
-  const genresSorted = Object.keys(genres).sort()
 
   return (
     <>
@@ -72,24 +39,13 @@ const RootPage: NextPage<Props> = ({ artistsByGenre }) => {
         `}
       >
         {status === 'unauthenticated' && <NotLoggedInImage />}
-        {genresSorted.map((genre) => (
-          <div key={genre}>
-            <Genre
-              name={genre}
-              onClick={() => handleGenreHide(genre)}
-              onRefresh={handleGenreRefresh}
-            />
-
-            {(visibleGenres[genre] || visibleGenres[genre] == null) &&
-              genres[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
-          </div>
-        ))}
+        <RootPage artistsByGenre={artistsByGenre} />
       </main>
     </>
   )
 }
 
-export default RootPage
+export default RootNextPage
 
 interface ServerSideProps {
   props: Props
