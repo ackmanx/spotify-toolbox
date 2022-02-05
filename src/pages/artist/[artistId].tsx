@@ -79,6 +79,8 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
     )
   }
 
+  const animations = 'animate__animated animate__fadeInUp animate__faster'
+
   return (
     <>
       <Head>
@@ -96,7 +98,7 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
             <Card album={album} onClick={() => showAlbumMenu(album.id)} />
             {albumMenus[album.id] && (
               <AlbumMenu$
-                className='animate__animated animate__fadeInUp animate__faster'
+                className={animations}
                 albumId={album.id}
                 onClick={() => showAlbumMenu(album.id)}
               />
@@ -111,7 +113,11 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
           <DivCardContainer key={single.id}>
             <Card album={single} onClick={() => showAlbumMenu(single.id)} />
             {albumMenus[single.id] && (
-              <AlbumMenu$ albumId={single.id} onClick={() => showAlbumMenu(single.id)} />
+              <AlbumMenu$
+                className={animations}
+                albumId={single.id}
+                onClick={() => showAlbumMenu(single.id)}
+              />
             )}
           </DivCardContainer>
         ))}
