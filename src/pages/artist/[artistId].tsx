@@ -42,7 +42,7 @@ const ArtistNextPage: NextPage<Props> = ({ artist, albums }) => {
       >
         <ToastContainer />
 
-        <ArtistPage artist={artist} albums={albums} />
+        <ArtistPage artist={artist} albumsByReleaseType={albums} />
       </main>
     </>
   )

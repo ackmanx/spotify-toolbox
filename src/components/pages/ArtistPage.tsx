@@ -9,7 +9,7 @@ import { Card } from '../card/Card'
 
 interface Props {
   artist: _Artist
-  albums: AlbumsByReleaseType
+  albumsByReleaseType: AlbumsByReleaseType
 }
 
 const styles = {
@@ -23,10 +23,14 @@ const styles = {
       font-size: 72px;
     }
   `,
-  albumContainer: css`
-    display: inline-block;
-    position: relative;
-  `,
+  albumContainer: (isAlbumNewlyViewed: boolean) => {
+    return css`
+      display: inline-block;
+      position: relative;
+      opacity: ${isAlbumNewlyViewed ? '30%' : 'initial'};
+      filter: grayscale(${isAlbumNewlyViewed ? 1 : 0});
+    `
+  },
   menu: css`
     position: absolute;
     top: 5px;
@@ -38,14 +42,24 @@ const styles = {
   `,
 }
 
-export const ArtistPage = ({ artist, albums }: Props) => {
+export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
   const [albumMenus, setAlbumMenus] = useState<Record<string, boolean>>({})
+  const [newlyViewedAlbums, setNewlyViewedAlbums] = useState<Record<string, boolean>>({})
+
+  const albums = albumsByReleaseType.album
+  const singles = albumsByReleaseType.single
 
   const animations = 'animate__animated animate__fadeInUp animate__faster'
 
-  const showAlbumMenu = (albumId: string) => {
+  const toggleAlbumMenu = (albumId: string) => {
     let timeout = 0
 
+    // Disable the menu if the album was marked as viewed, because it's already been saved to DB
+    if (newlyViewedAlbums[albumId]) {
+      return
+    }
+
+    // Cheap way to animate the menu exiting w/o having to mix Animate.css with CSSTransition
     if (albumMenus[albumId]) {
       const el = document.querySelector(`[data-album-id="${albumId}"]`)
       el?.classList.add('animate__fadeOutDown')
@@ -62,20 +76,28 @@ export const ArtistPage = ({ artist, albums }: Props) => {
     )
   }
 
+  const handleViewedAlbum = (albumId: string) => {
+    setNewlyViewedAlbums((prevState) => ({
+      ...prevState,
+      [albumId]: true,
+    }))
+  }
+
   return (
     <div>
       <div css={styles.header}>
         <h2>albums</h2>
       </div>
-      {albums.album.map((album) => (
-        <div key={album.id} css={styles.albumContainer}>
-          <Card album={album} onClick={() => showAlbumMenu(album.id)} />
+      {albums.map((album) => (
+        <div key={album.id} css={styles.albumContainer(newlyViewedAlbums[album.id])}>
+          <Card album={album} onClick={() => toggleAlbumMenu(album.id)} />
           {albumMenus[album.id] && (
             <AlbumMenu
               css={styles.menu}
               className={animations}
               albumId={album.id}
-              onClick={() => showAlbumMenu(album.id)}
+              onClick={() => toggleAlbumMenu(album.id)}
+              onViewedAlbum={handleViewedAlbum}
             />
           )}
         </div>
@@ -84,15 +106,16 @@ export const ArtistPage = ({ artist, albums }: Props) => {
       <div css={styles.header}>
         <h2>singles</h2>
       </div>
-      {albums.single.map((single) => (
-        <div key={single.id} css={styles.albumContainer}>
-          <Card album={single} onClick={() => showAlbumMenu(single.id)} />
+      {singles.map((single) => (
+        <div key={single.id} css={styles.albumContainer(newlyViewedAlbums[single.id])}>
+          <Card album={single} onClick={() => toggleAlbumMenu(single.id)} />
           {albumMenus[single.id] && (
             <AlbumMenu
               css={styles.menu}
               className={animations}
               albumId={single.id}
-              onClick={() => showAlbumMenu(single.id)}
+              onClick={() => toggleAlbumMenu(single.id)}
+              onViewedAlbum={handleViewedAlbum}
             />
           )}
         </div>

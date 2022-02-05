@@ -8,6 +8,7 @@ interface Props {
   albumId: string
   className?: string //css prop
   onClick(): void
+  onViewedAlbum(albumId: string): void
 }
 
 const styles = {
@@ -24,7 +25,7 @@ const styles = {
   `,
 }
 
-export const AlbumMenu = ({ albumId, className, onClick }: Props) => {
+export const AlbumMenu = ({ albumId, className, onClick, onViewedAlbum }: Props) => {
   return (
     <div css={styles.root} className={className} data-album-id={albumId} onClick={onClick}>
       <ButtonImage
@@ -34,8 +35,9 @@ export const AlbumMenu = ({ albumId, className, onClick }: Props) => {
         onClick={async (event) => {
           event.stopPropagation()
           //todo majerus: should be a POST probably
-          const response = await fetch(`/api/viewed/${albumId}`)
-          console.log(777, await response.json()) /* delete */
+          await fetch(`/api/viewed/${albumId}`)
+          onClick()
+          onViewedAlbum(albumId)
         }}
       />
     </div>
