@@ -2,7 +2,6 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import menuIcon from './menu-icon.png'
 import signInIcon from './sign-in.png'
 import signOutIcon from './sign-out.png'
-import backIcon from './back.png'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { ButtonImage } from '../shared/Image'
@@ -22,6 +21,11 @@ const Header = styled.header`
   img {
     cursor: pointer;
     border-radius: 100%;
+  }
+
+  h3 {
+    font-size: 32px;
+    margin: 0;
   }
 `
 
