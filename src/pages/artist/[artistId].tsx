@@ -61,10 +61,22 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
   if (!albums || !artist) return null
 
   const showAlbumMenu = (albumId: string) => {
-    setAlbumMenus((prevState) => ({
-      ...prevState,
-      [albumId]: !prevState[albumId],
-    }))
+    let timeout = 0
+
+    if (albumMenus[albumId]) {
+      const el = document.querySelector(`[data-album-id="${albumId}"]`)
+      el?.classList.add('animate__fadeOutDown')
+      timeout = 500
+    }
+
+    setTimeout(
+      () =>
+        setAlbumMenus((prevState) => ({
+          ...prevState,
+          [albumId]: !prevState[albumId],
+        })),
+      timeout
+    )
   }
 
   return (
@@ -83,7 +95,11 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
           <DivCardContainer key={album.id}>
             <Card album={album} onClick={() => showAlbumMenu(album.id)} />
             {albumMenus[album.id] && (
-              <AlbumMenu$ albumId={album.id} onClick={() => showAlbumMenu(album.id)} />
+              <AlbumMenu$
+                className='animate__animated animate__fadeInUp animate__faster'
+                albumId={album.id}
+                onClick={() => showAlbumMenu(album.id)}
+              />
             )}
           </DivCardContainer>
         ))}
