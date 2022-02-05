@@ -15,6 +15,10 @@ const styles = {
     width: 300px;
     height: 300px;
     margin: 20px;
+
+    & img {
+      border-radius: 5px;
+    }
   `,
   image: css`
     transform: scale(100%);

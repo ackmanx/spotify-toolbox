@@ -1,4 +1,3 @@
-import exp from 'constants'
 import { useEffect, useState } from 'react'
 
 import { _Artist } from '../../mongoose/Artist'

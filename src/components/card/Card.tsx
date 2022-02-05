@@ -15,6 +15,10 @@ const styles = {
     width: 300px;
     margin: 10px 20px;
     overflow: hidden;
+
+    & img {
+      border-radius: 5px;
+    }
   `,
   header: css`
     margin: 10px;
