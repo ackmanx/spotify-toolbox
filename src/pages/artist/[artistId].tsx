@@ -12,6 +12,8 @@ import { forceSerialization } from '../../utils/force-serialization'
 import { _User, mUser } from '../../mongoose/User'
 import { getSession } from 'next-auth/react'
 import { Card } from '../../components/card/Card'
+import { useState } from 'react'
+import { AlbumMenu } from '../../components/card/AlbumMenu'
 
 export type AlbumWithViewed = _Album & { isViewed: boolean }
 
@@ -37,13 +39,32 @@ const AlbumTypeHeader = styled.div`
   }
 `
 
+const DivCardContainer = styled.div`
+  display: inline-block;
+  position: relative;
+`
+
+const AlbumMenu$ = styled(AlbumMenu)`
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  margin: 10px 20px;
+  width: 290px;
+  height: 290px;
+  background-color: white;
+`
+
 const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
   useAccessTokenTimer()
+  const [albumMenus, setAlbumMenus] = useState<Record<string, boolean>>({})
 
   if (!albums || !artist) return null
 
-  const showAlbumMenu = () => {
-    console.log(777, 'show') /* delete */
+  const showAlbumMenu = (albumId: string) => {
+    setAlbumMenus((prevState) => ({
+      ...prevState,
+      [albumId]: !prevState[albumId],
+    }))
   }
 
   return (
@@ -59,14 +80,20 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
           <h2>albums</h2>
         </AlbumTypeHeader>
         {albums.album.map((album) => (
-          <Card key={album.id} album={album} onClick={showAlbumMenu} />
+          <DivCardContainer key={album.id}>
+            <Card album={album} onClick={() => showAlbumMenu(album.id)} />
+            {albumMenus[album.id] && <AlbumMenu$ albumId={album.id} />}
+          </DivCardContainer>
         ))}
 
         <AlbumTypeHeader>
           <h2>singles</h2>
         </AlbumTypeHeader>
         {albums.single.map((single) => (
-          <Card key={single.id} album={single} onClick={showAlbumMenu} />
+          <DivCardContainer key={single.id}>
+            <Card album={single} onClick={() => showAlbumMenu(single.id)} />
+            {albumMenus[single.id] && <AlbumMenu$ albumId={single.id} />}
+          </DivCardContainer>
         ))}
       </Main>
     </>

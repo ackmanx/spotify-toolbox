@@ -9,7 +9,6 @@ interface Props {
 }
 
 const DivRoot = styled.div`
-  display: inline-block;
   width: 300px;
   margin: 10px 20px;
   overflow: hidden;
