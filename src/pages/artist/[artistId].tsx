@@ -42,6 +42,10 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
 
   if (!albums || !artist) return null
 
+  const showAlbumMenu = () => {
+    console.log(777, 'show') /* delete */
+  }
+
   return (
     <>
       <Head>
@@ -55,14 +59,14 @@ const ArtistPage: NextPage<Props> = ({ artist, albums }) => {
           <h2>albums</h2>
         </AlbumTypeHeader>
         {albums.album.map((album) => (
-          <Card key={album.id} album={album} />
+          <Card key={album.id} album={album} onClick={showAlbumMenu} />
         ))}
 
         <AlbumTypeHeader>
           <h2>singles</h2>
         </AlbumTypeHeader>
         {albums.single.map((single) => (
-          <Card key={single.id} album={single} />
+          <Card key={single.id} album={single} onClick={showAlbumMenu} />
         ))}
       </Main>
     </>
