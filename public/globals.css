@@ -13,10 +13,15 @@ a {
   box-sizing: border-box;
 }
 
-/* Override variable used by Toastify to style */
+/* Toastify overrides */
 :root {
   --toastify-toast-width: 450px;
   --toastify-color-success: #00a605;
   --toastify-color-error: #cc0000;
   --toastify-color-light: #ffebeb;
+}
+
+/* Animate.css overrides */
+:root {
+  --animate-duration: 600ms;
 }
