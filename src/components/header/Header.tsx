@@ -46,8 +46,6 @@ const Component = ({ artist }: Props) => {
 
   const handleOpenMenu = () => setIsMenuOpen(!isMenuOpen)
 
-  if (!data) return null
-
   return (
     <header css={styles.root}>
       <ButtonImage src={menuIcon} width={60} height={60} onClick={() => router.push('/')} />

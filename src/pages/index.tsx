@@ -59,7 +59,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }): Promise<S
   const user: One<_User> = await mUser.findOne({ userId: session?.userId })
 
   if (!user) {
-    throw new Error('User not found in DB')
+    // Must not be logged in
+    return { props: { artistsByGenre: {}, viewedAlbums: [] } }
   }
 
   const artists: Many<_Artist> = await mArtist.find({
