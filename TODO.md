@@ -1,17 +1,11 @@
-# Rate limiting
-
-- Can check headers in web api response
-- If doing requests in a for loop, can retry and wait
+# Open in chrome/spotify
 
 # Clicking artist opens artist page with albums
 
 - Albums should already be in the db, but if not need to fetch
 
-# Filter out viewed albums from album view on artist
-
 # Method to perform actions on albums
 
-- Mark as viewed
 - Play in spotify app
 - Play in spotify web player
 - Play right in my webapp now?
@@ -35,3 +29,8 @@
 # Style the sign in page?
 
 # Use session `status` for auth considerations over `data`?
+
+# Rate limiting
+
+- Can check headers in web api response
+- If doing requests in a for loop, can retry and wait
