@@ -25,6 +25,11 @@ const styles = {
       cursor: pointer;
     }
   `,
+  icon: css`
+    &:hover {
+      filter: invert(100%);
+    }
+  `,
 }
 
 export const AlbumMenu = ({ albumId, className, onClick, onViewedAlbum }: Props) => {
@@ -39,7 +44,7 @@ export const AlbumMenu = ({ albumId, className, onClick, onViewedAlbum }: Props)
         in={markViewedProcessing}
         timeout={99999}
       >
-        <span ref={ref}>
+        <span ref={ref} css={styles.icon}>
           <ButtonImage
             src={MarkAsViewedIcon}
             width={50}
