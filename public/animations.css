@@ -1,9 +1,9 @@
 /* refresh_icon is in Genre component */
 .refresh_icon-enter-active {
-  animation: changecolor infinite 1000ms;
+  animation: refreshColorChange infinite 1000ms;
 }
 
-@keyframes changecolor {
+@keyframes refreshColorChange {
   from {
     fill: #000;
   }
@@ -12,5 +12,21 @@
   }
   to {
     fill: #000;
+  }
+}
+
+.mark_viewed-enter-active {
+  animation: markViewed infinite 2000ms;
+}
+
+@keyframes markViewed {
+  from {
+    filter: invert(0%);
+  }
+  50% {
+    filter: invert(100%);
+  }
+  to {
+    filter: invert(0%);
   }
 }
