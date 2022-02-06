@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import { _Artist } from '../../mongoose/Artist'
+import NoUserPicIcon from '../images/person-placeholder.png'
 import { ButtonImage } from '../shared/Image'
 import menuIcon from './menu-icon.png'
 import signInIcon from './sign-in.png'
@@ -63,7 +64,12 @@ const Component = ({ artist }: Props) => {
 
       {artist && <h3>{artist.name}</h3>}
 
-      <ButtonImage src={data?.user?.image ?? ''} width={40} height={40} onClick={handleOpenMenu} />
+      <ButtonImage
+        src={data?.user?.image ?? NoUserPicIcon}
+        width={40}
+        height={40}
+        onClick={handleOpenMenu}
+      />
     </header>
   )
 }

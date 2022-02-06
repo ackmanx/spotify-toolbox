@@ -2,8 +2,8 @@
 import { css } from '@emotion/react'
 
 import { _Artist } from '../../mongoose/Artist'
+import ArtistPlaceholder from '../images/person-placeholder.png'
 import { ImageLink } from '../shared/Image'
-import ArtistPlaceholder from './artist-placeholder.png'
 
 interface Props {
   artist: _Artist
