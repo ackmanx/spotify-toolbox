@@ -28,7 +28,7 @@ const styles = {
     }
 
     &:hover h2:first-letter {
-      color: #000;
+      color: #666;
     }
   `,
   header: css`
