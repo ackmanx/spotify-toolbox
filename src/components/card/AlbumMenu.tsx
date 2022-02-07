@@ -34,14 +34,19 @@ const styles = {
     display: flex;
     align-items: center;
   `,
+  icon: css`
+    transform: scale(100%);
+    transition: transform 0.1s linear;
+
+    &:hover {
+      transform: scale(110%);
+      transition: transform 0.1s linear;
+    }
+  `,
   bottom: css`
     display: flex;
     margin-bottom: 5px;
-  `,
-  icon: css`
-    &:hover {
-      filter: invert(100%);
-    }
+    gap: 10px;
   `,
 }
 
@@ -77,10 +82,10 @@ export const AlbumMenu = ({ album, className, onClick, onViewedAlbum }: Props) =
       </div>
       <div css={styles.bottom}>
         <div ref={ref} css={styles.icon}>
-          <ImageLink href={album.spotifyUri} imageSrc={OpenSpotifyIcon} width={40} height={40} />
+          <ImageLink href={album.spotifyUri} imageSrc={OpenSpotifyIcon} width={35} height={35} />
         </div>
         <div ref={ref} css={styles.icon}>
-          <ImageLink href={album.spotifyWebUrl} imageSrc={OpenWebIcon} width={40} height={40} />
+          <ImageLink href={album.spotifyWebUrl} imageSrc={OpenWebIcon} width={35} height={35} />
         </div>
       </div>
     </div>
