@@ -5,11 +5,14 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import '../../public/animations.css'
 import '../../public/globals.css'
+import { AuthContextProvider } from '../AuthContext'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <AuthContextProvider>
+        <Component {...pageProps} />
+      </AuthContextProvider>
     </SessionProvider>
   )
 }

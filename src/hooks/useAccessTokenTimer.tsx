@@ -1,11 +1,14 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { toast } from 'react-toastify'
+
+import { AuthContext } from '../AuthContext'
 
 export const useAccessTokenTimer = () => {
   const { data } = useSession()
   const router = useRouter()
+  const { setIsExpired } = useContext(AuthContext)
   const expiresAt = (data?.expiresAt ?? 0) as number
 
   useEffect(() => {
@@ -13,19 +16,8 @@ export const useAccessTokenTimer = () => {
       const expirationTimeInMs = expiresAt * 1000 - new Date().getTime()
 
       setTimeout(() => {
-        toast.error(
-          <>
-            <p>Access token has expired</p>
-            <p>Sign in again to get a new one</p>
-          </>,
-          {
-            position: 'top-center',
-            autoClose: false,
-            hideProgressBar: true,
-            onClick: () => router.push('/api/auth/signin'),
-          }
-        )
+        setIsExpired(true)
       }, expirationTimeInMs)
     }
-  }, [expiresAt, router])
+  }, [expiresAt, router, setIsExpired])
 }

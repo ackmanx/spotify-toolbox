@@ -1,5 +1,8 @@
 import { Head, Html, Main, NextScript } from 'next/document'
 
+/*
+ * This only runs on server and is run for every page
+ */
 export default function Document() {
   return (
     <Html>

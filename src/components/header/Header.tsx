@@ -2,8 +2,9 @@
 import { css } from '@emotion/react'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 
+import { AuthContext } from '../../AuthContext'
 import { _Artist } from '../../mongoose/Artist'
 import NoUserPicIcon from '../images/person-placeholder.png'
 import { ButtonImage } from '../shared/Image'
@@ -37,11 +38,30 @@ const styles = {
     align-items: center;
     margin-left: 10px;
   `,
+  profileContainer: css`
+    position: relative;
+  `,
+  profileImage: (isExpired: boolean) =>
+    isExpired
+      ? css`
+          &:before {
+            content: ' ';
+            width: 44px;
+            height: 44px;
+            border: 2px dashed red;
+            position: absolute;
+            border-radius: 100%;
+            left: 2px;
+            top: -3px;
+          }
+        `
+      : null,
 }
 
 const Component = ({ artist }: Props) => {
   const router = useRouter()
   const { data } = useSession()
+  const { isExpired } = useContext(AuthContext)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleOpenMenu = () => setIsMenuOpen(!isMenuOpen)
@@ -62,12 +82,16 @@ const Component = ({ artist }: Props) => {
 
       {artist && <h3>{artist.name}</h3>}
 
-      <ButtonImage
-        src={data?.user?.image ?? NoUserPicIcon}
-        width={40}
-        height={40}
-        onClick={handleOpenMenu}
-      />
+      <div css={styles.profileContainer}>
+        <div css={styles.profileImage(isExpired)}>
+          <ButtonImage
+            src={data?.user?.image ?? NoUserPicIcon}
+            width={40}
+            height={40}
+            onClick={handleOpenMenu}
+          />
+        </div>
+      </div>
     </header>
   )
 }

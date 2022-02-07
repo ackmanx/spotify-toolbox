@@ -58,13 +58,7 @@ export const Genre = ({ name, onClick, onRefresh }: Props) => {
       const response = await fetch(`/api/refresh/${name}`)
 
       if (!response.ok) {
-        toast.error(
-          <>
-            <p>Access token probably expired</p>
-            <p>Sign in again to get a new one</p>
-          </>,
-          { position: 'top-center', theme: 'colored' }
-        )
+        toast.error('There was an error refreshing', { position: 'top-center' })
         return
       }
 
