@@ -50,6 +50,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       name: album.name,
       releaseDate: album.release_date,
       coverArt: album.images.find((image) => image.width === image.height)?.url,
+      spotifyWebUrl: album.external_urls.spotify,
+      spotifyUri: album.uri,
     }))
 
     genreFilteredArtistsWithAlbums.push(artist)

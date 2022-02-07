@@ -3,13 +3,14 @@ import { css } from '@emotion/react'
 import { useRef, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
+import { _Album } from '../../mongoose/Artist'
 import { ButtonImage, ImageLink } from '../shared/Image'
 import MarkAsViewedIcon from './images/mark-as-viewed.png'
 import OpenSpotifyIcon from './images/open-in-spotify.png'
 import OpenWebIcon from './images/open-in-web.png'
 
 interface Props {
-  albumId: string
+  album: _Album
   className?: string //css prop
   onClick(): void
   onViewedAlbum(albumId: string): void
@@ -44,12 +45,12 @@ const styles = {
   `,
 }
 
-export const AlbumMenu = ({ albumId, className, onClick, onViewedAlbum }: Props) => {
+export const AlbumMenu = ({ album, className, onClick, onViewedAlbum }: Props) => {
   const ref = useRef(null)
   const [markViewedProcessing, setMarkViewedProcessing] = useState(false)
 
   return (
-    <div css={styles.root} className={className} data-album-id={albumId} onClick={onClick}>
+    <div css={styles.root} className={className} data-album-id={album.id} onClick={onClick}>
       <div css={styles.top}>
         <CSSTransition
           nodeRef={ref}
@@ -66,9 +67,9 @@ export const AlbumMenu = ({ albumId, className, onClick, onViewedAlbum }: Props)
                 event.stopPropagation()
                 setMarkViewedProcessing(true)
                 //todo majerus: should be a POST probably
-                await fetch(`/api/viewed/${albumId}`)
+                await fetch(`/api/viewed/${album.id}`)
                 onClick()
-                onViewedAlbum(albumId)
+                onViewedAlbum(album.id)
               }}
             />
           </div>
@@ -76,16 +77,10 @@ export const AlbumMenu = ({ albumId, className, onClick, onViewedAlbum }: Props)
       </div>
       <div css={styles.bottom}>
         <div ref={ref} css={styles.icon}>
-          <ImageLink
-            //todo majerus: need to add links to albums in db, then add here
-            href={''}
-            imageSrc={OpenSpotifyIcon}
-            width={40}
-            height={40}
-          />
+          <ImageLink href={album.spotifyUri} imageSrc={OpenSpotifyIcon} width={40} height={40} />
         </div>
         <div ref={ref} css={styles.icon}>
-          <ImageLink href={''} imageSrc={OpenWebIcon} width={40} height={40} />
+          <ImageLink href={album.spotifyWebUrl} imageSrc={OpenWebIcon} width={40} height={40} />
         </div>
       </div>
     </div>

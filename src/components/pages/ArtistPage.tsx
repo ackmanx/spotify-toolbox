@@ -95,7 +95,7 @@ export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
             <AlbumMenu
               css={styles.menu}
               className={animations}
-              albumId={album.id}
+              album={album}
               onClick={() => toggleAlbumMenu(album.id)}
               onViewedAlbum={handleViewedAlbum}
             />
@@ -113,7 +113,7 @@ export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
             <AlbumMenu
               css={styles.menu}
               className={animations}
-              albumId={single.id}
+              album={single}
               onClick={() => toggleAlbumMenu(single.id)}
               onViewedAlbum={handleViewedAlbum}
             />

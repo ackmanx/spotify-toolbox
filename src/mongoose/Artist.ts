@@ -18,6 +18,8 @@ export interface _Album {
   name: string
   releaseDate: string
   coverArt?: string
+  spotifyUri: string
+  spotifyWebUrl: string
 }
 
 const AlbumSchema = new Schema<_Album>({
@@ -26,6 +28,8 @@ const AlbumSchema = new Schema<_Album>({
   name: String,
   releaseDate: String,
   coverArt: String,
+  spotifyUri: String,
+  spotifyWebUrl: String,
 })
 
 const ArtistSchema = new Schema<_Artist>({

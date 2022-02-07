@@ -15,7 +15,8 @@ export const ButtonImage = ({ onClick, ...props }: ButtonImageProps) => (
     onClick={onClick}
   >
     {/* Using the loader prop lets you bypass NextJS' external domain requirement in next.config.ts */}
-    <NextImage {...props} loader={({ src }) => src} />
+    {/* I use this because if Spotify is connected to FB, don't know what domain FB will use for profile pic */}
+    <NextImage {...props} loader={({ src }) => src} unoptimized />
   </button>
 )
 
@@ -26,10 +27,15 @@ interface ImageLinkProps {
   height: number
 }
 
-export const ImageLink = ({ href, imageSrc, width, height }: ImageLinkProps) => (
-  <Link href={href}>
-    <a>
+export const ImageLink = ({ href, imageSrc, width, height }: ImageLinkProps) =>
+  href.startsWith('http') ? (
+    <a href={href} target='_blank' rel='noreferrer'>
       <NextImage src={imageSrc} width={width} height={height} />
     </a>
-  </Link>
-)
+  ) : (
+    <Link href={href}>
+      <a>
+        <NextImage src={imageSrc} width={width} height={height} />
+      </a>
+    </Link>
+  )

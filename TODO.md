@@ -1,5 +1,7 @@
 # Open in chrome/spotify
 
+# Refresh only a single artist
+
 # Clicking artist opens artist page with albums
 
 - Albums should already be in the db, but if not need to fetch
