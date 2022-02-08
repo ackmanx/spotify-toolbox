@@ -57,9 +57,11 @@ export const RootPage = ({ artistsByGenre, viewedAlbums }: Props) => {
 
           {(visibleGenres[genre] || visibleGenres[genre] == null) &&
             genres[genre].map((artist) => {
-              const hasUnviewedAlbums = artist.albums.some(
-                (album) => !viewedAlbums.includes(album.id)
-              )
+              // If a user isn't refreshed yet, it may have no albums in the DB
+              // This happens when the user logs in for the first time
+              const hasUnviewedAlbums = !artist.albums.length
+                ? true
+                : artist.albums.some((album) => !viewedAlbums.includes(album.id))
 
               return hasUnviewedAlbums ? <Artist key={artist.id} artist={artist} /> : null
             })}
