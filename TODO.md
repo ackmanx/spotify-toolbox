@@ -2,14 +2,8 @@
 
 # Refresh only a single artist
 
-# Clicking artist opens artist page with albums
-
-- Albums should already be in the db, but if not need to fetch
-
 # Method to perform actions on albums
 
-- Play in spotify app
-- Play in spotify web player
 - Play right in my webapp now?
 - Add to playlist
 
