@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 
 import dbConnect from '../../../lib/db'
-import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
+import { _Artist, buildAlbum, buildArtist, mArtist } from '../../../mongoose/Artist'
 import { _User, mUser } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
 import { GetAll } from '../../../utils/server/spotify-web-api'
@@ -42,17 +42,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
-    const albums = await GetAll.albumsForArtist(req, artist.id)
+    const albums = await GetAll.albumsForArtist(req, artist)
 
-    artist.albums = albums.map((album) => ({
-      id: album.id,
-      type: album.album_type,
-      name: album.name,
-      releaseDate: album.release_date,
-      coverArt: album.images.find((image) => image.width === image.height)?.url,
-      spotifyWebUrl: album.external_urls.spotify,
-      spotifyUri: album.uri,
-    }))
+    artist.albums = albums.map(buildAlbum)
 
     genreFilteredArtistsWithAlbums.push(artist)
   }

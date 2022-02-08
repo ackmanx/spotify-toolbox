@@ -44,6 +44,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           token.userId = token.sub
           token.accessToken = account.access_token
           token.expiresAt = account.expires_at //access token expiration date in seconds
+          token.isExpired = (account.expires_at as number) * 1000 - new Date().getTime() < 0
         }
 
         return token
@@ -56,6 +57,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         session.userId = token.userId
         session.accessToken = token.accessToken
         session.expiresAt = token.expiresAt
+        session.isExpired = token.isExpired
 
         return session
       },

@@ -2,6 +2,8 @@ import { NextApiRequest } from 'next'
 import { getSession } from 'next-auth/react'
 import SpotifyWebApi from 'spotify-web-api-node'
 
+import { _Artist } from '../../mongoose/Artist'
+
 import ArtistObjectFull = SpotifyApi.ArtistObjectFull
 import AlbumObjectSimplified = SpotifyApi.AlbumObjectSimplified
 
@@ -11,14 +13,14 @@ interface SpotifyWebApiResponse<T> {
   statusCode: number
 }
 
-export const getSpotifyWebApi = async (reqOrAccessToken: NextApiRequest | string) => {
+export const getSpotifyWebApi = async (reqOrToken: NextApiRequest | string) => {
   let accessToken: string
 
-  if (typeof reqOrAccessToken !== 'string') {
-    const session = await getSession({ req: reqOrAccessToken })
+  if (typeof reqOrToken !== 'string') {
+    const session = await getSession({ req: reqOrToken })
     accessToken = session?.accessToken as string
   } else {
-    accessToken = reqOrAccessToken
+    accessToken = reqOrToken
   }
 
   const spotifyWebApi = new SpotifyWebApi({
@@ -52,12 +54,12 @@ export const GetAll = {
 
     return results
   },
-  albumsForArtist: async (req: NextApiRequest, id: string) => {
-    console.log(777, 'Getting albums for:', id) /* delete */
+  albumsForArtist: async (reqOrToken: NextApiRequest | string, artist: _Artist) => {
+    console.log(777, 'Getting albums for:', artist.name, artist.id) /* delete */
     const limit = 50
 
-    const spotifyWebApi = await getSpotifyWebApi(req)
-    const spotifyResponse = await spotifyWebApi.getArtistAlbums(id, {
+    const spotifyWebApi = await getSpotifyWebApi(reqOrToken)
+    const spotifyResponse = await spotifyWebApi.getArtistAlbums(artist.id, {
       include_groups: 'single,album',
       limit,
       country: 'US',
@@ -71,7 +73,7 @@ export const GetAll = {
 
     for (let currentPage = 0; currentPage < numPages; currentPage++) {
       const offset = currentPage * limit
-      const response = await spotifyWebApi.getArtistAlbums(id, { limit, offset })
+      const response = await spotifyWebApi.getArtistAlbums(artist.id, { limit, offset })
       results.push(...response.body.items)
     }
 

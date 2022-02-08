@@ -10,10 +10,11 @@ import Header from '../../components/header/Header'
 import { ArtistPage } from '../../components/pages/ArtistPage'
 import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
 import dbConnect from '../../lib/db'
-import { _Album, _Artist, mArtist } from '../../mongoose/Artist'
+import { _Album, _Artist, buildAlbum, mArtist } from '../../mongoose/Artist'
 import { _User, mUser } from '../../mongoose/User'
 import { One } from '../../mongoose/types'
 import { forceSerialization } from '../../utils/force-serialization'
+import { GetAll } from '../../utils/server/spotify-web-api'
 
 export type AlbumWithViewed = _Album & { isViewed: boolean }
 
@@ -66,6 +67,16 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   if (!user || !artist) {
     throw new Error('User or artist not found in DB')
+  }
+
+  if (!artist.albums.length) {
+    if (session?.isExpired) {
+      return { props: { artist, albums: {} } }
+    }
+
+    const albums = await GetAll.albumsForArtist(session?.accessToken as string, artist)
+    artist.albums = albums.map(buildAlbum)
+    await artist.save()
   }
 
   const artistPojo = artist.toObject()
