@@ -1,5 +1,3 @@
-# Open in chrome/spotify
-
 # Refresh only a single artist
 
 # Method to perform actions on albums

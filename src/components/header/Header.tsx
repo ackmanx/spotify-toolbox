@@ -33,11 +33,6 @@ const styles = {
       margin: 0;
     }
   `,
-  image: css`
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-  `,
   profileContainer: css`
     position: relative;
   `,
@@ -56,6 +51,12 @@ const styles = {
           }
         `
       : null,
+  image: css`
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 45px;
+  `,
 }
 
 const Component = ({ artist }: Props) => {
@@ -70,16 +71,6 @@ const Component = ({ artist }: Props) => {
     <header css={styles.root}>
       <ButtonImage src={menuIcon} width={60} height={60} onClick={() => router.push('/')} />
 
-      {isMenuOpen && (
-        <div css={styles.image}>
-          {data ? (
-            <ButtonImage src={signOutIcon} width={40} height={40} onClick={() => signOut()} />
-          ) : (
-            <ButtonImage src={signInIcon} width={40} height={40} onClick={() => signIn()} />
-          )}
-        </div>
-      )}
-
       {artist && <h3>{artist.name}</h3>}
 
       <div css={styles.profileContainer}>
@@ -90,6 +81,16 @@ const Component = ({ artist }: Props) => {
             height={40}
             onClick={handleOpenMenu}
           />
+
+          {isMenuOpen && (
+            <div css={styles.image}>
+              {data ? (
+                <ButtonImage src={signOutIcon} width={40} height={40} onClick={() => signOut()} />
+              ) : (
+                <ButtonImage src={signInIcon} width={40} height={40} onClick={() => signIn()} />
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>
