@@ -55,7 +55,7 @@ export const AlbumMenu = ({ album, className, onClick, onViewedAlbum }: Props) =
   const [markViewedProcessing, setMarkViewedProcessing] = useState(false)
 
   return (
-    <div css={styles.root} className={className} data-album-id={album.id} onClick={onClick}>
+    <div css={styles.root} className={className} data-id={album.id} onClick={onClick}>
       <div css={styles.top}>
         <CSSTransition
           nodeRef={ref}

@@ -65,7 +65,18 @@ const Component = ({ artist }: Props) => {
   const { isExpired } = useContext(AuthContext)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const handleOpenMenu = () => setIsMenuOpen(!isMenuOpen)
+  const handleOpenMenu = () => {
+    if (isMenuOpen) {
+      const el = document.querySelector(`[data-id="account-menu"]`)
+      el?.classList.add('animate__flipOutX')
+
+      setTimeout(() => setIsMenuOpen(false), 500)
+    }
+
+    setIsMenuOpen(true)
+  }
+
+  const animations = 'animate__animated animate__flipInX'
 
   return (
     <header css={styles.root}>
@@ -83,7 +94,7 @@ const Component = ({ artist }: Props) => {
           />
 
           {isMenuOpen && (
-            <div css={styles.image}>
+            <div css={styles.image} className={animations} data-id='account-menu'>
               {data ? (
                 <ButtonImage src={signOutIcon} width={40} height={40} onClick={() => signOut()} />
               ) : (

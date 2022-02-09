@@ -61,7 +61,7 @@ export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
 
     // Cheap way to animate the menu exiting w/o having to mix Animate.css with CSSTransition
     if (albumMenus[albumId]) {
-      const el = document.querySelector(`[data-album-id="${albumId}"]`)
+      const el = document.querySelector(`[data-id="${albumId}"]`)
       el?.classList.add('animate__fadeOutDown')
       timeout = 500
     }
