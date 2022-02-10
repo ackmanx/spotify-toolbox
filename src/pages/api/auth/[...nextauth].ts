@@ -70,7 +70,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         await dbConnect()
 
         const userInDB: HydratedDocument<_User> | null = await mUser.findOne({
-          id: loggedInUser.id,
+          userId: loggedInUser.id,
         })
 
         if (!userInDB) {

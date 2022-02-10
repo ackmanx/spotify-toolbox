@@ -28,3 +28,12 @@
 
 - Can check headers in web api response
 - If doing requests in a for loop, can retry and wait
+
+# Bug
+
+next-dev.js?3515:32 Warning: Encountered two children with the same key, `61KJdJU38zrAW4c3PI9C9N`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+at div
+at div
+at RootPage (webpack-internal:///./src/components/pages/RootPage.tsx:47:32)
+
+# Bug
