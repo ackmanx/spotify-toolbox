@@ -82,27 +82,33 @@ export const getServerSideProps: GetServerSideProps = async ({ req }): Promise<S
     return { props: { artistsByGenre: {}, viewedAlbums: [], isTokenExpired } }
   }
 
-  // Update followed artists in case there's any new ones or any dropped off
-  const followedArtists = await GetAll.followedArtists(session?.accessToken as string)
+  const sFollowedArtists = await GetAll.followedArtists(session?.accessToken as string)
+  const followedArtistsIDs: string[] = sFollowedArtists.map((artist) => artist.id)
 
-  const artists: Many<_Artist> = []
-  const followedArtistsIDs: string[] = []
-
-  followedArtists.forEach((artist) => {
-    artists.push(buildArtist(artist))
-    followedArtistsIDs.push(artist.id)
+  const mFollowedArtistsInDB: Many<_Artist> = await mArtist.find({
+    id: { $in: followedArtistsIDs },
   })
+  const followedArtistsInDB_IDs = mFollowedArtistsInDB.map((artist) => artist.id)
 
-  user.followedArtists = followedArtistsIDs
-  await user.save()
+  const sNewArtistsToSaveToDB = sFollowedArtists.filter(
+    (artist) => !followedArtistsInDB_IDs.includes(artist.id)
+  )
 
-  const artistsByGenre = artists.reduce((genres: Record<string, Many<_Artist>>, artist) => {
+  const mNewArtistsToSaveToDB = sNewArtistsToSaveToDB.map((artist) => buildArtist(artist))
+  await mArtist.bulkSave(mNewArtistsToSaveToDB)
+
+  const mArtists: Many<_Artist> = mFollowedArtistsInDB.concat(mNewArtistsToSaveToDB)
+
+  const artistsByGenre = mArtists.reduce((genres: Record<string, Many<_Artist>>, artist) => {
     if (!genres[artist.genre]) genres[artist.genre] = []
 
     genres[artist.genre].push(artist)
 
     return genres
   }, {})
+
+  user.followedArtists = followedArtistsIDs
+  await user.save()
 
   return {
     props: forceSerialization<Props>({
