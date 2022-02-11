@@ -34,10 +34,10 @@ export const getSpotifyWebApi = async (reqOrToken: NextApiRequest | string) => {
 }
 
 export const GetAll = {
-  followedArtists: async (reqOrAccessToken: NextApiRequest | string) => {
+  followedArtists: async (reqOrToken: NextApiRequest | string) => {
     const limit = 50
 
-    const spotifyWebApi = await getSpotifyWebApi(reqOrAccessToken)
+    const spotifyWebApi = await getSpotifyWebApi(reqOrToken)
     const spotifyResponse = await spotifyWebApi.getFollowedArtists({ limit })
 
     const results: ArtistObjectFull[] = []

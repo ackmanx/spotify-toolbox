@@ -63,9 +63,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       },
     },
     events: {
-      /*
-       * Check if this is the first time the user has logged in and seed the DB if it is
-       */
       signIn: async ({ user: loggedInUser, account }) => {
         await dbConnect()
 
@@ -74,22 +71,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         })
 
         if (!userInDB) {
-          const followedArtists = await GetAll.followedArtists(account.access_token ?? '')
-
-          const artists: Many<_Artist> = []
-          const followedArtistsIDs: string[] = []
-
-          followedArtists.forEach((artist) => {
-            artists.push(buildArtist(artist))
-            followedArtistsIDs.push(artist.id)
-          })
-
           const user = new mUser()
           user.userId = loggedInUser.id
-          user.followedArtists = followedArtistsIDs
-
           await user.save()
-          await mArtist.bulkSave(artists)
         }
       },
     },
