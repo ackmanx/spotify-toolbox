@@ -6,9 +6,8 @@ import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
 import Header from '../components/header/Header'
-import CoolCatImage from '../components/images/cool-cat.png'
 import { RootPage } from '../components/pages/RootPage'
-import { ButtonImage } from '../components/shared/Image'
+import { CoolCat } from '../components/shared/CoolCat'
 import { useAccessTokenTimer } from '../hooks/useAccessTokenTimer'
 import dbConnect from '../lib/db'
 import { _Artist, buildArtist, mArtist } from '../mongoose/Artist'
@@ -42,25 +41,19 @@ const RootNextPage: NextPage<Props> = ({ artistsByGenre, viewedAlbums, isTokenEx
         `}
       >
         {status === 'unauthenticated' ? (
-          <div>
-            <h2>It looks like you are not signed in.</h2>
-            <h2>Try harder.</h2>
-            <ButtonImage src={CoolCatImage} onClick={() => {}} />
-          </div>
+          <CoolCat header='It looks like you are not signed in.' subheader='Try harder.' />
         ) : isTokenExpired ? (
-          <div>
-            <h2>It looks like your Spotify access token expired.</h2>
-            <h2>Better sign out and back in, like a boss.</h2>
-            <ButtonImage src={CoolCatImage} onClick={() => {}} />
-          </div>
+          <CoolCat
+            header='It looks like your Spotify access token expired.'
+            subheader='Better sign out and back in.'
+          />
         ) : (
           <>
             {hasNoFollowedArtists && (
-              <div>
-                <h2>It looks like you are not following any artists.</h2>
-                <h2>Level up and try again.</h2>
-                <ButtonImage src={CoolCatImage} onClick={() => {}} />
-              </div>
+              <CoolCat
+                header='It looks like you are not following any artists.'
+                subheader='Level up and try again.'
+              />
             )}
 
             <RootPage artistsByGenre={artistsByGenre} viewedAlbums={viewedAlbums} />
