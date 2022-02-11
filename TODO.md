@@ -37,3 +37,9 @@ at div
 at RootPage (webpack-internal:///./src/components/pages/RootPage.tsx:47:32)
 
 # Bug
+
+If a new user signs in and has the same followed artists, looks like I'm creating duplicates in the db during seed
+
+# Bug
+
+If you aren't signed in, seeing the image for that and no artists followed
