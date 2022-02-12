@@ -8,9 +8,10 @@ import { AuthContext } from '../../AuthContext'
 import { _Artist } from '../../mongoose/Artist'
 import NoUserPicIcon from '../images/person-placeholder.png'
 import { ButtonImage } from '../shared/Image'
-import menuIcon from './menu-icon.png'
-import signInIcon from './sign-in.png'
-import signOutIcon from './sign-out.png'
+import followIcon from './images/following.png'
+import menuIcon from './images/menu.png'
+import signInIcon from './images/sign-in.png'
+import signOutIcon from './images/sign-out.png'
 
 interface Props {
   artist?: _Artist
@@ -51,9 +52,11 @@ const styles = {
           }
         `
       : null,
-  image: css`
+  menu: css`
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     position: absolute;
     top: 45px;
   `,
@@ -68,7 +71,7 @@ const Component = ({ artist }: Props) => {
   const handleOpenMenu = () => {
     if (isMenuOpen) {
       const el = document.querySelector(`[data-id="account-menu"]`)
-      el?.classList.add('animate__flipOutX')
+      el?.classList.add('animate__bounceOut')
 
       setTimeout(() => setIsMenuOpen(false), 500)
     }
@@ -76,7 +79,7 @@ const Component = ({ artist }: Props) => {
     setIsMenuOpen(true)
   }
 
-  const animations = 'animate__animated animate__flipInX'
+  const animations = 'animate__animated animate__bounceIn'
 
   return (
     <header css={styles.root}>
@@ -94,12 +97,18 @@ const Component = ({ artist }: Props) => {
           />
 
           {isMenuOpen && (
-            <div css={styles.image} className={animations} data-id='account-menu'>
+            <div css={styles.menu} className={animations} data-id='account-menu'>
               {data ? (
                 <ButtonImage src={signOutIcon} width={40} height={40} onClick={() => signOut()} />
               ) : (
                 <ButtonImage src={signInIcon} width={40} height={40} onClick={() => signIn()} />
               )}
+              <ButtonImage
+                src={followIcon}
+                width={40}
+                height={40}
+                onClick={() => console.log('')}
+              />
             </div>
           )}
         </div>
