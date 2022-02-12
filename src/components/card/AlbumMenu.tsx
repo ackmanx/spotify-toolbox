@@ -81,10 +81,10 @@ export const AlbumMenu = ({ album, className, onClick, onViewedAlbum }: Props) =
         </CSSTransition>
       </div>
       <div css={styles.bottom}>
-        <div ref={ref} css={styles.icon}>
+        <div css={styles.icon}>
           <ImageLink href={album.spotifyUri} imageSrc={OpenSpotifyIcon} width={35} height={35} />
         </div>
-        <div ref={ref} css={styles.icon}>
+        <div css={styles.icon}>
           <ImageLink href={album.spotifyWebUrl} imageSrc={OpenWebIcon} width={35} height={35} />
         </div>
       </div>

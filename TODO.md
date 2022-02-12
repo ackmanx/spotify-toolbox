@@ -31,15 +31,5 @@
 
 # Bug
 
-next-dev.js?3515:32 Warning: Encountered two children with the same key, `61KJdJU38zrAW4c3PI9C9N`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
-at div
-at div
-at RootPage (webpack-internal:///./src/components/pages/RootPage.tsx:47:32)
-
-# Bug
-
 If a new user signs in and has the same followed artists, looks like I'm creating duplicates in the db during seed
-
-# Bug
-
-If you aren't signed in, seeing the image for that and no artists followed
+this is because getServerSideProps is being called twice for some reason and race condition allows dupes
