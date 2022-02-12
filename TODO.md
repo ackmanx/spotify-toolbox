@@ -33,3 +33,15 @@
 
 If a new user signs in and has the same followed artists, looks like I'm creating duplicates in the db during seed
 this is because getServerSideProps is being called twice for some reason and race condition allows dupes
+
+# Bug with dupes
+
+I've got dupes coming back from server props
+Two of them for Shirobon
+But in the rendered component i see 5 dupes of that artist
+This also affects react keys conflicting
+This is happening between restarts too
+It appears that the first set is correct
+Then there's a dupe set rendered w/o hiding artists without new albums
+Going to an artist and coming back, that non-hidden set is itself dupes
+But the artists don't seem to be in any particular order
