@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { _Artist } from '../../mongoose/Artist'
 import { Artist } from '../artists/Artist'
 import { Genre } from '../genre/Genre'
+import { CoolCat } from '../shared/CoolCat'
 
 type VisibleGenres = Record<string, boolean | undefined>
 
@@ -46,23 +47,32 @@ export const RootPage = () => {
       [genre]: artists,
     }))
 
+  const hasArtists = Object.entries(artistsByGenre).some((genre) => genre.length)
+
   return (
     <div>
-      {Object.keys(artistsByGenre)
-        .sort()
-        .map((genre) => (
-          <div key={genre}>
-            <Genre
-              name={genre}
-              onToggleVisibility={() => handleToggleGenreVisibility(genre)}
-              onRefresh={handleArtistRefreshForGenre}
-            />
+      {hasArtists ? (
+        Object.keys(artistsByGenre)
+          .sort()
+          .map((genre) => (
+            <div key={genre}>
+              <Genre
+                name={genre}
+                onToggleVisibility={() => handleToggleGenreVisibility(genre)}
+                onRefresh={handleArtistRefreshForGenre}
+              />
 
-            {/* Visibility might be null if user has never toggled it */}
-            {(visibleGenres[genre] || visibleGenres[genre] == null) &&
-              artistsByGenre[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
-          </div>
-        ))}
+              {/* Visibility might be null if user has never toggled it */}
+              {(visibleGenres[genre] || visibleGenres[genre] == null) &&
+                artistsByGenre[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
+            </div>
+          ))
+      ) : (
+        <CoolCat
+          header="It looks like you've got no followed artists."
+          subheader='Level up and try again.'
+        />
+      )}
     </div>
   )
 }
