@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import { useRef, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
-import { _Album } from '../../mongoose/Artist'
+import { _Album } from '../../mongoose/Album'
 import { ButtonImage, ImageLink } from '../shared/Image'
 import MarkAsViewedIcon from './images/mark-as-viewed.png'
 import OpenSpotifyIcon from './images/open-in-spotify.png'

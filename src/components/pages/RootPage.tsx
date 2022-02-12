@@ -11,14 +11,22 @@ export const RootPage = () => {
   const [visibleGenres, setVisibleGenres] = useState<VisibleGenres>({})
 
   useEffect(() => {
-    const visibleGenres: VisibleGenres = {}
+    async function doStuff() {
+      const res = await fetch('/api/genre/artists')
+      const body = await res.json()
 
-    Object.keys(artistsByGenre).forEach((genre) => {
-      visibleGenres[genre] = localStorage.getItem(genre) === 'true'
-    })
+      const visibleGenres: VisibleGenres = {}
 
-    setVisibleGenres(visibleGenres)
-  }, [artistsByGenre])
+      Object.keys(body).forEach((genre) => {
+        visibleGenres[genre] = localStorage.getItem(genre) === 'true'
+      })
+
+      setVisibleGenres(visibleGenres)
+      setArtistsByGenre(body)
+    }
+
+    doStuff()
+  }, [])
 
   const handleToggleGenreVisibility = (genre: string) =>
     setVisibleGenres((prevState) => {
