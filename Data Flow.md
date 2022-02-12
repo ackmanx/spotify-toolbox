@@ -1,13 +1,13 @@
 # Data Flow
 
 1. Not logged in
-   1. Session authentication is `unauthenticated`
-   2. No data is sent to the UI
-   3. No spotify access token alert
+   1. xSession authentication is `unauthenticated`
+   2. xNo data is sent to the UI
+   3. xNo spotify access token alert
 2. User logs in
-   1. It doesn't matter if SAT is valid unless you interact with Spotify directly
-   2. User is shown the currently-saved list of followed artists with unviewed albums
-   3. Data does not include album data, only artist data
+   1. xIt doesn't matter if SAT is valid unless you interact with Spotify directly
+   2. xUser is shown the currently-saved list of followed artists with unviewed albums
+   3. xData does not include album data, only artist data
 3. User clicks on an artist
    1. Get albums for artist from DB
    2. If albums is empty, make a call to Spotify to get all albums for that artist

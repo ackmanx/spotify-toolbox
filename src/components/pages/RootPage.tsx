@@ -4,15 +4,10 @@ import { _Artist } from '../../mongoose/Artist'
 import { Artist } from '../artists/Artist'
 import { Genre } from '../genre/Genre'
 
-interface Props {
-  artistsByGenre: Record<string, _Artist[]>
-  viewedAlbums: string[]
-}
-
 type VisibleGenres = Record<string, boolean | undefined>
 
-export const RootPage = ({ artistsByGenre, viewedAlbums }: Props) => {
-  const [genres, setGenres] = useState<Record<string, _Artist[]>>(artistsByGenre)
+export const RootPage = () => {
+  const [genres, setGenres] = useState<Record<string, _Artist[]>>({})
   const [visibleGenres, setVisibleGenres] = useState<VisibleGenres>({})
 
   useEffect(() => {
@@ -25,7 +20,7 @@ export const RootPage = ({ artistsByGenre, viewedAlbums }: Props) => {
     setVisibleGenres(visibleGenres)
   }, [genres])
 
-  const handleGenreHide = (genre: string) =>
+  const handleToggleGenreVisibility = (genre: string) =>
     setVisibleGenres((prevState) => {
       const isGenreVisible = prevState[genre] == null ? false : !prevState[genre]
 
@@ -37,36 +32,29 @@ export const RootPage = ({ artistsByGenre, viewedAlbums }: Props) => {
       }
     })
 
-  const handleGenreRefresh = (genre: string, artists: _Artist[]) =>
+  const handleArtistRefreshForGenre = (genre: string, artists: _Artist[]) =>
     setGenres((prevState) => ({
       ...prevState,
       [genre]: artists,
     }))
 
-  const genresSorted = Object.keys(genres).sort()
-
   return (
     <div>
-      {genresSorted.map((genre) => (
-        <div key={genre}>
-          <Genre
-            name={genre}
-            onClick={() => handleGenreHide(genre)}
-            onRefresh={handleGenreRefresh}
-          />
+      {Object.keys(genres)
+        .sort()
+        .map((genre) => (
+          <div key={genre}>
+            <Genre
+              name={genre}
+              onToggleVisibility={() => handleToggleGenreVisibility(genre)}
+              onRefresh={handleArtistRefreshForGenre}
+            />
 
-          {(visibleGenres[genre] || visibleGenres[genre] == null) &&
-            genres[genre].map((artist) => {
-              // If a user isn't refreshed yet, it may have no albums in the DB
-              // This happens when the user logs in for the first time
-              const hasUnviewedAlbums = !artist.albums.length
-                ? true
-                : artist.albums.some((album) => !viewedAlbums.includes(album.id))
-
-              return hasUnviewedAlbums ? <Artist key={artist.id} artist={artist} /> : null
-            })}
-        </div>
-      ))}
+            {/* Visibility might be null if user has never toggled it */}
+            {(visibleGenres[genre] || visibleGenres[genre] == null) &&
+              genres[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
+          </div>
+        ))}
     </div>
   )
 }

@@ -9,7 +9,7 @@ import RefreshIcon from './RefreshIcon'
 
 interface Props {
   name: string
-  onClick(): void
+  onToggleVisibility(): void
   onRefresh(genre: string, artists: _Artist[]): void
 }
 
@@ -44,7 +44,7 @@ const styles = {
   `,
 }
 
-export const Genre = ({ name, onClick, onRefresh }: Props) => {
+export const Genre = ({ name, onToggleVisibility, onRefresh }: Props) => {
   const [refreshStatus, setRefreshStatus] = useState<RefreshStatus>('hidden')
   const refreshRef = useRef(null)
 
@@ -79,7 +79,7 @@ export const Genre = ({ name, onClick, onRefresh }: Props) => {
       onMouseLeave={() =>
         setRefreshStatus(refreshStatus === 'processing' ? 'processing' : 'hidden')
       }
-      onClick={onClick}
+      onClick={onToggleVisibility}
     >
       <h2 css={styles.header}>{name}</h2>
 
