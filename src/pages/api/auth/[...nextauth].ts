@@ -4,10 +4,7 @@ import NextAuth from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
 
 import dbConnect from '../../../lib/db'
-import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
 import { _User, mUser } from '../../../mongoose/User'
-import { Many } from '../../../mongoose/types'
-import { GetAll } from '../../../utils/server/spotify-web-api'
 
 const scope = [
   'playlist-modify-public',

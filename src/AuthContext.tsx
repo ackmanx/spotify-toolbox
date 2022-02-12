@@ -1,16 +1,25 @@
+import { useSession } from 'next-auth/react'
 import { createContext, useState } from 'react'
 
 interface AuthContext {
-  isExpired: boolean
-  setIsExpired(value: boolean): void
+  isTokenExpired: boolean
+  setIsTokenExpired(value: boolean): void
 }
 
 export const AuthContext = createContext<AuthContext>({
-  isExpired: false,
-  setIsExpired: () => {},
+  isTokenExpired: false,
+  setIsTokenExpired: () => {},
 })
 
 export const AuthContextProvider = ({ children }: any) => {
-  const [isExpired, setIsExpired] = useState(false)
-  return <AuthContext.Provider value={{ isExpired, setIsExpired }}>{children}</AuthContext.Provider>
+  const { data } = useSession()
+
+  const tokenExpiresAtMs = (data?.expiresAt as number) * 1000
+  const [isTokenExpired, setIsTokenExpired] = useState(tokenExpiresAtMs - new Date().getTime() < 0)
+
+  return (
+    <AuthContext.Provider value={{ isTokenExpired, setIsTokenExpired }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }

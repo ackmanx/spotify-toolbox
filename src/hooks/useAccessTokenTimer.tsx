@@ -7,8 +7,7 @@ import { AuthContext } from '../AuthContext'
 
 export const useAccessTokenTimer = () => {
   const { data } = useSession()
-  const router = useRouter()
-  const { setIsExpired } = useContext(AuthContext)
+  const { setIsTokenExpired } = useContext(AuthContext)
   const expiresAt = (data?.expiresAt ?? 0) as number
 
   useEffect(() => {
@@ -16,8 +15,8 @@ export const useAccessTokenTimer = () => {
       const expirationTimeInMs = expiresAt * 1000 - new Date().getTime()
 
       setTimeout(() => {
-        setIsExpired(true)
+        setIsTokenExpired(true)
       }, expirationTimeInMs)
     }
-  }, [expiresAt, router, setIsExpired])
+  }, [expiresAt, setIsTokenExpired])
 }
