@@ -62,7 +62,7 @@ const styles = {
 const Component = ({ artist }: Props) => {
   const router = useRouter()
   const { data } = useSession()
-  const { isExpired } = useContext(AuthContext)
+  const { isTokenExpired } = useContext(AuthContext)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleOpenMenu = () => {
@@ -85,7 +85,7 @@ const Component = ({ artist }: Props) => {
       {artist && <h3>{artist.name}</h3>}
 
       <div css={styles.profileContainer}>
-        <div css={styles.profileImage(isExpired)}>
+        <div css={styles.profileImage(isTokenExpired)}>
           <ButtonImage
             src={data?.user?.image ?? NoUserPicIcon}
             width={40}
