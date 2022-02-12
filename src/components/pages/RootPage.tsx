@@ -7,18 +7,18 @@ import { Genre } from '../genre/Genre'
 type VisibleGenres = Record<string, boolean | undefined>
 
 export const RootPage = () => {
-  const [genres, setGenres] = useState<Record<string, _Artist[]>>({})
+  const [artistsByGenre, setArtistsByGenre] = useState<Record<string, _Artist[]>>({})
   const [visibleGenres, setVisibleGenres] = useState<VisibleGenres>({})
 
   useEffect(() => {
     const visibleGenres: VisibleGenres = {}
 
-    Object.keys(genres).forEach((genre) => {
+    Object.keys(artistsByGenre).forEach((genre) => {
       visibleGenres[genre] = localStorage.getItem(genre) === 'true'
     })
 
     setVisibleGenres(visibleGenres)
-  }, [genres])
+  }, [artistsByGenre])
 
   const handleToggleGenreVisibility = (genre: string) =>
     setVisibleGenres((prevState) => {
@@ -33,14 +33,14 @@ export const RootPage = () => {
     })
 
   const handleArtistRefreshForGenre = (genre: string, artists: _Artist[]) =>
-    setGenres((prevState) => ({
+    setArtistsByGenre((prevState) => ({
       ...prevState,
       [genre]: artists,
     }))
 
   return (
     <div>
-      {Object.keys(genres)
+      {Object.keys(artistsByGenre)
         .sort()
         .map((genre) => (
           <div key={genre}>
@@ -52,7 +52,7 @@ export const RootPage = () => {
 
             {/* Visibility might be null if user has never toggled it */}
             {(visibleGenres[genre] || visibleGenres[genre] == null) &&
-              genres[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
+              artistsByGenre[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
           </div>
         ))}
     </div>

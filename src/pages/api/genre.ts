@@ -22,5 +22,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return albums.some((album) => !user?.viewedAlbums.includes(album.id))
   })
 
-  res.send(artistsWithUnviewedAlbums)
+  const artistsByGenre = artistsWithUnviewedAlbums.reduce(
+    (genres: Record<string, Many<_Artist>>, artist) => {
+      if (!genres[artist.genre]) {
+        genres[artist.genre] = []
+      }
+
+      genres[artist.genre].push(artist)
+
+      return genres
+    },
+    {}
+  )
+
+  res.send(artistsByGenre)
 }

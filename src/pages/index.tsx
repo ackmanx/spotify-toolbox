@@ -52,14 +52,6 @@ export default RootNextPage
 //
 //   const mArtists: Many<_Artist> = mFollowedArtistsInDB.concat(mNewArtistsToSaveToDB)
 //
-//   const artistsByGenre = mArtists.reduce((genres: Record<string, Many<_Artist>>, artist) => {
-//     if (!genres[artist.genre]) genres[artist.genre] = []
-//
-//     genres[artist.genre].push(artist)
-//
-//     return genres
-//   }, {})
-//
 //   user.followedArtists = followedArtistsIDs
 //   await user.save()
 //
