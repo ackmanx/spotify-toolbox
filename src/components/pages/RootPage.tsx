@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 import { _Artist } from '../../mongoose/Artist'
@@ -8,6 +9,8 @@ import { CoolCat } from '../shared/CoolCat'
 type VisibleGenres = Record<string, boolean | undefined>
 
 export const RootPage = () => {
+  const { status } = useSession()
+  const [isLoading, setIsLoading] = useState(true)
   const [artistsByGenre, setArtistsByGenre] = useState<Record<string, _Artist[]>>({})
   const [visibleGenres, setVisibleGenres] = useState<VisibleGenres>({})
 
@@ -24,6 +27,7 @@ export const RootPage = () => {
 
       setVisibleGenres(visibleGenres)
       setArtistsByGenre(body)
+      setIsLoading(false)
     }
 
     doStuff()
@@ -46,6 +50,10 @@ export const RootPage = () => {
       ...prevState,
       [genre]: artists,
     }))
+
+  if (status === 'unauthenticated' || isLoading) {
+    return null
+  }
 
   const hasArtists = Object.entries(artistsByGenre).some((genre) => genre.length)
 

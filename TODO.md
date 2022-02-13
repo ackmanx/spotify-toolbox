@@ -36,15 +36,9 @@ this is because getServerSideProps is being called twice for some reason and rac
 
 # Bug with dupes
 
-I've got dupes coming back from server props
-Two of them for Shirobon
-But in the rendered component i see 5 dupes of that artist
-This also affects react keys conflicting
-This is happening between restarts too
-It appears that the first set is correct
-Then there's a dupe set rendered w/o hiding artists without new albums
-Going to an artist and coming back, that non-hidden set is itself dupes
-But the artists don't seem to be in any particular order
+In the update following artists call with artists.ts, we got dupes in the bulk save
+This is because the `_id` primary key in the collection is unique, and the `id` property is the artist id
+I need to either remove duplicates manually before saving or change the `_id` to be the artist id
 
 # Migration
 
