@@ -36,30 +36,3 @@ const RootNextPage: NextPage = () => {
 }
 
 export default RootNextPage
-
-// export const getServerSideProps: GetServerSideProps = async ({ req }): Promise<ServerSideProps> => {
-//   const sFollowedArtists = await GetAll.followedArtists(session?.accessToken as string)
-//   const followedArtistsIDs: string[] = sFollowedArtists.map((artist) => artist.id)
-//
-//   const followedArtistsInDB_IDs = mFollowedArtistsInDB.map((artist) => artist.id)
-//
-//   const sNewArtistsToSaveToDB = sFollowedArtists.filter(
-//     (artist) => !followedArtistsInDB_IDs.includes(artist.id)
-//   )
-//
-//   const mNewArtistsToSaveToDB = sNewArtistsToSaveToDB.map((artist) => buildArtist(artist))
-//   await mArtist.bulkSave(mNewArtistsToSaveToDB)
-//
-//   const mArtists: Many<_Artist> = mFollowedArtistsInDB.concat(mNewArtistsToSaveToDB)
-//
-//   user.followedArtists = followedArtistsIDs
-//   await user.save()
-//
-//   return {
-//     props: forceSerialization<Props>({
-//       artistsByGenre,
-//       viewedAlbums: user.viewedAlbums,
-//       isTokenExpired,
-//     }),
-//   }
-// }

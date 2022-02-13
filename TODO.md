@@ -29,17 +29,6 @@
 - Can check headers in web api response
 - If doing requests in a for loop, can retry and wait
 
-# Bug
-
-If a new user signs in and has the same followed artists, looks like I'm creating duplicates in the db during seed
-this is because getServerSideProps is being called twice for some reason and race condition allows dupes
-
-# Bug with dupes
-
-In the update following artists call with artists.ts, we got dupes in the bulk save
-This is because the `_id` primary key in the collection is unique, and the `id` property is the artist id
-I need to either remove duplicates manually before saving or change the `_id` to be the artist id
-
 # Migration
 
     "seenAlbums": [

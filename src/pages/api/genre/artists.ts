@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     throw new Error('User not found in DB')
   }
 
-  let mFollowedArtists: Many<_Artist> = []
+  let mFollowedArtistsInDB: Many<_Artist>
 
   // If this is first sign-in for a user, they won't have any followed artists because we haven't yet pinged Spotify
   if (!user.followedArtists.length) {
@@ -28,15 +28,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     user.followedArtists = sFollowedArtists.map((artist) => artist.id)
     await user.save()
 
-    mFollowedArtists = sFollowedArtists.map((artist) => buildArtist(artist))
-    await mArtist.bulkSave(mFollowedArtists)
+    mFollowedArtistsInDB = await mArtist.find({
+      id: { $in: user.followedArtists },
+    })
+
+    const followedArtistsInDB_IDs = mFollowedArtistsInDB.map((artist) => artist.id)
+
+    const sNewArtistsToSaveToDB = sFollowedArtists.filter(
+      (artist) => !followedArtistsInDB_IDs.includes(artist.id)
+    )
+
+    const mNewArtistsToSaveToDB: Many<_Artist> = sNewArtistsToSaveToDB.map((artist) =>
+      buildArtist(artist)
+    )
+    await mArtist.bulkSave(mNewArtistsToSaveToDB)
+    mFollowedArtistsInDB.concat(mNewArtistsToSaveToDB)
   } else {
-    mFollowedArtists = await mArtist.find({
-      id: { $in: user?.followedArtists },
+    mFollowedArtistsInDB = await mArtist.find({
+      id: { $in: user.followedArtists },
     })
   }
 
-  const artistsWithUnviewedAlbums = mFollowedArtists.filter(async (artist) => {
+  const artistsWithUnviewedAlbums = mFollowedArtistsInDB.filter(async (artist) => {
     const albums: Many<_Album> = await mAlbum.find({ id: { $in: artist.albums } })
     return albums.some((album) => !user?.viewedAlbums.includes(album.id))
   })
