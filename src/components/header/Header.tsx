@@ -64,7 +64,7 @@ const styles = {
 
 const Component = ({ artist }: Props) => {
   const router = useRouter()
-  const { data } = useSession()
+  const { data, status } = useSession()
   const { isTokenExpired } = useContext(AuthContext)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -98,7 +98,7 @@ const Component = ({ artist }: Props) => {
 
           {isMenuOpen && (
             <div css={styles.menu} className={animations} data-id='account-menu'>
-              {data ? (
+              {status === 'authenticated' ? (
                 <ButtonImage src={signOutIcon} width={40} height={40} onClick={() => signOut()} />
               ) : (
                 <ButtonImage src={signInIcon} width={40} height={40} onClick={() => signIn()} />
