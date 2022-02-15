@@ -2,12 +2,13 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 
 import dbConnect from '../../../lib/db'
-import { _Artist, buildAlbum, buildArtist, mArtist } from '../../../mongoose/Artist'
+import { _Album, buildAlbum, mAlbum } from '../../../mongoose/Album'
+import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
 import { _User, mUser } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Many<_Artist>>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
   const genreToRefresh = req.query.genre
   await dbConnect()
@@ -15,7 +16,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const user: One<_User> = await mUser.findOne({ userId: session?.userId })
 
   if (!user) {
-    throw new Error('User not found in database. How are you even logged in?')
+    res
+      .status(401)
+      .send({ success: false, message: 'User not found in database. How are you even logged in?' })
+    return
+  }
+
+  if (session?.isExpired) {
+    res.status(401).send({
+      success: false,
+      message: 'Your Spotify access token is expired. Please sign out then back in.',
+    })
+    return
   }
 
   const spotifyFollowedArtists = await GetAll.followedArtists(req)
@@ -24,45 +36,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   user.followedArtists = spotifyFollowedArtistsIDs
   await user.save()
 
-  const artists: Many<_Artist> = await mArtist.find({
+  const artistsInDB: Many<_Artist> = await mArtist.find({
     id: { $in: spotifyFollowedArtistsIDs },
   })
-  const artistIDs = artists.map((artist) => artist.id)
+  const artistIDs = artistsInDB.map((artist) => artist.id)
 
   const artistsNotInDB: Many<_Artist> = spotifyFollowedArtists
     // Filter out all artists that we've already got in the database
     .filter((spotifyArtist) => !artistIDs.includes(spotifyArtist.id))
     .map(buildArtist)
 
-  const genreFilteredArtists = artists
+  // Save artists not in the DB
+  // This includes all followed artists (no albums though), not just the genre we're refreshing
+  await mArtist.bulkSave(artistsNotInDB)
+
+  const genreFilteredArtists = artistsInDB
     .concat(artistsNotInDB)
     .filter((artist) => artist.genre === genreToRefresh)
 
-  let genreFilteredArtistsWithAlbums: Many<_Artist> = []
-
+  // For each artist, get all their albums and put new ones into the DB
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
-    const albums = await GetAll.albumsForArtist(req, artist)
+    const sAlbumsForArtist = await GetAll.albumsForArtist(req, artist)
 
-    artist.albums = albums.map(buildAlbum)
+    const mAlbumsInDB: Many<_Album> = await mAlbum.find({ artistId: artist.id })
+    const mAlbumsInDB_IDs: string[] = mAlbumsInDB.map((album) => album.id)
+    const mAlbumsForArtist: Many<_Album> = sAlbumsForArtist.map((album) =>
+      buildAlbum(album, artist.id)
+    )
 
-    genreFilteredArtistsWithAlbums.push(artist)
+    const mAlbumsToSave = mAlbumsForArtist.filter((album) => !mAlbumsInDB_IDs.includes(album.id))
+
+    await mAlbum.bulkSave(mAlbumsToSave)
   }
 
-  // Save all refreshed artists with their albums to the database
-  await mArtist.bulkSave(genreFilteredArtistsWithAlbums)
-
-  const artistsWithFreshAlbums: Many<_Artist> = []
-
-  genreFilteredArtistsWithAlbums.forEach((artistWithAlbums) => {
-    artistWithAlbums.albums.some((album) => {
-      if (!user?.viewedAlbums.includes(album.id)) {
-        //todo majerus: check for republished albums here
-        artistsWithFreshAlbums.push(artistWithAlbums)
-        return true
-      }
-    })
-  })
-
-  res.send(artistsWithFreshAlbums)
+  res.send({ success: true })
 }

@@ -45,12 +45,6 @@ export const RootPage = () => {
       }
     })
 
-  const handleArtistRefreshForGenre = (genre: string, artists: _Artist[]) =>
-    setArtistsByGenre((prevState) => ({
-      ...prevState,
-      [genre]: artists,
-    }))
-
   if (status === 'unauthenticated' || isLoading) {
     return null
   }
@@ -64,11 +58,7 @@ export const RootPage = () => {
           .sort()
           .map((genre) => (
             <div key={genre}>
-              <Genre
-                name={genre}
-                onToggleVisibility={() => handleToggleGenreVisibility(genre)}
-                onRefresh={handleArtistRefreshForGenre}
-              />
+              <Genre name={genre} onToggleVisibility={() => handleToggleGenreVisibility(genre)} />
 
               {/* Visibility might be null if user has never toggled it */}
               {(visibleGenres[genre] || visibleGenres[genre] == null) &&

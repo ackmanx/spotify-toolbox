@@ -10,7 +10,6 @@ import RefreshIcon from './RefreshIcon'
 interface Props {
   name: string
   onToggleVisibility(): void
-  onRefresh(genre: string, artists: _Artist[]): void
 }
 
 type RefreshStatus = 'hidden' | 'visible' | 'processing'
@@ -44,7 +43,7 @@ const styles = {
   `,
 }
 
-export const Genre = ({ name, onToggleVisibility, onRefresh }: Props) => {
+export const Genre = ({ name, onToggleVisibility }: Props) => {
   const [refreshStatus, setRefreshStatus] = useState<RefreshStatus>('hidden')
   const refreshRef = useRef(null)
 
@@ -63,7 +62,7 @@ export const Genre = ({ name, onToggleVisibility, onRefresh }: Props) => {
         return
       }
 
-      onRefresh(name, await response.json())
+      window.location.reload()
     } catch (error: any) {
       toast.error(error.message, { position: 'top-center', autoClose: false })
     } finally {
