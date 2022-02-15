@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { _Artist } from '../../mongoose/Artist'
 import { AlbumsByReleaseType } from '../../pages/artist/[artistId]'
@@ -9,7 +9,6 @@ import { Card } from '../card/Card'
 
 interface Props {
   artist: _Artist
-  albumsByReleaseType: AlbumsByReleaseType
 }
 
 const styles = {
@@ -42,12 +41,25 @@ const styles = {
   `,
 }
 
-export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
+export const ArtistPage = ({ artist }: Props) => {
   const [albumMenus, setAlbumMenus] = useState<Record<string, boolean>>({})
   const [newlyViewedAlbums, setNewlyViewedAlbums] = useState<Record<string, boolean>>({})
+  const [albumsByReleaseType, setAlbumsByReleaseType] = useState<AlbumsByReleaseType>()
+  const artistId = artist.id
 
-  const albums = albumsByReleaseType.album
-  const singles = albumsByReleaseType.single
+  useEffect(() => {
+    async function doStuff() {
+      const res = await fetch(`/api/artist/${artistId}`)
+      const body = await res.json()
+      setAlbumsByReleaseType(body)
+    }
+
+    doStuff()
+  }, [artistId])
+
+  if (!albumsByReleaseType) {
+    return null
+  }
 
   const animations = 'animate__animated animate__fadeInUp animate__faster'
 
@@ -88,7 +100,7 @@ export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
       <div css={styles.header}>
         <h2>albums</h2>
       </div>
-      {albums.map((album) => (
+      {albumsByReleaseType.album.map((album) => (
         <div key={album.id} css={styles.albumContainer(newlyViewedAlbums[album.id])}>
           <Card album={album} onClick={() => toggleAlbumMenu(album.id)} />
           {albumMenus[album.id] && (
@@ -106,7 +118,7 @@ export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
       <div css={styles.header}>
         <h2>singles</h2>
       </div>
-      {singles.map((single) => (
+      {albumsByReleaseType.single.map((single) => (
         <div key={single.id} css={styles.albumContainer(newlyViewedAlbums[single.id])}>
           <Card album={single} onClick={() => toggleAlbumMenu(single.id)} />
           {albumMenus[single.id] && (

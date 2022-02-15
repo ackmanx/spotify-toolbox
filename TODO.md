@@ -22,8 +22,6 @@
 
 # Style the sign in page?
 
-# Use session `status` for auth considerations over `data`?
-
 # Rate limiting
 
 - Can check headers in web api response

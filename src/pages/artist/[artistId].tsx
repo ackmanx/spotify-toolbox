@@ -2,7 +2,6 @@
 import { css } from '@emotion/react'
 import type { NextPage } from 'next'
 import { GetServerSideProps } from 'next'
-import { getSession } from 'next-auth/react'
 import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
@@ -10,25 +9,23 @@ import Header from '../../components/header/Header'
 import { ArtistPage } from '../../components/pages/ArtistPage'
 import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
 import dbConnect from '../../lib/db'
-import { _Album, _Artist, buildAlbum, mArtist } from '../../mongoose/Artist'
-import { _User, mUser } from '../../mongoose/User'
+import { _Album } from '../../mongoose/Album'
+import { _Artist, mArtist } from '../../mongoose/Artist'
 import { One } from '../../mongoose/types'
 import { forceSerialization } from '../../utils/force-serialization'
-import { GetAll } from '../../utils/server/spotify-web-api'
 
 export type AlbumWithViewed = _Album & { isViewed: boolean }
 
 interface Props {
   artist: _Artist
-  albums: AlbumsByReleaseType
 }
 
 export type AlbumsByReleaseType = Record<string, AlbumWithViewed[]>
 
-const ArtistNextPage: NextPage<Props> = ({ artist, albums }) => {
+const ArtistNextPage: NextPage<Props> = ({ artist }) => {
   useAccessTokenTimer()
 
-  if (!albums || !artist) return null
+  if (!artist) return null
 
   return (
     <>
@@ -43,7 +40,7 @@ const ArtistNextPage: NextPage<Props> = ({ artist, albums }) => {
       >
         <ToastContainer />
 
-        <ArtistPage artist={artist} albumsByReleaseType={albums} />
+        <ArtistPage artist={artist} />
       </main>
     </>
   )
@@ -59,38 +56,15 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
   req,
 }): Promise<ServerSideProps> => {
-  const session = await getSession({ req })
   await dbConnect()
 
-  const user: One<_User> = await mUser.findOne({ id: session?.userId })
-  const artist: One<_Artist> = await mArtist.findOne({ id: query.artistId })
+  const artistInDB: One<_Artist> = await mArtist.findOne({ id: query.artistId })
 
-  if (!user || !artist) {
-    throw new Error('User or artist not found in DB')
+  if (!artistInDB) {
+    throw new Error(`No artist found for ${query.artistId}`)
   }
-
-  if (!artist.albums.length) {
-    if (session?.isExpired) {
-      return { props: { artist, albums: {} } }
-    }
-
-    const albums = await GetAll.albumsForArtist(session?.accessToken as string, artist)
-    artist.albums = albums.map(buildAlbum)
-    await artist.save()
-  }
-
-  const artistPojo = artist.toObject()
-
-  const albums = artistPojo.albums.reduce(
-    (albums: AlbumsByReleaseType, album) => {
-      const isViewed = user.viewedAlbums.includes(album.id) ?? false
-      albums[album.type].push({ ...album, isViewed })
-      return albums
-    },
-    { single: [], album: [] }
-  )
 
   return {
-    props: forceSerialization<Props>({ artist, albums }),
+    props: forceSerialization<Props>({ artist: artistInDB }),
   }
 }
