@@ -58,13 +58,14 @@ export const Genre = ({ name, onToggleVisibility, onRefresh }: Props) => {
       const response = await fetch(`/api/refresh/${name}`)
 
       if (!response.ok) {
-        toast.error('There was an error refreshing', { position: 'top-center' })
+        const error = await response.json()
+        toast.error(error.message, { position: 'top-center', autoClose: false })
         return
       }
 
       onRefresh(name, await response.json())
     } catch (error: any) {
-      toast.error(error.message, { position: 'top-center' })
+      toast.error(error.message, { position: 'top-center', autoClose: false })
     } finally {
       setRefreshStatus('hidden')
     }
