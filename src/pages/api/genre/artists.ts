@@ -49,8 +49,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     })
   }
 
+  //todo majerus: shouldn't this work to hide artists with all viewed albums?
+  //todo majerus: or is this api call not made again when user goes back to root page from artist page?
   const artistsWithUnviewedAlbums = mFollowedArtistsInDB.filter(async (artist) => {
-    const albums: Many<_Album> = await mAlbum.find({ id: { $in: artist.albums } })
+    const albums: Many<_Album> = await mAlbum.find({ id: { $in: artist.albumIDs } })
     return albums.some((album) => !user?.viewedAlbums.includes(album.id))
   })
 

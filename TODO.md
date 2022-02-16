@@ -6,6 +6,12 @@
 
 Page refresh fixes
 
+# Bug - In RootPage where we check for has unviewed albums, we need to know album IDs for an artist
+
+But if the user hasn't refreshed yet, we don't know the albums for artists
+
+# Question - todo in artists.ts about viewed
+
 # Method to perform actions on albums
 
 - Play right in my webapp now?

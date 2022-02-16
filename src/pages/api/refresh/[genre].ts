@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
     const sAlbumsForArtist = await GetAll.albumsForArtist(req, artist)
-    artist.albums = sAlbumsForArtist.map((album) => album.id)
+    artist.albumIDs = sAlbumsForArtist.map((album) => album.id)
 
     await artist.save()
 

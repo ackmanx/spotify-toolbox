@@ -8,7 +8,7 @@ import { Genre } from '../genre/Genre'
 import { CoolCat } from '../shared/CoolCat'
 
 interface Props {
-  user: _User
+  user: _User | null
 }
 
 type VisibleGenres = Record<string, boolean | undefined>
@@ -68,8 +68,9 @@ export const RootPage = ({ user }: Props) => {
               {/* Visibility might be null if user has never toggled it */}
               {(visibleGenres[genre] || visibleGenres[genre] == null) &&
                 artistsByGenre[genre].map((artist) => {
-                  const hasUnviewedAlbums = artist.albums.some(
-                    (album) => !user.viewedAlbums.includes(album)
+                  console.log(777, artist)
+                  const hasUnviewedAlbums = artist.albumIDs.some(
+                    (id) => !user?.viewedAlbums.includes(id)
                   )
 
                   return hasUnviewedAlbums ? <Artist key={artist.id} artist={artist} /> : null

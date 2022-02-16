@@ -9,7 +9,7 @@ export interface _Artist {
   name: string
   coverArt?: string
   genre: string
-  albums: string[]
+  albumIDs: string[]
 }
 
 const ArtistSchema = new Schema<_Artist>({
@@ -17,7 +17,7 @@ const ArtistSchema = new Schema<_Artist>({
   name: String,
   coverArt: String,
   genre: String,
-  albums: [String],
+  albumIDs: [String],
 })
 
 export const mArtist: Model<_Artist> =
