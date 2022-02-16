@@ -13,7 +13,7 @@ export interface _Artist {
 }
 
 const ArtistSchema = new Schema<_Artist>({
-  id: String,
+  id: { type: String, unique: true },
   name: String,
   coverArt: String,
   genre: String,

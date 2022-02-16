@@ -14,7 +14,7 @@ export interface _Album {
 }
 
 const AlbumSchema = new Schema<_Album>({
-  id: String,
+  id: { type: String, unique: true },
   artistId: String,
   type: String,
   name: String,
