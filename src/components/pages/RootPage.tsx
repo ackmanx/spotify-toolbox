@@ -24,6 +24,10 @@ export const RootPage = ({ user }: Props) => {
       const res = await fetch('/api/artist/all')
       const body = await res.json()
 
+      if (!res.ok) {
+        return
+      }
+
       const visibleGenres: VisibleGenres = {}
 
       Object.keys(body).forEach((genre) => {
