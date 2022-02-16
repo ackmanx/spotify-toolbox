@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       buildArtist(artist)
     )
     await mArtist.bulkSave(mNewArtistsToSaveToDB)
-    mFollowedArtistsInDB.concat(mNewArtistsToSaveToDB)
+    mFollowedArtistsInDB = mFollowedArtistsInDB.concat(mNewArtistsToSaveToDB)
   } else {
     mFollowedArtistsInDB = await mArtist.find({
       id: { $in: user.followedArtists },
