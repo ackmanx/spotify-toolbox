@@ -21,7 +21,7 @@ export const RootPage = ({ user }: Props) => {
 
   useEffect(() => {
     async function doStuff() {
-      const res = await fetch('/api/genre/artists')
+      const res = await fetch('/api/artist/all')
       const body = await res.json()
 
       const visibleGenres: VisibleGenres = {}

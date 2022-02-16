@@ -8,7 +8,7 @@ import { _User, mUser } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 
-type ResBody = Record<string, Many<_Artist>>
+type ResBody = Record<string, Many<_Artist>> | { success: boolean; message?: string }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResBody>) {
   const session = await getSession({ req })
@@ -17,7 +17,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const user = await mUser.findOne({ userId: session?.userId })
 
   if (!user) {
-    throw new Error('User not found in DB')
+    res
+      .status(401)
+      .send({ success: false, message: 'User not found in database. How are you even logged in?' })
+    return
   }
 
   let mFollowedArtistsInDB: Many<_Artist>

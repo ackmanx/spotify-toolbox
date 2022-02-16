@@ -10,7 +10,7 @@ Page refresh fixes
 
 But if the user hasn't refreshed yet, we don't know the albums for artists
 
-# Question - todo in artists.ts about viewed
+# Mark as Viewed should be a post
 
 # Method to perform actions on albums
 

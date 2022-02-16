@@ -71,8 +71,7 @@ export const AlbumMenu = ({ album, className, onClick, onViewedAlbum }: Props) =
               onClick={async (event) => {
                 event.stopPropagation()
                 setMarkViewedProcessing(true)
-                //todo majerus: should be a POST probably
-                await fetch(`/api/viewed/${album.id}`)
+                await fetch(`/api/mark-as-viewed/${album.id}`)
                 onClick()
                 onViewedAlbum(album.id)
               }}
