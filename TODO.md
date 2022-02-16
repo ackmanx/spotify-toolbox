@@ -1,5 +1,11 @@
 # Refresh only a single artist
 
+# Update followed artists
+
+# Bug - Seems that first-time login for a user it shows no followed artists after it gets everything
+
+Page refresh fixes
+
 # Method to perform actions on albums
 
 - Play right in my webapp now?

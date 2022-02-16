@@ -2,13 +2,18 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 import { _Artist } from '../../mongoose/Artist'
+import { _User } from '../../mongoose/User'
 import { Artist } from '../artists/Artist'
 import { Genre } from '../genre/Genre'
 import { CoolCat } from '../shared/CoolCat'
 
+interface Props {
+  user: _User
+}
+
 type VisibleGenres = Record<string, boolean | undefined>
 
-export const RootPage = () => {
+export const RootPage = ({ user }: Props) => {
   const { status } = useSession()
   const [isLoading, setIsLoading] = useState(true)
   const [artistsByGenre, setArtistsByGenre] = useState<Record<string, _Artist[]>>({})
@@ -62,7 +67,13 @@ export const RootPage = () => {
 
               {/* Visibility might be null if user has never toggled it */}
               {(visibleGenres[genre] || visibleGenres[genre] == null) &&
-                artistsByGenre[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
+                artistsByGenre[genre].map((artist) => {
+                  const hasUnviewedAlbums = artist.albums.some(
+                    (album) => !user.viewedAlbums.includes(album)
+                  )
+
+                  return hasUnviewedAlbums ? <Artist key={artist.id} artist={artist} /> : null
+                })}
             </div>
           ))
       ) : (
