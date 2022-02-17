@@ -20,6 +20,11 @@ const scope = [
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   return await NextAuth(req, res, {
+    theme: {
+      colorScheme: 'light',
+      brandColor: '#000000',
+      logo: '/logo.png',
+    },
     providers: [
       SpotifyProvider({
         clientId: process.env.SPOTIFY_CLIENT_ID ?? '',
