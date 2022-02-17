@@ -54,28 +54,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     })
   }
 
-  const artistsWithUnviewedAlbums: Many<_Artist> = []
-
-  // Async-friendly filter
-  for (let i = 0; mFollowedArtistsInDB.length > i; i++) {
-    const artist = mFollowedArtistsInDB[i]
-    const albums: Many<_Album> = await mAlbum.find({ id: { $in: artist.albumIDs } })
-
-    const hasUnviewedAlbums =
-      artist.albumIDs.length === 0 || albums.some((album) => !user?.viewedAlbums.includes(album.id))
-
-    if (hasUnviewedAlbums) {
-      artistsWithUnviewedAlbums.push(artist)
-    }
-  }
-
-  const artistsByGenre = artistsWithUnviewedAlbums.reduce(
+  const artistsByGenre = mFollowedArtistsInDB.reduce(
     (genres: Record<string, Many<_Artist>>, artist) => {
       if (!genres[artist.genre]) {
         genres[artist.genre] = []
       }
 
-      genres[artist.genre].push(artist)
+      const hasUnviewedAlbums =
+        artist.albumIDs.length === 0 ||
+        artist.albumIDs.some((albumId) => !user.viewedAlbums.includes(albumId))
+
+      if (hasUnviewedAlbums) {
+        genres[artist.genre].push(artist)
+      }
 
       return genres
     },
