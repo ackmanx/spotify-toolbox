@@ -4,8 +4,8 @@ import { getSession } from 'next-auth/react'
 import dbConnect from '../../../lib/db'
 import { _Album, mAlbum } from '../../../mongoose/Album'
 import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
-import { _User, mUser } from '../../../mongoose/User'
-import { Many, One } from '../../../mongoose/types'
+import { mUser } from '../../../mongoose/User'
+import { Many } from '../../../mongoose/types'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 
 type ResBody = Record<string, Many<_Artist>> | { success: boolean; message?: string }

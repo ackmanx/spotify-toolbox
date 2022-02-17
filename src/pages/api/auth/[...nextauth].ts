@@ -69,6 +69,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         if (!userInDB) {
           const user = new mUser()
           user.userId = loggedInUser.id
+          user.isNewUser = true
           await user.save()
         }
       },
