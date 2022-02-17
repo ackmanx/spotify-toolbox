@@ -4,8 +4,9 @@ import { getSession } from 'next-auth/react'
 
 import dbConnect from '../../../lib/db'
 import { _Album, buildAlbum, mAlbum } from '../../../mongoose/Album'
+import { _Artist, mArtist } from '../../../mongoose/Artist'
 import { mUser } from '../../../mongoose/User'
-import { Many } from '../../../mongoose/types'
+import { Many, One } from '../../../mongoose/types'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 import { AlbumsByReleaseType } from '../../artist/[artistId]'
 
@@ -31,6 +32,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (albumsInDB.length === 0) {
     const sAlbumsForArtist = await GetAll.albumsForArtist(req, artistId)
     const mAlbums = sAlbumsForArtist.map((album) => buildAlbum(album, artistId))
+    const albumIDs = mAlbums.map((album) => album.id)
+
+    const artist: One<_Artist> = await mArtist.findOne({ id: artistId })
+
+    if (!artist) {
+      res
+        .status(401)
+        .send({
+          success: false,
+          message: 'Artist not found in database. How did you even get here?',
+        })
+      return
+    }
+
+    artist.albumIDs = albumIDs
+    await artist.save()
 
     await mAlbum.bulkSave(mAlbums)
 

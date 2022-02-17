@@ -2,6 +2,8 @@
 
 # Update followed artists
 
+# Hide viewed artists in the server on all artists call
+
 # Mark as Viewed should be a post
 
 # Method to perform actions on albums
