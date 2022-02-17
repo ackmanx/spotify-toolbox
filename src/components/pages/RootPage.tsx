@@ -72,10 +72,10 @@ export const RootPage = ({ user }: Props) => {
               {/* Visibility might be null if user has never toggled it */}
               {(visibleGenres[genre] || visibleGenres[genre] == null) &&
                 artistsByGenre[genre].map((artist) => {
-                  console.log(777, artist)
-                  const hasUnviewedAlbums = artist.albumIDs.some(
-                    (id) => !user?.viewedAlbums.includes(id)
-                  )
+                  // An artist w/o albums means user has not ever looked at that artist
+                  const hasUnviewedAlbums =
+                    !artist.albumIDs.length ||
+                    artist.albumIDs.some((id) => !user?.viewedAlbums.includes(id))
 
                   return hasUnviewedAlbums ? <Artist key={artist.id} artist={artist} /> : null
                 })}
