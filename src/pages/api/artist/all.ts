@@ -25,10 +25,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   let mFollowedArtistsInDB: Many<_Artist>
 
-  // If this is first sign-in for a user, they won't have any followed artists because we haven't yet pinged Spotify
-  if (!user.followedArtists.length) {
+  if (user.isNewUser) {
     const sFollowedArtists = await GetAll.followedArtists(req)
+
     user.followedArtists = sFollowedArtists.map((artist) => artist.id)
+    user.isNewUser = false
+
     await user.save()
 
     mFollowedArtistsInDB = await mArtist.find({
