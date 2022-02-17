@@ -69,16 +69,9 @@ export const RootPage = ({ user }: Props) => {
             <div key={genre}>
               <Genre name={genre} onToggleVisibility={() => handleToggleGenreVisibility(genre)} />
 
-              {/* Visibility might be null if user has never toggled it */}
+              {/* Genre visibility might be null if user has never toggled it */}
               {(visibleGenres[genre] || visibleGenres[genre] == null) &&
-                artistsByGenre[genre].map((artist) => {
-                  // An artist w/o albums means user has not ever looked at that artist
-                  const hasUnviewedAlbums =
-                    !artist.albumIDs.length ||
-                    artist.albumIDs.some((id) => !user?.viewedAlbums.includes(id))
-
-                  return hasUnviewedAlbums ? <Artist key={artist.id} artist={artist} /> : null
-                })}
+                artistsByGenre[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
             </div>
           ))
       ) : (
