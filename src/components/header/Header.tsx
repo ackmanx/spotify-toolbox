@@ -9,7 +9,7 @@ import { _Artist } from '../../mongoose/Artist'
 import NoUserPicIcon from '../images/person-placeholder.png'
 import { ButtonImage } from '../shared/Image'
 import followIcon from './images/following.png'
-import menuIcon from './images/menu.png'
+import menuIcon from './images/logo.png'
 import signInIcon from './images/sign-in.png'
 import signOutIcon from './images/sign-out.png'
 

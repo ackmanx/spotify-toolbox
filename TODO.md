@@ -2,14 +2,6 @@
 
 # Update followed artists
 
-# Bug - Seems that first-time login for a user it shows no followed artists after it gets everything
-
-Page refresh fixes
-
-# Bug - In RootPage where we check for has unviewed albums, we need to know album IDs for an artist
-
-But if the user hasn't refreshed yet, we don't know the albums for artists
-
 # Mark as Viewed should be a post
 
 # Method to perform actions on albums

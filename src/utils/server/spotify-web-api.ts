@@ -54,12 +54,11 @@ export const GetAll = {
 
     return results
   },
-  albumsForArtist: async (reqOrToken: NextApiRequest | string, artist: _Artist) => {
-    console.log(777, 'Getting albums for:', artist.name, artist.id) /* delete */
+  albumsForArtist: async (reqOrToken: NextApiRequest | string, artistID: string) => {
     const limit = 50
 
     const spotifyWebApi = await getSpotifyWebApi(reqOrToken)
-    const spotifyResponse = await spotifyWebApi.getArtistAlbums(artist.id, {
+    const spotifyResponse = await spotifyWebApi.getArtistAlbums(artistID, {
       include_groups: 'single,album',
       limit,
       country: 'US',
@@ -73,7 +72,7 @@ export const GetAll = {
 
     for (let currentPage = 0; currentPage < numPages; currentPage++) {
       const offset = currentPage * limit
-      const response = await spotifyWebApi.getArtistAlbums(artist.id, { limit, offset })
+      const response = await spotifyWebApi.getArtistAlbums(artistID, { limit, offset })
       results.push(...response.body.items)
     }
 

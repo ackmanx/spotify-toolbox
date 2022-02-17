@@ -57,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // For each artist, get all their albums and put new ones into the DB
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
-    const sAlbumsForArtist = await GetAll.albumsForArtist(req, artist)
+    const sAlbumsForArtist = await GetAll.albumsForArtist(req, artist.id)
     artist.albumIDs = sAlbumsForArtist.map((album) => album.id)
 
     await artist.save()
