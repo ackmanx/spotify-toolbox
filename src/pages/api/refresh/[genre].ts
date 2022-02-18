@@ -70,7 +70,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const mAlbumsToSave = mAlbumsForArtist.filter((album) => !mAlbumsInDB_IDs.includes(album.id))
 
-    await mAlbum.bulkSave(mAlbumsToSave)
+    try {
+      await mAlbum.bulkSave(mAlbumsToSave)
+    } catch (error: any) {
+      // Code 11000 is a Mongo duplicate key error
+      // It happens when two artists collab and release the same album, resulting in same ID
+      // To make things simple, we just ignore the duplicate albums
+      if (error.code !== 11000) {
+        console.error(error)
+      }
+    }
   }
 
   res.send({ success: true })
