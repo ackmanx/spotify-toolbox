@@ -3,6 +3,7 @@ import mongoose, { HydratedDocument, Model, Schema } from 'mongoose'
 import AlbumObjectSimplified = SpotifyApi.AlbumObjectSimplified
 
 export interface _Album {
+  _id: string
   id: string
   artistId: string
   type: string
@@ -14,7 +15,8 @@ export interface _Album {
 }
 
 const AlbumSchema = new Schema<_Album>({
-  id: { type: String, unique: true },
+  _id: String,
+  id: { type: String },
   artistId: String,
   type: String,
   name: String,
@@ -32,6 +34,7 @@ export const buildAlbum = (
 ): HydratedDocument<_Album> => {
   const newAlbum = new mAlbum()
 
+  newAlbum._id = album.id
   newAlbum.id = album.id
   newAlbum.artistId = artistId
   newAlbum.type = album.album_type

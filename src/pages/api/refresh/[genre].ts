@@ -54,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .concat(artistsNotInDB)
     .filter((artist) => artist.genre === genreToRefresh)
 
-  // For each artist, get all their albums and put new ones into the DB
+  // For each artist, get all their albums IDs
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
     const sAlbumsForArtist = await GetAll.albumsForArtist(req, artist.id)

@@ -5,6 +5,7 @@ import { guessGenre } from '../utils/server/guess-genre'
 import ArtistObjectFull = SpotifyApi.ArtistObjectFull
 
 export interface _Artist {
+  _id: string
   id: string
   name: string
   coverArt?: string
@@ -13,7 +14,8 @@ export interface _Artist {
 }
 
 const ArtistSchema = new Schema<_Artist>({
-  id: { type: String, unique: true },
+  _id: String,
+  id: String,
   name: String,
   coverArt: String,
   genre: String,
@@ -26,6 +28,7 @@ export const mArtist: Model<_Artist> =
 export const buildArtist = (artist: ArtistObjectFull) => {
   const model = new mArtist()
 
+  model._id = artist.id
   model.id = artist.id
   model.name = artist.name
   model.coverArt = artist.images.find((image) => image.width === image.height)?.url
