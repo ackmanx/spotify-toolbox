@@ -99,7 +99,16 @@ const Component = ({ artist }: Props) => {
           {isMenuOpen && (
             <div css={styles.menu} className={animations} data-id='account-menu'>
               {status === 'authenticated' ? (
-                <ButtonImage src={signOutIcon} width={40} height={40} onClick={() => signOut()} />
+                <ButtonImage
+                  src={signOutIcon}
+                  width={40}
+                  height={40}
+                  onClick={() =>
+                    signOut({
+                      callbackUrl: window.location.origin,
+                    })
+                  }
+                />
               ) : (
                 <ButtonImage src={signInIcon} width={40} height={40} onClick={() => signIn()} />
               )}

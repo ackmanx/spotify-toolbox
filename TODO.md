@@ -2,13 +2,7 @@
 
 # Update followed artists
 
-# Hide viewed artists in the server on all artists call
-
 # Bug - If a user tires to view an artist that has no albums and their token is expired, make a nicer error
-
-# Bug - Signing out should redirect you to root
-
-# Bug - Refresh genre has duplicate key error
 
 # Mark as Viewed should be a post
 
@@ -31,8 +25,6 @@
 # UI mode - view all albums from artist
 
 - in this mode, can mark an overlay on an album to show that it's new
-
-# Style the sign in page?
 
 # Rate limiting
 
