@@ -2,10 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 
 import dbConnect from '../../../lib/db'
-import { _Album, mAlbum } from '../../../mongoose/Album'
 import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
 import { mUser } from '../../../mongoose/User'
 import { Many } from '../../../mongoose/types'
+import { removeDuplicates } from '../../../utils/array'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 
 type ResBody = Record<string, Many<_Artist>> | { success: boolean; message?: string }
@@ -39,14 +39,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     const followedArtistsInDB_IDs = mFollowedArtistsInDB.map((artist) => artist.id)
 
-    const sNewArtistsToSaveToDB = sFollowedArtists.filter(
-      (artist) => !followedArtistsInDB_IDs.includes(artist.id)
-    )
+    const mNewArtistsToSaveToDB: Many<_Artist> = removeDuplicates(
+      sFollowedArtists,
+      followedArtistsInDB_IDs
+    ).map((artist) => buildArtist(artist))
 
-    const mNewArtistsToSaveToDB: Many<_Artist> = sNewArtistsToSaveToDB.map((artist) =>
-      buildArtist(artist)
-    )
     await mArtist.bulkSave(mNewArtistsToSaveToDB)
+
     mFollowedArtistsInDB = mFollowedArtistsInDB.concat(mNewArtistsToSaveToDB)
   } else {
     mFollowedArtistsInDB = await mArtist.find({
