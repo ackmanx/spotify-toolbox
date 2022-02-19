@@ -6,6 +6,7 @@ import { _Album, buildAlbum, mAlbum } from '../../../mongoose/Album'
 import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
 import { _User, mUser } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
+import { filterNonNull } from '../../../utils/array'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -62,23 +63,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     await artist.save()
 
-    const mAlbumsInDB: Many<_Album> = await mAlbum.find({ artistId: artist.id })
+    const mAlbumsInDB: Many<_Album> = await mAlbum.find({ _id: artist.albumIDs })
     const mAlbumsInDB_IDs: string[] = mAlbumsInDB.map((album) => album.id)
-    const mAlbumsForArtist: Many<_Album> = sAlbumsForArtist.map((album) =>
-      buildAlbum(album, artist.id)
-    )
 
-    const mAlbumsToSave = mAlbumsForArtist.filter((album) => !mAlbumsInDB_IDs.includes(album.id))
+    const mAlbumsToSave: Many<_Album> = sAlbumsForArtist
+      .map((album) => {
+        if (!mAlbumsInDB_IDs.includes(album.id)) {
+          return buildAlbum(album, artist.id)
+        }
+      })
+      .filter(filterNonNull)
 
-    try {
+    if (mAlbumsToSave.length) {
       await mAlbum.bulkSave(mAlbumsToSave)
-    } catch (error: any) {
-      // Code 11000 is a Mongo duplicate key error
-      // It happens when two artists collab and release the same album, resulting in same ID
-      // To make things simple, we just ignore the duplicate albums
-      if (error.code !== 11000) {
-        console.error(error)
-      }
     }
   }
 
