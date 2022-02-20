@@ -4,7 +4,6 @@
 
 # Remove duplicate new albums if same name
 
--
 - Update refresh genre
 - Update artist albums page api call
 
