@@ -2,6 +2,13 @@
 
 # Update followed artists
 
+# Remove duplicate new albums if same name
+
+- Need to migrate viewedAlbums to include the album name too
+- Need to update user document usages of viewedAlbums
+- Update refresh genre
+- Update artist albums page api call
+
 # Bug - If a user tires to view an artist that has no albums and their token is expired, make a nicer error
 
 # Mark as Viewed should be a post
