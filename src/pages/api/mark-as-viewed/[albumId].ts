@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 
 import dbConnect from '../../../lib/db'
+import { _Album, mAlbum } from '../../../mongoose/Album'
 import { _User, mUser } from '../../../mongoose/User'
 import { One } from '../../../mongoose/types'
 
@@ -11,7 +12,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await dbConnect()
 
   const user: One<_User> = await mUser.findOne({ userId: session?.userId })
-  user?.viewedAlbums.push(albumToMark)
+  const album: One<_Album> = await mAlbum.findOne({ id: albumToMark })
+
+  if (!album) {
+    return res.send({
+      success: false,
+      message:
+        'This album must have been magically deleted from the time you marked it as viewed and the microseconds until now',
+    })
+  }
+
+  user?.viewedAlbums.push({ id: album.id, name: album.name })
   user?.save()
 
   res.send({ success: true })

@@ -5,7 +5,7 @@ import dbConnect from '../../../lib/db'
 import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
 import { mUser } from '../../../mongoose/User'
 import { Many } from '../../../mongoose/types'
-import { removeDuplicates } from '../../../utils/array'
+import { isViewed, removeDuplicates } from '../../../utils/array'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 
 type ResBody = Record<string, Many<_Artist>> | { success: boolean; message?: string }
@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       const hasUnviewedAlbums =
         artist.albumIDs.length === 0 ||
-        artist.albumIDs.some((albumId) => !user.viewedAlbums.includes(albumId))
+        artist.albumIDs.some((albumId) => !isViewed(user.viewedAlbums, albumId))
 
       if (hasUnviewedAlbums) {
         genres[artist.genre].push(artist)

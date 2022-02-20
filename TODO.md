@@ -4,8 +4,6 @@
 
 # Remove duplicate new albums if same name
 
-- Need to migrate viewedAlbums to include the album name too
-- Need to update user document usages of viewedAlbums
 - Update refresh genre
 - Update artist albums page api call
 

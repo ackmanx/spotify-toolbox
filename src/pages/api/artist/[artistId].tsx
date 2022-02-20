@@ -7,6 +7,7 @@ import { _Album, buildAlbum, mAlbum } from '../../../mongoose/Album'
 import { _Artist, mArtist } from '../../../mongoose/Artist'
 import { mUser } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
+import { isViewed } from '../../../utils/array'
 import { GetAll } from '../../../utils/server/spotify-web-api'
 import { AlbumsByReleaseType } from '../../artist/[artistId]'
 
@@ -37,12 +38,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const artist: One<_Artist> = await mArtist.findOne({ id: artistId })
 
     if (!artist) {
-      res
-        .status(401)
-        .send({
-          success: false,
-          message: 'Artist not found in database. How did you even get here?',
-        })
+      res.status(401).send({
+        success: false,
+        message: 'Artist not found in database. How did you even get here?',
+      })
       return
     }
 
@@ -56,8 +55,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const albumsByReleaseType = albumsInDB.reduce(
     (albums: AlbumsByReleaseType, album: HydratedDocument<_Album>) => {
-      const isViewed = user.viewedAlbums.includes(album.id)
-      albums[album.type].push({ ...album.toObject(), isViewed })
+      albums[album.type].push({
+        ...album.toObject(),
+        isViewed: isViewed(user.viewedAlbums, album.id),
+      })
       return albums
     },
     { single: [], album: [] }
