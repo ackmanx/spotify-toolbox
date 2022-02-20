@@ -4,10 +4,22 @@
 
 # Remove duplicate new albums if same name
 
+-
 - Update refresh genre
 - Update artist albums page api call
 
 # Bug - If a user tires to view an artist that has no albums and their token is expired, make a nicer error
+
+# Bug - Artist/album art is not always the right proportion
+
+- Example: Mihka!
+
+# Tech Debt - Getting latest albums for an artist should be a shared function
+
+- Usages:
+- artistId
+- all (maybe)
+- refresh
 
 # Mark as Viewed should be a post
 
