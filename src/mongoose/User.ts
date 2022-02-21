@@ -17,10 +17,10 @@ type _ViewedAlbums = {
 
 const UserSchema = new Schema<_User>({
   userId: { type: String, unique: true },
-  isNewUser: Boolean,
-  followedArtists: [String],
+  isNewUser: { type: Boolean, default: false },
+  followedArtists: { type: [String], default: [] },
   // This is an object of dynamic keys, which is hard to model in Mongoose so making it free-form
-  viewedAlbums: Schema.Types.Mixed,
+  viewedAlbums: { type: Schema.Types.Mixed, default: {} },
 })
 
 export const mUser: Model<_User> = mongoose.models.User ?? mongoose.model('User', UserSchema)
