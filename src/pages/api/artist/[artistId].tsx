@@ -57,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     (albums: AlbumsByReleaseType, album: HydratedDocument<_Album>) => {
       albums[album.type].push({
         ...album.toObject(),
-        isViewed: isViewed(user.viewedAlbums, album.id),
+        isViewed: isViewed(user.viewedAlbums, artistId, album.id),
       })
       return albums
     },

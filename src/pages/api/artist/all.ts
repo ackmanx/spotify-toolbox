@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       const hasUnviewedAlbums =
         artist.albumIDs.length === 0 ||
-        artist.albumIDs.some((albumId) => !isViewed(user.viewedAlbums, albumId))
+        artist.albumIDs.some((albumId) => !isViewed(user.viewedAlbums, artist.id, albumId))
 
       if (hasUnviewedAlbums) {
         genres[artist.genre].push(artist)

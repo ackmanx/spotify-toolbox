@@ -7,7 +7,7 @@ export interface _User {
   viewedAlbums: _ViewedAlbums
 }
 
-type _ViewedAlbums = {
+export type _ViewedAlbums = {
   [ArtistID: string]: {
     id: string
     name: string

@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
 import { _Album } from '../../mongoose/Album'
+import { _Artist } from '../../mongoose/Artist'
 import { ButtonImage, ImageLink } from '../shared/Image'
 import MarkAsViewedIcon from './images/mark-as-viewed.png'
 import OpenSpotifyIcon from './images/open-in-spotify.png'
@@ -11,6 +12,7 @@ import OpenWebIcon from './images/open-in-web.png'
 
 interface Props {
   album: _Album
+  artist: _Artist
   className?: string //css prop
   onClick(): void
   onViewedAlbum(albumId: string): void
@@ -50,7 +52,7 @@ const styles = {
   `,
 }
 
-export const AlbumMenu = ({ album, className, onClick, onViewedAlbum }: Props) => {
+export const AlbumMenu = ({ album, artist, className, onClick, onViewedAlbum }: Props) => {
   const ref = useRef(null)
   const [markViewedProcessing, setMarkViewedProcessing] = useState(false)
 
@@ -71,7 +73,7 @@ export const AlbumMenu = ({ album, className, onClick, onViewedAlbum }: Props) =
               onClick={async (event) => {
                 event.stopPropagation()
                 setMarkViewedProcessing(true)
-                await fetch(`/api/mark-as-viewed/${album.id}`)
+                await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
                 onClick()
                 onViewedAlbum(album.id)
               }}
