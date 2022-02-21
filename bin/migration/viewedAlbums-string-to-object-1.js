@@ -2,7 +2,6 @@
 ":" //# comment; exec /usr/bin/env node --input-type=module - "$@" < "$0"
 
 /*
- * Playground to hit Spotify endpoints
  * Get an access token here:
  *  https://developer.spotify.com/console/get-current-user/
  *
@@ -16,8 +15,7 @@ const albumIDs = []
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const accessToken =
-  ''
+const accessToken = ''
 const clientId = ''
 const clientSecret = ''
 
@@ -41,22 +39,28 @@ async function main() {
     const response = await spotifyWebApi.getAlbums(albumIDsInPage)
     const albums = response.body.albums
 
-    const viewedAlbums = albums.map((album) => {
-      if (album) {
-        albumsThatExist.push(album.id)
+    const viewedAlbums = albums
+      .map((album) => {
+        if (album) {
+          albumsThatExist.push(album.id)
 
-        return {
-          id: album.id,
-          name: album.name,
+          return {
+            id: album.id,
+            name: album.name,
+          }
+        }
+      })
+      .filter(Boolean)
+
+    fs.appendFile(
+      'migration-album-ids-result.jsonl',
+      `${JSON.stringify(viewedAlbums)}\n`,
+      (err) => {
+        if (err) {
+          console.error(err)
         }
       }
-    }).filter(Boolean)
-
-    fs.appendFile('migration-album-ids-result.jsonl', `${JSON.stringify(viewedAlbums)}\n`, (err) => {
-      if (err) {
-        console.error(err)
-      }
-    })
+    )
 
     await sleep(1000)
   }
@@ -69,4 +73,3 @@ main()
 function removeDuplicates(source, overlap) {
   return source.filter((item) => !overlap.includes(item))
 }
-
