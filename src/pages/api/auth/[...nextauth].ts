@@ -75,6 +75,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           const user = new mUser()
           user.userId = loggedInUser.id
           user.isNewUser = true
+          user.viewedAlbums = {}
           await user.save()
         }
       },
