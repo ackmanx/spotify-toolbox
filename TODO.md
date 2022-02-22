@@ -2,6 +2,8 @@
 
 # Update followed artists
 
+# UX - add background to account menu so you can't accidentally click refresh
+
 # Remove duplicate new albums if same name
 
 - Update refresh genre

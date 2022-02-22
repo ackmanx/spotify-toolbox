@@ -58,9 +58,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
     const sAlbumsForArtist = await GetAll.albumsForArtist(req, artist.id)
+
+    if (!user.viewedAlbums[artist.id]) {
+      user.viewedAlbums[artist.id] = []
+    }
+
+    const viewedAlbums = user.viewedAlbums[artist.id]
+    const viewedAlbumsIDs = viewedAlbums.map((album) => album.id)
     artist.albumIDs = sAlbumsForArtist.map((album) => album.id)
 
     await artist.save()
+
+    // If album is not viewed, make sure it's not a duplicate
+    sAlbumsForArtist.forEach((album) => {
+      if (!viewedAlbumsIDs.includes(album.id)) {
+        viewedAlbums.forEach((viewed) => {
+          if (viewed.name === album.name) {
+            viewedAlbums.push({ id: album.id, artistId: artist.id, name: album.name })
+          }
+        })
+      }
+    })
+
+    user.markModified('viewedAlbums')
+    await user.save()
 
     const mAlbumsInDB: Many<_Album> = await mAlbum.find({ _id: artist.albumIDs })
     const mAlbumsInDB_IDs: string[] = mAlbumsInDB.map((album) => album.id)
