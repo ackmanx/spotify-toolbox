@@ -54,7 +54,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .concat(artistsNotInDB)
     .filter((artist) => artist.genre === genreToRefresh)
 
-  // For each artist, get all their albums IDs
+  console.log(
+    `REFRESH: Starting refresh for ${genreToRefresh}. Checking ${genreFilteredArtists.length} artists`
+  )
+
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
     const sAlbumsForArtist = await GetAll.albumsForArtist(req, artist.id)
@@ -67,15 +70,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const viewedAlbumsIDs = viewedAlbums.map((album) => album.id)
     artist.albumIDs = sAlbumsForArtist.map((album) => album.id)
 
-    console.log(777, 'REFRESH: Saving artist', artist.name, artist.id)
+    console.log(`REFRESH: Checking artist ${i}/${genreFilteredArtists.length}: ${artist.name}`)
+
     await artist.save()
 
-    // If album is not viewed, make sure it's not a duplicate
+    // If album is not viewed, make sure it's not a republish of an existing album by that artist
     sAlbumsForArtist.forEach((album) => {
       if (!viewedAlbumsIDs.includes(album.id)) {
         viewedAlbums.forEach((viewed) => {
           if (viewed.name === album.name) {
-            console.log(777, 'REFRESH: Found duplicate album', album.name, album.id)
+            console.log(`REFRESH: Found duplicate album: ${album.name}`)
             viewedAlbums.push({ id: album.id, artistId: artist.id, name: album.name })
           }
         })
@@ -89,14 +93,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const mAlbumsInDB_IDs: string[] = mAlbumsInDB.map((album) => album.id)
 
     const mAlbumsToSave: Many<_Album> = removeDuplicates(sAlbumsForArtist, mAlbumsInDB_IDs).map(
-      (album) => {
-        console.log(777, 'REFRESH: Adding album to save', album.name, album.id)
-        return buildAlbum(album, artist.id)
-      }
+      (album) => buildAlbum(album, artist.id)
     )
 
     if (mAlbumsToSave.length) {
-      console.log(777, 'REFRESH: Saving albums', mAlbumsToSave.length)
+      console.log(`REFRESH: Adding ${mAlbumsToSave.length} albums to DB`)
       await mAlbum.bulkSave(mAlbumsToSave)
     }
   }
