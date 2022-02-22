@@ -4,10 +4,9 @@
 
 # UX - add background to account menu so you can't accidentally click refresh
 
-# Remove duplicate new albums if same name
+# Consideration - Should artistId be stored in the album collection?
 
-- Update refresh genre
-- Update artist albums page api call
+- There are often multiple artists and the albums can be published on both of their artist pages
 
 # Bug - If a user tires to view an artist that has no albums and their token is expired, make a nicer error
 
