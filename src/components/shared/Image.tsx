@@ -4,14 +4,16 @@ import { ImageProps } from 'next/dist/client/image'
 import NextImage from 'next/image'
 import Link from 'next/link'
 
-type ButtonImageProps = ImageProps & { onClick(event: any): void }
+type ButtonImageProps = ImageProps & { disabled?: boolean; onClick(event: any): void }
 
-export const ButtonImage = ({ onClick, ...props }: ButtonImageProps) => (
+export const ButtonImage = ({ disabled, onClick, ...props }: ButtonImageProps) => (
   <button
     css={css`
       background-color: transparent;
       border: none;
+      cursor: pointer;
     `}
+    disabled={disabled}
     onClick={onClick}
   >
     {/* Using the loader prop lets you bypass NextJS' external domain requirement in next.config.ts */}

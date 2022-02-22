@@ -1,17 +1,14 @@
 /* refresh_icon is in Genre component */
 .refresh_icon-enter-active {
-  animation: refreshColorChange infinite 1000ms;
+  animation: rotateRefresh infinite 1000ms;
 }
 
-@keyframes refreshColorChange {
+@keyframes rotateRefresh {
   from {
-    fill: #000;
-  }
-  50% {
-    fill: #0f8713;
+    transform: rotate(0deg)
   }
   to {
-    fill: #000;
+    transform: rotate(359deg)
   }
 }
 

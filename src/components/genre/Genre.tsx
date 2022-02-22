@@ -5,7 +5,8 @@ import { toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
 
 import { _Artist } from '../../mongoose/Artist'
-import RefreshIcon from './RefreshIcon'
+import { ButtonImage } from '../shared/Image'
+import RefreshIcon from './refresh-icon.png'
 
 interface Props {
   name: string
@@ -36,8 +37,6 @@ const styles = {
     font-size: 72px;
   `,
   button: css`
-    background-color: transparent;
-    border: none;
     position: relative;
     top: 10px;
   `,
@@ -90,13 +89,15 @@ export const Genre = ({ name, onToggleVisibility }: Props) => {
           in={refreshStatus === 'processing'}
           timeout={99999}
         >
-          <button
-            css={styles.button}
-            onClick={handleRefresh}
-            disabled={refreshStatus === 'processing'}
-          >
-            <RefreshIcon ref={refreshRef} key='key' />
-          </button>
+          <div ref={refreshRef} css={styles.button}>
+            <ButtonImage
+              src={RefreshIcon}
+              width={40}
+              height={40}
+              onClick={handleRefresh}
+              disabled={refreshStatus === 'processing'}
+            />
+          </div>
         </CSSTransition>
       )}
     </div>
