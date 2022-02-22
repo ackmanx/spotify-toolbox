@@ -70,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const viewedAlbumsIDs = viewedAlbums.map((album) => album.id)
     artist.albumIDs = sAlbumsForArtist.map((album) => album.id)
 
-    console.log(`REFRESH: Checking artist ${i}/${genreFilteredArtists.length}: ${artist.name}`)
+    console.log(`REFRESH: Checking artist ${i + 1}/${genreFilteredArtists.length}: ${artist.name}`)
 
     await artist.save()
 
