@@ -110,7 +110,16 @@ const Component = ({ artist }: Props) => {
                   }
                 />
               ) : (
-                <ButtonImage src={signInIcon} width={40} height={40} onClick={() => signIn()} />
+                <ButtonImage
+                  src={signInIcon}
+                  width={40}
+                  height={40}
+                  onClick={() =>
+                    signIn(undefined, {
+                      callbackUrl: window.location.origin,
+                    })
+                  }
+                />
               )}
               <ButtonImage
                 src={followIcon}
