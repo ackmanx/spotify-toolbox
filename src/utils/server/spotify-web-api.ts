@@ -56,23 +56,24 @@ export const GetAll = {
   },
   albumsForArtist: async (reqOrToken: NextApiRequest | string, artistID: string) => {
     const limit = 50
-
-    const spotifyWebApi = await getSpotifyWebApi(reqOrToken)
-    const spotifyResponse = await spotifyWebApi.getArtistAlbums(artistID, {
+    const options = {
       include_groups: 'single,album',
       limit,
       country: 'US',
-    })
+    }
+
+    const spotifyWebApi = await getSpotifyWebApi(reqOrToken)
+    const spotifyResponse = await spotifyWebApi.getArtistAlbums(artistID, options)
 
     const results: AlbumObjectSimplified[] = []
 
     results.push(...spotifyResponse.body.items)
 
-    const numPages = Math.floor(spotifyResponse.body.total / spotifyResponse.body.limit)
+    const remainingPages = Math.ceil(spotifyResponse.body.total / spotifyResponse.body.limit)
 
-    for (let currentPage = 0; currentPage < numPages; currentPage++) {
+    for (let currentPage = 1; currentPage < remainingPages; currentPage++) {
       const offset = currentPage * limit
-      const response = await spotifyWebApi.getArtistAlbums(artistID, { limit, offset })
+      const response = await spotifyWebApi.getArtistAlbums(artistID, { ...options, offset })
       results.push(...response.body.items)
     }
 
