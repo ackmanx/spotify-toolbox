@@ -2,6 +2,8 @@
 
 # Update followed artists
 
+# Feature - User-generated genres with editor to update
+
 # Consideration - Should artistId be stored in the album collection?
 
 - There are often multiple artists and the albums can be published on both of their artist pages
