@@ -79,4 +79,9 @@ export const GetAll = {
 
     return results
   },
+  tracksForAlbum: async (reqOrToken: NextApiRequest | string, albumId: string) => {
+    const spotifyWebApi = await getSpotifyWebApi(reqOrToken)
+    const response = await spotifyWebApi.getAlbumTracks(albumId, { limit: 50, offset: 0 })
+    return response.body.items.map((track) => track.id)
+  },
 }

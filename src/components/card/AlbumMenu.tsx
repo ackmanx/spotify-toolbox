@@ -6,6 +6,7 @@ import { CSSTransition } from 'react-transition-group'
 import { _Album } from '../../mongoose/Album'
 import { _Artist } from '../../mongoose/Artist'
 import { ButtonImage, ImageLink } from '../shared/Image'
+import AddToPlaylistIcon from './images/add-to-playlist.png'
 import MarkAsViewedIcon from './images/mark-as-viewed.png'
 import OpenSpotifyIcon from './images/open-in-spotify.png'
 import OpenWebIcon from './images/open-in-web.png'
@@ -14,8 +15,8 @@ interface Props {
   album: _Album
   artist: _Artist
   className?: string //css prop
-  onClick(): void
-  onViewedAlbum(albumId: string): void
+  onToggleMenuVisibility(): void
+  onShadeViewedAlbum(albumId: string): void
 }
 
 const styles = {
@@ -52,12 +53,23 @@ const styles = {
   `,
 }
 
-export const AlbumMenu = ({ album, artist, className, onClick, onViewedAlbum }: Props) => {
+export const AlbumMenu = ({
+  album,
+  artist,
+  className,
+  onToggleMenuVisibility,
+  onShadeViewedAlbum,
+}: Props) => {
   const ref = useRef(null)
   const [markViewedProcessing, setMarkViewedProcessing] = useState(false)
 
   return (
-    <div css={styles.root} className={className} data-id={album.id} onClick={onClick}>
+    <div
+      css={styles.root}
+      className={className}
+      data-id={album.id}
+      onClick={onToggleMenuVisibility}
+    >
       <div css={styles.top}>
         <CSSTransition
           nodeRef={ref}
@@ -74,8 +86,8 @@ export const AlbumMenu = ({ album, artist, className, onClick, onViewedAlbum }: 
                 event.stopPropagation()
                 setMarkViewedProcessing(true)
                 await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
-                onClick()
-                onViewedAlbum(album.id)
+                onToggleMenuVisibility()
+                onShadeViewedAlbum(album.id)
               }}
             />
           </div>
@@ -87,6 +99,29 @@ export const AlbumMenu = ({ album, artist, className, onClick, onViewedAlbum }: 
         </div>
         <div css={styles.icon}>
           <ImageLink href={album.spotifyWebUrl} imageSrc={OpenWebIcon} width={35} height={35} />
+        </div>
+        <div css={styles.icon}>
+          <CSSTransition
+            nodeRef={ref}
+            classNames='mark_viewed'
+            in={markViewedProcessing}
+            timeout={99999}
+          >
+            <div ref={ref} css={styles.icon}>
+              <ButtonImage
+                src={AddToPlaylistIcon}
+                width={35}
+                height={35}
+                onClick={async (event) => {
+                  event.stopPropagation()
+                  setMarkViewedProcessing(true)
+                  await fetch(`/api/playlist/add-album/${album.id}`)
+                  onToggleMenuVisibility()
+                  onShadeViewedAlbum(album.id)
+                }}
+              />
+            </div>
+          </CSSTransition>
         </div>
       </div>
     </div>

@@ -88,7 +88,7 @@ export const ArtistPage = ({ artist }: Props) => {
     )
   }
 
-  const handleViewedAlbum = (albumId: string) => {
+  const handleShadeViewedAlbum = (albumId: string) => {
     setNewlyViewedAlbums((prevState) => ({
       ...prevState,
       [albumId]: true,
@@ -109,8 +109,8 @@ export const ArtistPage = ({ artist }: Props) => {
               className={animations}
               album={album}
               artist={artist}
-              onClick={() => toggleAlbumMenu(album.id)}
-              onViewedAlbum={handleViewedAlbum}
+              onToggleMenuVisibility={() => toggleAlbumMenu(album.id)}
+              onShadeViewedAlbum={handleShadeViewedAlbum}
             />
           )}
         </div>
@@ -128,8 +128,8 @@ export const ArtistPage = ({ artist }: Props) => {
               className={animations}
               album={single}
               artist={artist}
-              onClick={() => toggleAlbumMenu(single.id)}
-              onViewedAlbum={handleViewedAlbum}
+              onToggleMenuVisibility={() => toggleAlbumMenu(single.id)}
+              onShadeViewedAlbum={handleShadeViewedAlbum}
             />
           )}
         </div>
