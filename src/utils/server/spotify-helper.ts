@@ -33,7 +33,7 @@ export const getSpotifyWebApi = async (reqOrToken: NextApiRequest | string) => {
   return spotifyWebApi
 }
 
-export const GetAll = {
+export const SpotifyHelper = {
   followedArtists: async (reqOrToken: NextApiRequest | string) => {
     const limit = 50
 

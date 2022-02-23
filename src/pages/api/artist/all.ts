@@ -6,7 +6,7 @@ import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
 import { mUser } from '../../../mongoose/User'
 import { Many } from '../../../mongoose/types'
 import { isViewed, removeDuplicates } from '../../../utils/array'
-import { GetAll } from '../../../utils/server/spotify-web-api'
+import { SpotifyHelper } from '../../../utils/server/spotify-helper'
 
 type ResBody = Record<string, Many<_Artist>> | { success: boolean; message?: string }
 
@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   let mFollowedArtistsInDB: Many<_Artist>
 
   if (user.isNewUser) {
-    const sFollowedArtists = await GetAll.followedArtists(req)
+    const sFollowedArtists = await SpotifyHelper.followedArtists(req)
 
     user.followedArtists = sFollowedArtists.map((artist) => artist.id)
     user.isNewUser = false

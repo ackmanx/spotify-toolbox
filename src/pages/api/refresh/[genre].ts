@@ -7,7 +7,7 @@ import { _Artist, buildArtist, mArtist } from '../../../mongoose/Artist'
 import { _User, mUser } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
 import { filterNonNull, removeDuplicates } from '../../../utils/array'
-import { GetAll } from '../../../utils/server/spotify-web-api'
+import { SpotifyHelper } from '../../../utils/server/spotify-helper'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  const spotifyFollowedArtists = await GetAll.followedArtists(req)
+  const spotifyFollowedArtists = await SpotifyHelper.followedArtists(req)
   const spotifyFollowedArtistsIDs = spotifyFollowedArtists.map((artist) => artist.id)
 
   user.followedArtists = spotifyFollowedArtistsIDs
@@ -60,7 +60,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   for (let i = 0; i < genreFilteredArtists.length; i++) {
     const artist = genreFilteredArtists[i]
-    const sAlbumsForArtist = await GetAll.albumsForArtist(req, artist.id)
+    const sAlbumsForArtist = await SpotifyHelper.albumsForArtist(req, artist.id)
 
     if (!user.viewedAlbums[artist.id]) {
       user.viewedAlbums[artist.id] = []

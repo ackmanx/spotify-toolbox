@@ -8,7 +8,7 @@ import { _Artist, mArtist } from '../../../mongoose/Artist'
 import { mUser } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
 import { isViewed } from '../../../utils/array'
-import { GetAll } from '../../../utils/server/spotify-web-api'
+import { SpotifyHelper } from '../../../utils/server/spotify-helper'
 import { AlbumsByReleaseType } from '../../artist/[artistId]'
 
 type ResBody = AlbumsByReleaseType | { success: boolean; message?: string }
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   let albumsInDB: Many<_Album> = await mAlbum.find({ artistId })
 
   if (albumsInDB.length === 0) {
-    const sAlbumsForArtist = await GetAll.albumsForArtist(req, artistId)
+    const sAlbumsForArtist = await SpotifyHelper.albumsForArtist(req, artistId)
     const mAlbums = sAlbumsForArtist.map((album) => buildAlbum(album, artistId))
     const albumIDs = mAlbums.map((album) => album.id)
 
