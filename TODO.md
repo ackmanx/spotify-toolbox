@@ -2,8 +2,6 @@
 
 # Update followed artists
 
-# UX - add background to account menu so you can't accidentally click refresh
-
 # Consideration - Should artistId be stored in the album collection?
 
 - There are often multiple artists and the albums can be published on both of their artist pages
@@ -26,7 +24,6 @@
 # Method to perform actions on albums
 
 - Play right in my webapp now?
-- Add to playlist
 
 # Show any sort of stats anywhere?
 

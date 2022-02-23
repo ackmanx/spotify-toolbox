@@ -59,6 +59,8 @@ const styles = {
     justify-content: center;
     position: absolute;
     top: 45px;
+    background-color: white;
+    z-index: 100;
   `,
 }
 
