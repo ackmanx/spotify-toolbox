@@ -116,6 +116,7 @@ export const AlbumMenu = ({
                   event.stopPropagation()
                   setMarkViewedProcessing(true)
                   await fetch(`/api/playlist/add-album/${album.id}`)
+                  await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
                   onToggleMenuVisibility()
                   onShadeViewedAlbum(album.id)
                 }}

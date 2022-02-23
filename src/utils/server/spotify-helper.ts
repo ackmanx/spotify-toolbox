@@ -82,6 +82,15 @@ export const SpotifyHelper = {
   tracksForAlbum: async (reqOrToken: NextApiRequest | string, albumId: string) => {
     const spotifyWebApi = await getSpotifyWebApi(reqOrToken)
     const response = await spotifyWebApi.getAlbumTracks(albumId, { limit: 50, offset: 0 })
-    return response.body.items.map((track) => track.id)
+    return response.body.items.map((track) => track.uri)
+  },
+  addTracksToPlaylist: async (reqOrToken: NextApiRequest | string, trackIDs: string[]) => {
+    const spotifyWebApi = await getSpotifyWebApi(reqOrToken)
+
+    //todo majerus: Get playlist dynamically being this ID only applies to me
+    const response = await spotifyWebApi.addTracksToPlaylist('6MyZCahcNhtawRPnd3yOPx', trackIDs)
+
+    //todo majerus: Remove ghetto check
+    return String(response.statusCode).startsWith('2')
   },
 }
