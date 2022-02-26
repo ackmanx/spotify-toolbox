@@ -22,7 +22,12 @@ const styles = {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 0 15px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: white;
+    box-shadow: 0 0 5px 0 #333;
 
     img {
       cursor: pointer;
