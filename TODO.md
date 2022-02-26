@@ -1,5 +1,11 @@
 # Tech Debt
 
+### Initial load should only return genres
+
+- On click of a genre we can get artists then or do init on that genre
+- Can delete the local storage for genre visibility, but keep ability to collapse
+- Default to all collapsed every time
+
 ### Getting latest albums for an artist should be a shared function
 
 - Usages:
