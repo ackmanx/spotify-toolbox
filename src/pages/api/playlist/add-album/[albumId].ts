@@ -16,9 +16,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     tracksForAlbum
   )
 
-  if (response.error) {
-    return res.status(404).send({ success: false, message: response.error })
-  }
-
   res.send({ success: response.status })
 }

@@ -93,13 +93,14 @@ export const SpotifyHelper = {
 
     const sPlaylists = await spotifyWebApi.getUserPlaylists({ limit: 50 })
 
-    const playlist = sPlaylists.body.items.find((playlist) => playlist.name === playlistName)
+    let playlistToAddTo = sPlaylists.body.items.find((playlist) => playlist.name === playlistName)
 
-    if (!playlist) {
-      return { error: `Playlist '${playlistName}' not found in your Spotify account` }
+    if (!playlistToAddTo) {
+      const response = await spotifyWebApi.createPlaylist(playlistName)
+      playlistToAddTo = response.body
     }
 
-    const response = await spotifyWebApi.addTracksToPlaylist(playlist.id, trackIDs)
+    const response = await spotifyWebApi.addTracksToPlaylist(playlistToAddTo.id, trackIDs)
 
     return { status: response.statusCode }
   },
