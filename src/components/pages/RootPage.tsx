@@ -23,13 +23,6 @@ export const RootPage = () => {
         return
       }
 
-      const visibleGenres: VisibleGenres = {}
-
-      Object.keys(body).forEach((genre) => {
-        visibleGenres[genre] = localStorage.getItem(genre) === 'true'
-      })
-
-      setVisibleGenres(visibleGenres)
       setArtistsByGenre(body)
       setIsLoading(false)
     }
@@ -38,16 +31,10 @@ export const RootPage = () => {
   }, [])
 
   const handleToggleGenreVisibility = (genre: string) =>
-    setVisibleGenres((prevState) => {
-      const isGenreVisible = prevState[genre] == null ? false : !prevState[genre]
-
-      localStorage.setItem(genre, isGenreVisible.toString())
-
-      return {
-        ...prevState,
-        [genre]: isGenreVisible,
-      }
-    })
+    setVisibleGenres((prevState) => ({
+      ...prevState,
+      [genre]: !prevState[genre],
+    }))
 
   if (status === 'unauthenticated' || isLoading) {
     return null
@@ -64,8 +51,7 @@ export const RootPage = () => {
             <div key={genre}>
               <Genre name={genre} onToggleVisibility={() => handleToggleGenreVisibility(genre)} />
 
-              {/* Genre visibility might be null if user has never toggled it */}
-              {(visibleGenres[genre] || visibleGenres[genre] == null) &&
+              {visibleGenres[genre] &&
                 artistsByGenre[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
             </div>
           ))
