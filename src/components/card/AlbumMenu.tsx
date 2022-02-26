@@ -125,7 +125,7 @@ export const AlbumMenu = ({
                     return
                   }
 
-                  // await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
+                  await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
                   onToggleMenuVisibility()
                   onShadeViewedAlbum(album.id)
                 }}
