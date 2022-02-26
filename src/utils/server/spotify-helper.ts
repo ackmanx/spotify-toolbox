@@ -84,13 +84,23 @@ export const SpotifyHelper = {
     const response = await spotifyWebApi.getAlbumTracks(albumId, { limit: 50, offset: 0 })
     return response.body.items.map((track) => track.uri)
   },
-  addTracksToPlaylist: async (reqOrToken: NextApiRequest | string, trackIDs: string[]) => {
+  addTracksToPlaylist: async (
+    reqOrToken: NextApiRequest | string,
+    playlistName: string,
+    trackIDs: string[]
+  ) => {
     const spotifyWebApi = await getSpotifyWebApi(reqOrToken)
 
-    //todo majerus: Get playlist dynamically being this ID only applies to me
-    const response = await spotifyWebApi.addTracksToPlaylist('6MyZCahcNhtawRPnd3yOPx', trackIDs)
+    const sPlaylists = await spotifyWebApi.getUserPlaylists({ limit: 50 })
 
-    //todo majerus: Remove ghetto check
-    return String(response.statusCode).startsWith('2')
+    const playlist = sPlaylists.body.items.find((playlist) => playlist.name === playlistName)
+
+    if (!playlist) {
+      return { error: `Playlist '${playlistName}' not found in your Spotify account` }
+    }
+
+    const response = await spotifyWebApi.addTracksToPlaylist(playlist.id, trackIDs)
+
+    return { status: response.statusCode }
   },
 }

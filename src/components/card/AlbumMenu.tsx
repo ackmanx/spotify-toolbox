@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
 
 import { _Album } from '../../mongoose/Album'
@@ -115,8 +116,16 @@ export const AlbumMenu = ({
                 onClick={async (event) => {
                   event.stopPropagation()
                   setMarkViewedProcessing(true)
-                  await fetch(`/api/playlist/add-album/${album.id}`)
-                  await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
+
+                  const addToPlaylistResponse = await fetch(`/api/playlist/add-album/${album.id}`)
+                  const body = await addToPlaylistResponse.json()
+
+                  if (!addToPlaylistResponse.ok) {
+                    toast.error(body.message, { position: 'top-center', autoClose: false })
+                    return
+                  }
+
+                  // await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
                   onToggleMenuVisibility()
                   onShadeViewedAlbum(album.id)
                 }}
