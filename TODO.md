@@ -1,4 +1,5 @@
 # Tech Debt
+
 ### Need to get app playlist dynamically so other users can test out the app
 
 ### Getting latest albums for an artist should be a shared function
@@ -10,6 +11,7 @@
 
 ### Mark as Viewed should be a post
 
+### Large payload for index page getServerSideProps
 
 ### Rate limiting (not an issue yet)
 
@@ -17,6 +19,7 @@
 - If doing requests in a for loop, can retry and wait
 
 # Feature
+
 ### Refresh only a single artist
 
 ### Update followed artists
@@ -43,11 +46,13 @@
 - in this mode, can mark an overlay on an album to show that it's new
 
 # Consideration
+
 ### Should artistId be stored in the album collection?
 
 - There are often multiple artists and the albums can be published on both of their artist pages
 
 # Bug
+
 ### If a user tires to view an artist that has no albums and their token is expired, make a nicer error
 
 ### Artist/album art is not always the right proportion
