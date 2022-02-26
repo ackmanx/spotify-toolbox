@@ -2,18 +2,13 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 import { _Artist } from '../../mongoose/Artist'
-import { _User } from '../../mongoose/User'
 import { Artist } from '../artists/Artist'
 import { Genre } from '../genre/Genre'
 import { CoolCat } from '../shared/CoolCat'
 
-interface Props {
-  user: _User | null
-}
-
 type VisibleGenres = Record<string, boolean | undefined>
 
-export const RootPage = ({ user }: Props) => {
+export const RootPage = () => {
   const { status } = useSession()
   const [isLoading, setIsLoading] = useState(true)
   const [artistsByGenre, setArtistsByGenre] = useState<Record<string, _Artist[]>>({})

@@ -1,7 +1,5 @@
 # Tech Debt
 
-### Need to get app playlist dynamically so other users can test out the app
-
 ### Getting latest albums for an artist should be a shared function
 
 - Usages:
@@ -10,8 +8,6 @@
 - refresh
 
 ### Mark as Viewed should be a post
-
-### Large payload for index page getServerSideProps
 
 ### Rate limiting (not an issue yet)
 
