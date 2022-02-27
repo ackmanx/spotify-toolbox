@@ -3,9 +3,9 @@ import { css } from '@emotion/react'
 
 const styles = {
   header: css`
-    margin: 0;
-    color: #ebebeb;
-    font-size: 72px;
+    margin: 10px;
+    color: #cdcdcd;
+    font-size: 48px;
   `,
 }
 

@@ -1,29 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 
 import { _Artist } from '../../mongoose/Artist'
-import { AlbumsByReleaseType } from '../../pages/artist/[artistId]'
 import { Artist } from '../artists/Artist'
-import { AlbumMenu } from '../card/AlbumMenu'
-import { Card } from '../card/Card'
 import { Subheader } from '../header/Subheader'
 
 interface Props {
   genre: string
-}
-
-const styles = {
-  header: css`
-    text-align: left;
-    padding: 0 20px;
-
-    h2 {
-      margin: 0;
-      color: #ebebeb;
-      font-size: 72px;
-    }
-  `,
 }
 
 export const GenrePage = ({ genre }: Props) => {
@@ -44,7 +27,7 @@ export const GenrePage = ({ genre }: Props) => {
 
   return (
     <div>
-      <Subheader name={genre} />
+      <Subheader name='artists' />
 
       {artists.map((artist) => (
         <Artist key={artist.id} artist={artist} />
