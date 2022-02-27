@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import { useContext, useState } from 'react'
 
 import { AuthContext } from '../../AuthContext'
-import { _Artist } from '../../mongoose/Artist'
 import NoUserPicIcon from '../images/person-placeholder.png'
 import { ButtonImage } from '../shared/Image'
 import followIcon from './images/following.png'
@@ -14,7 +13,7 @@ import signInIcon from './images/sign-in.png'
 import signOutIcon from './images/sign-out.png'
 
 interface Props {
-  artist?: _Artist
+  title?: string
 }
 
 const styles = {
@@ -69,7 +68,7 @@ const styles = {
   `,
 }
 
-const Component = ({ artist }: Props) => {
+const Component = ({ title }: Props) => {
   const router = useRouter()
   const { data, status } = useSession()
   const { isTokenExpired } = useContext(AuthContext)
@@ -92,7 +91,7 @@ const Component = ({ artist }: Props) => {
     <header css={styles.root}>
       <ButtonImage src={menuIcon} width={60} height={60} onClick={() => router.push('/')} />
 
-      {artist && <h3>{artist.name}</h3>}
+      {title && <h3>{title}</h3>}
 
       <div css={styles.profileContainer}>
         <div css={styles.profileImage(isTokenExpired)}>
