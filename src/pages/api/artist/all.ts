@@ -8,7 +8,7 @@ import { Many } from '../../../mongoose/types'
 import { isViewed, removeDuplicates } from '../../../utils/array'
 import { SpotifyHelper } from '../../../utils/server/spotify-helper'
 
-type ResBody = Record<string, Many<_Artist>> | { success: boolean; message?: string }
+type ResBody = string[] | { success: boolean; message?: string }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResBody>) {
   const session = await getSession({ req })
@@ -53,24 +53,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     })
   }
 
-  const artistsByGenre = mFollowedArtistsInDB.reduce(
-    (genres: Record<string, Many<_Artist>>, artist) => {
-      if (!genres[artist.genre]) {
-        genres[artist.genre] = []
-      }
+  const genres = mFollowedArtistsInDB.reduce((genres: string[], artist) => {
+    const hasUnviewedAlbums =
+      artist.albumIDs.length === 0 ||
+      artist.albumIDs.some((albumId) => !isViewed(user.viewedAlbums, artist.id, albumId))
 
-      const hasUnviewedAlbums =
-        artist.albumIDs.length === 0 ||
-        artist.albumIDs.some((albumId) => !isViewed(user.viewedAlbums, artist.id, albumId))
+    if (hasUnviewedAlbums && !genres.includes(artist.genre)) {
+      genres.push(artist.genre)
+    }
 
-      if (hasUnviewedAlbums) {
-        genres[artist.genre].push(artist)
-      }
+    return genres
+  }, [])
 
-      return genres
-    },
-    {}
-  )
+  genres.sort()
 
-  res.send(artistsByGenre)
+  res.send(genres)
 }

@@ -45,16 +45,14 @@ export const RootPage = () => {
   return (
     <div>
       {hasArtists ? (
-        Object.keys(artistsByGenre)
-          .sort()
-          .map((genre) => (
-            <div key={genre}>
-              <Genre name={genre} onToggleVisibility={() => handleToggleGenreVisibility(genre)} />
+        artistsByGenre.map((genre) => (
+          <div key={genre}>
+            <Genre name={genre} onToggleVisibility={() => handleToggleGenreVisibility(genre)} />
 
-              {visibleGenres[genre] &&
-                artistsByGenre[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
-            </div>
-          ))
+            {visibleGenres[genre] &&
+              artistsByGenre[genre].map((artist) => <Artist key={artist.id} artist={artist} />)}
+          </div>
+        ))
       ) : (
         <CoolCat
           header="It looks like you've got no followed artists."
