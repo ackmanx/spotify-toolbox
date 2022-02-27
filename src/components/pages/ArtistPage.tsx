@@ -102,7 +102,7 @@ export const ArtistPage = ({ artist }: Props) => {
 
       {albumsByReleaseType.album.map((album) => (
         <div key={album.id} css={styles.albumContainer(newlyViewedAlbums[album.id])}>
-          <Card album={album} onClick={() => toggleAlbumMenu(album.id)} />
+          {!album.isViewed && <Card album={album} onClick={() => toggleAlbumMenu(album.id)} />}
           {albumMenus[album.id] && (
             <AlbumMenu
               css={styles.menu}
@@ -120,7 +120,7 @@ export const ArtistPage = ({ artist }: Props) => {
 
       {albumsByReleaseType.single.map((single) => (
         <div key={single.id} css={styles.albumContainer(newlyViewedAlbums[single.id])}>
-          <Card album={single} onClick={() => toggleAlbumMenu(single.id)} />
+          {!single.isViewed && <Card album={single} onClick={() => toggleAlbumMenu(single.id)} />}
           {albumMenus[single.id] && (
             <AlbumMenu
               css={styles.menu}

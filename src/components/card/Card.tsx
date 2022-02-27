@@ -30,10 +30,6 @@ const styles = {
 }
 
 export const Card = ({ album, onClick }: Props) => {
-  if (album.isViewed) {
-    return null
-  }
-
   return (
     <div css={styles.root} key={album.id}>
       <NextImage
@@ -47,3 +43,11 @@ export const Card = ({ album, onClick }: Props) => {
     </div>
   )
 }
+
+/*
+ cover art
+ placeholder
+ text
+ subtext?
+ menu?
+ */
