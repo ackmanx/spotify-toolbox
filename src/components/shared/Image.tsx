@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import { ImageProps } from 'next/dist/client/image'
 import NextImage from 'next/image'
-import Link from 'next/link'
+import NextLink from 'next/link'
 
 type ButtonImageProps = ImageProps & { disabled?: boolean; onClick(event: any): void }
 
@@ -35,9 +35,9 @@ export const ImageLink = ({ href, imageSrc, width, height }: ImageLinkProps) =>
       <NextImage src={imageSrc} width={width} height={height} />
     </a>
   ) : (
-    <Link href={href}>
+    <NextLink href={href}>
       <a>
         <NextImage src={imageSrc} width={width} height={height} />
       </a>
-    </Link>
+    </NextLink>
   )

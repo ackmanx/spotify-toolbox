@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
 
-import { _Artist } from '../../mongoose/Artist'
 import { ButtonImage } from '../shared/Image'
 import RefreshIcon from './refresh-icon.png'
 
@@ -78,7 +78,9 @@ export const Genre = ({ name }: Props) => {
         setRefreshStatus(refreshStatus === 'processing' ? 'processing' : 'hidden')
       }
     >
-      <h2 css={styles.header}>{name}</h2>
+      <Link href={`/genre/${name}`}>
+        <h2 css={styles.header}>{name}</h2>
+      </Link>
 
       {(refreshStatus === 'visible' || refreshStatus === 'processing') && (
         <CSSTransition
