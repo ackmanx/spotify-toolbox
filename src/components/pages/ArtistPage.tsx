@@ -6,6 +6,7 @@ import { _Artist } from '../../mongoose/Artist'
 import { AlbumsByReleaseType } from '../../pages/artist/[artistId]'
 import { AlbumMenu } from '../card/AlbumMenu'
 import { Card } from '../card/Card'
+import { Subheader } from '../header/Subheader'
 
 interface Props {
   artist: _Artist
@@ -97,9 +98,8 @@ export const ArtistPage = ({ artist }: Props) => {
 
   return (
     <div>
-      <div css={styles.header}>
-        <h2>albums</h2>
-      </div>
+      <Subheader name='albums' />
+
       {albumsByReleaseType.album.map((album) => (
         <div key={album.id} css={styles.albumContainer(newlyViewedAlbums[album.id])}>
           <Card album={album} onClick={() => toggleAlbumMenu(album.id)} />
@@ -116,9 +116,8 @@ export const ArtistPage = ({ artist }: Props) => {
         </div>
       ))}
 
-      <div css={styles.header}>
-        <h2>singles</h2>
-      </div>
+      <Subheader name='singles' />
+
       {albumsByReleaseType.single.map((single) => (
         <div key={single.id} css={styles.albumContainer(newlyViewedAlbums[single.id])}>
           <Card album={single} onClick={() => toggleAlbumMenu(single.id)} />

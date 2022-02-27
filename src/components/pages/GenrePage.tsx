@@ -7,6 +7,7 @@ import { AlbumsByReleaseType } from '../../pages/artist/[artistId]'
 import { Artist } from '../artists/Artist'
 import { AlbumMenu } from '../card/AlbumMenu'
 import { Card } from '../card/Card'
+import { Subheader } from '../header/Subheader'
 
 interface Props {
   genre: string
@@ -43,9 +44,7 @@ export const GenrePage = ({ genre }: Props) => {
 
   return (
     <div>
-      <div css={styles.header}>
-        <h2>{genre}</h2>
-      </div>
+      <Subheader name={genre} />
 
       {artists.map((artist) => (
         <Artist key={artist.id} artist={artist} />

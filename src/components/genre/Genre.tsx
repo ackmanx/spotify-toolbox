@@ -5,6 +5,7 @@ import { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
 
+import { Subheader } from '../header/Subheader'
 import { ButtonImage } from '../shared/Image'
 import RefreshIcon from './refresh-icon.png'
 
@@ -29,11 +30,6 @@ const styles = {
     &:hover h2:first-letter {
       color: #666;
     }
-  `,
-  header: css`
-    margin: 0;
-    color: #ebebeb;
-    font-size: 72px;
   `,
   button: css`
     position: relative;
@@ -79,7 +75,9 @@ export const Genre = ({ name }: Props) => {
       }
     >
       <Link href={`/genre/${name}`}>
-        <h2 css={styles.header}>{name}</h2>
+        <div>
+          <Subheader name={name} />
+        </div>
       </Link>
 
       {(refreshStatus === 'visible' || refreshStatus === 'processing') && (

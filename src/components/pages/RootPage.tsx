@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 import { Genre } from '../genre/Genre'
+import { Subheader } from '../header/Subheader'
 import { CoolCat } from '../shared/CoolCat'
 
 export const RootPage = () => {
@@ -31,6 +32,8 @@ export const RootPage = () => {
 
   return (
     <div>
+      <Subheader name='genres' />
+
       {genres.length !== 0 ? (
         genres.map((genre) => (
           <div key={genre}>
