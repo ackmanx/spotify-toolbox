@@ -11,6 +11,8 @@
 
 ### Refresh token without signing out/in
 
+### Refresh shows modal or progress bar of some sort
+
 ### Refresh only a single artist
 
 ### Update followed artists
@@ -49,6 +51,11 @@
 ### Initial load should only return genres
 
 - On click of a genre we can get artists then or do init on that genre
+
+### Standardize error handling
+
+- Can have helpers for error responses on BE
+- Maybe have a fetch wrapper for the FE that will toast an error
 
 ### Getting latest albums for an artist should be a shared function
 
