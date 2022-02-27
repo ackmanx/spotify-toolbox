@@ -1,5 +1,5 @@
-import CoolCatImage from '../images/cool-cat.png'
 import { ButtonImage } from './Image'
+import CoolCatImage from './images/cool-cat.png'
 
 interface Props {
   header: string
