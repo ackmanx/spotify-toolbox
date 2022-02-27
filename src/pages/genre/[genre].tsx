@@ -5,7 +5,7 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
-import Header from '../../components/header/Header'
+import Header from '../../components/header/AppHeader'
 import { GenrePage } from '../../components/pages/GenrePage'
 import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
 
