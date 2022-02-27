@@ -11,7 +11,7 @@ export const RootPage = () => {
 
   useEffect(() => {
     async function doStuff() {
-      const res = await fetch('/api/artist/all')
+      const res = await fetch('/api/genres/all')
       const body = await res.json()
 
       if (!res.ok) {
