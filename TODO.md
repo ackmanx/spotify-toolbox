@@ -1,5 +1,7 @@
 # Bug
 
+### Sort albums by release date
+
 ### If a user tires to view an artist that has no albums and their token is expired, make a nicer error
 
 ### Artist/album art is not always the right proportion
