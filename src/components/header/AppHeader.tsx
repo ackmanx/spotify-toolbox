@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import { ButtonImage } from '../shared/Image'
 import { Account } from './Account'
+import { RefreshButton } from './RefreshButton'
 import AppLogo from './images/logo.png'
 
 interface Props {
@@ -27,6 +28,10 @@ const styles = {
       margin: 0;
     }
   `,
+  centerGroup: css`
+    display: flex;
+    align-items: end;
+  `,
 }
 
 const Component = ({ title }: Props) => {
@@ -36,7 +41,14 @@ const Component = ({ title }: Props) => {
     <header css={styles.root}>
       <ButtonImage src={AppLogo} width={60} height={60} onClick={() => router.push('/')} />
 
-      {title && <h3>{title}</h3>}
+      <div css={styles.centerGroup}>
+        {title && (
+          <>
+            <h3>{title}</h3>
+            <RefreshButton name={title} />
+          </>
+        )}
+      </div>
 
       <Account />
     </header>

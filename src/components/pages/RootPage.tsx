@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { Genre } from '../genre/Genre'
 import { Subheader } from '../header/Subheader'
 import { CoolCat } from '../shared/CoolCat'
 
@@ -36,9 +36,9 @@ export const RootPage = () => {
 
       {genres.length !== 0 ? (
         genres.map((genre) => (
-          <div key={genre}>
-            <Genre name={genre} />
-          </div>
+          <Link key={genre} href={`/genre/${genre}`}>
+            {genre}
+          </Link>
         ))
       ) : (
         <CoolCat
