@@ -50,9 +50,7 @@
 
 # Tech Debt
 
-### Initial load should only return genres
-
-- On click of a genre we can get artists then or do init on that genre
+### Remove misc genre and update more unknown ones
 
 ### Standardize error handling
 
@@ -72,7 +70,3 @@
 
 - Can check headers in web api response
 - If doing requests in a for loop, can retry and wait
-
-### For artists page, don't return albums that are viewed already
-
-- Pattern is the BE filters this out so the FE doesn't have to

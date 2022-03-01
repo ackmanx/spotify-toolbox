@@ -5,7 +5,7 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
-import Header from '../../components/header/AppHeader'
+import { AppHeader } from '../../components/header/AppHeader'
 import { ArtistPage } from '../../components/pages/ArtistPage'
 import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
 import dbConnect from '../../lib/db'
@@ -32,7 +32,7 @@ const ArtistNextPage: NextPage<Props> = ({ artist }) => {
       <Head>
         <title>Toolbox - {artist.name}</title>
       </Head>
-      <Header title={artist.name} />
+      <AppHeader title={artist.name} />
       <main
         css={css`
           text-align: center;

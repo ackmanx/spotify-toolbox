@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
-import Header from '../components/header/AppHeader'
+import { AppHeader } from '../components/header/AppHeader'
 import { RootPage } from '../components/pages/RootPage'
 import { CoolCat } from '../components/shared/CoolCat'
 import { useAccessTokenTimer } from '../hooks/useAccessTokenTimer'
@@ -20,7 +20,7 @@ const RootNextPage: NextPage = () => {
         <title>Toolbox</title>
       </Head>
       <ToastContainer />
-      <Header />
+      <AppHeader />
       <main
         css={css`
           text-align: center;

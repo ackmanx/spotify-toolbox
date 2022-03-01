@@ -34,7 +34,7 @@ const styles = {
   `,
 }
 
-const Component = ({ title }: Props) => {
+export const AppHeader = ({ title }: Props) => {
   const router = useRouter()
 
   return (
@@ -54,5 +54,3 @@ const Component = ({ title }: Props) => {
     </header>
   )
 }
-
-export default Component

@@ -5,7 +5,7 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
-import Header from '../../components/header/AppHeader'
+import { AppHeader } from '../../components/header/AppHeader'
 import { GenrePage } from '../../components/pages/GenrePage'
 import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
 
@@ -23,7 +23,7 @@ const GenreNextPage: NextPage<Props> = ({ genre }) => {
       <Head>
         <title>Toolbox - {genre}</title>
       </Head>
-      <Header title={genre} />
+      <AppHeader title={genre} />
       <main
         css={css`
           text-align: center;
