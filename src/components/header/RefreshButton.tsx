@@ -18,7 +18,7 @@ export const RefreshButton = ({ artistIDs }: Props) => {
     setIsRefreshing(true)
 
     try {
-      for (let i = 0; artistIDs.length < i; i++) {
+      for (let i = 0; i < artistIDs.length; i++) {
         const response = await fetch(`/api/artist/refresh/${artistIDs[i]}`)
 
         if (!response.ok) {
