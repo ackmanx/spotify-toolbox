@@ -98,7 +98,7 @@ export const ArtistPage = ({ artist }: Props) => {
 
   return (
     <div>
-      <Subheader name='albums' />
+      {albumsByReleaseType.album.some((album) => !album.isViewed) && <Subheader name='albums' />}
 
       {albumsByReleaseType.album.map((album) => (
         <div key={album.id} css={styles.albumContainer(newlyViewedAlbums[album.id])}>
@@ -116,7 +116,9 @@ export const ArtistPage = ({ artist }: Props) => {
         </div>
       ))}
 
-      <Subheader name='singles' />
+      {albumsByReleaseType.single.some((single) => !single.isViewed) && (
+        <Subheader name='singles' />
+      )}
 
       {albumsByReleaseType.single.map((single) => (
         <div key={single.id} css={styles.albumContainer(newlyViewedAlbums[single.id])}>
