@@ -19,10 +19,6 @@
 
 ### Refresh token without signing out/in
 
-### Refresh shows modal or progress bar of some sort
-
-### Refresh only a single artist
-
 ### Update followed artists
 
 ### User-generated genres with editor to update
