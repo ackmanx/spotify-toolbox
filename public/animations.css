@@ -1,4 +1,3 @@
-/* refresh_icon is in Genre component */
 .refresh_icon-enter-active {
   animation: rotateRefresh infinite 1000ms;
 }

@@ -10,7 +10,7 @@ import AppLogo from './images/logo.png'
 
 interface Props {
   // Need to know all the artists when on genre page so can pass the IDs to the server to update
-  artists: _Artist[]
+  artists?: _Artist[]
   title?: string
 }
 
