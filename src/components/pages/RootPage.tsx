@@ -1,9 +1,24 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { Subheader } from '../header/Subheader'
 import { CoolCat } from '../shared/CoolCat'
+
+const styles = {
+  root: css`
+    a {
+      border: 1px solid black;
+      margin: 10px;
+      width: 200px;
+      height: 100px;
+      display: inline-block;
+      font-size: 24px;
+    }
+  `,
+}
 
 export const RootPage = () => {
   const { status } = useSession()
@@ -31,7 +46,7 @@ export const RootPage = () => {
   }
 
   return (
-    <div>
+    <div css={styles.root}>
       <Subheader name='genres' />
 
       {genres.length !== 0 ? (
