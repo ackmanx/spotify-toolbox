@@ -7,17 +7,10 @@ import { ButtonImage } from '../shared/Image'
 import RefreshIcon from './images/refresh-icon.png'
 
 interface Props {
-  name: string
+  artistIDs: string[]
 }
 
-const styles = {
-  // button: css`
-  //   position: relative;
-  //   top: 10px;
-  // `,
-}
-
-export const RefreshButton = ({ name }: Props) => {
+export const RefreshButton = ({ artistIDs }: Props) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const refreshRef = useRef(null)
 
@@ -25,19 +18,20 @@ export const RefreshButton = ({ name }: Props) => {
     setIsRefreshing(true)
 
     try {
-      const response = await fetch(`/api/refresh/${name}`)
+      for (let i = 0; artistIDs.length < i; i++) {
+        const response = await fetch(`/api/artist/refresh/${artistIDs[i]}`)
 
-      if (!response.ok) {
-        const error = await response.json()
-        toast.error(error.message, { position: 'top-center', autoClose: false })
-        return
+        if (!response.ok) {
+          const error = await response.json()
+          toast.error(error.message, { position: 'top-center', autoClose: false })
+          return
+        }
       }
-
-      window.location.reload()
     } catch (error: any) {
-      toast.error(error.message, { position: 'top-center', autoClose: false })
-    } finally {
       setIsRefreshing(false)
+      return toast.error(error.message, { position: 'top-center', autoClose: false })
+    } finally {
+      window.location.reload()
     }
   }
 

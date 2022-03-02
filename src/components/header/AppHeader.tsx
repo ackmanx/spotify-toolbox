@@ -2,12 +2,15 @@
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 
+import { _Artist } from '../../mongoose/Artist'
 import { ButtonImage } from '../shared/Image'
 import { Account } from './Account'
 import { RefreshButton } from './RefreshButton'
 import AppLogo from './images/logo.png'
 
 interface Props {
+  // Need to know all the artists when on genre page so can pass the IDs to the server to update
+  artists: _Artist[]
   title?: string
 }
 
@@ -34,8 +37,9 @@ const styles = {
   `,
 }
 
-export const AppHeader = ({ title }: Props) => {
+export const AppHeader = ({ artists = [], title }: Props) => {
   const router = useRouter()
+  const artistIDs = artists.map((artist) => artist.id)
 
   return (
     <header css={styles.root}>
@@ -45,7 +49,7 @@ export const AppHeader = ({ title }: Props) => {
         {title && (
           <>
             <h3>{title}</h3>
-            <RefreshButton name={title} />
+            <RefreshButton artistIDs={artistIDs} />
           </>
         )}
       </div>

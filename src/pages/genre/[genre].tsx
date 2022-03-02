@@ -23,16 +23,8 @@ const GenreNextPage: NextPage<Props> = ({ genre }) => {
       <Head>
         <title>Toolbox - {genre}</title>
       </Head>
-      <AppHeader title={genre} />
-      <main
-        css={css`
-          text-align: center;
-        `}
-      >
-        <ToastContainer />
-
-        <GenrePage genre={genre} />
-      </main>
+      <ToastContainer />
+      <GenrePage genre={genre} />
     </>
   )
 }

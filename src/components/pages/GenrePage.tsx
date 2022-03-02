@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 
 import { _Artist } from '../../mongoose/Artist'
 import { Artist } from '../artists/Artist'
+import { AppHeader } from '../header/AppHeader'
 import { Subheader } from '../header/Subheader'
 
 interface Props {
@@ -26,12 +28,19 @@ export const GenrePage = ({ genre }: Props) => {
   }
 
   return (
-    <div>
-      <Subheader name='artists' />
+    <>
+      <AppHeader title={genre} artists={artists} />
+      <main
+        css={css`
+          text-align: center;
+        `}
+      >
+        <Subheader name='artists' />
 
-      {artists.map((artist) => (
-        <Artist key={artist.id} artist={artist} />
-      ))}
-    </div>
+        {artists.map((artist) => (
+          <Artist key={artist.id} artist={artist} />
+        ))}
+      </main>
+    </>
   )
 }
