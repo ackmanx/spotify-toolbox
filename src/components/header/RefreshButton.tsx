@@ -12,6 +12,7 @@ interface Props {
 
 export const RefreshButton = ({ artistIDs }: Props) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [numRefreshingArtist, setNumRefreshingArtist] = useState(0)
   const refreshRef = useRef(null)
 
   const handleRefresh = async (event: any) => {
@@ -19,6 +20,7 @@ export const RefreshButton = ({ artistIDs }: Props) => {
 
     try {
       for (let i = 0; i < artistIDs.length; i++) {
+        setNumRefreshingArtist(i + 1)
         const response = await fetch(`/api/artist/refresh/${artistIDs[i]}`)
 
         if (!response.ok) {
@@ -51,6 +53,11 @@ export const RefreshButton = ({ artistIDs }: Props) => {
             onClick={handleRefresh}
             disabled={isRefreshing}
           />
+          {isRefreshing && (
+            <>
+              {numRefreshingArtist}/{artistIDs.length}
+            </>
+          )}
         </div>
       </CSSTransition>
     </>
