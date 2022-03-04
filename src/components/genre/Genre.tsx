@@ -22,6 +22,15 @@ const styles = {
     font-size: 24px;
     background-color: #f5f5f5;
 
+    transform: scale(100%);
+    transition: transform 200ms;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(108%);
+      transition: transform 200ms;
+    }
+
     a {
       display: flex;
       align-items: center;
