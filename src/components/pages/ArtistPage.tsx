@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 
 import { _Artist } from '../../mongoose/Artist'
 import { AlbumsByReleaseType } from '../../pages/artist/[artistId]'
-import { AlbumMenu } from '../card/AlbumMenu'
-import { Card } from '../card/Card'
+import { Album } from '../album/Album'
+import { AlbumMenu } from '../album/AlbumMenu'
 import { Subheader } from '../header/Subheader'
 
 interface Props {
@@ -102,7 +102,7 @@ export const ArtistPage = ({ artist }: Props) => {
 
       {albumsByReleaseType.album.map((album) => (
         <div key={album.id} css={styles.albumContainer(newlyViewedAlbums[album.id])}>
-          {!album.isViewed && <Card album={album} onClick={() => toggleAlbumMenu(album.id)} />}
+          {!album.isViewed && <Album album={album} onClick={() => toggleAlbumMenu(album.id)} />}
           {albumMenus[album.id] && (
             <AlbumMenu
               css={styles.menu}
@@ -122,7 +122,7 @@ export const ArtistPage = ({ artist }: Props) => {
 
       {albumsByReleaseType.single.map((single) => (
         <div key={single.id} css={styles.albumContainer(newlyViewedAlbums[single.id])}>
-          {!single.isViewed && <Card album={single} onClick={() => toggleAlbumMenu(single.id)} />}
+          {!single.isViewed && <Album album={single} onClick={() => toggleAlbumMenu(single.id)} />}
           {albumMenus[single.id] && (
             <AlbumMenu
               css={styles.menu}
