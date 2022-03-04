@@ -21,10 +21,12 @@
 
 ### User-generated genres with editor to update
 
-### Method to perform actions on albums
+### Album menu
 
 - Play right in my webapp now?
 - How can I better display data
+
+### Have link to artist's spotify page
 
 ### Show any sort of stats anywhere?
 
