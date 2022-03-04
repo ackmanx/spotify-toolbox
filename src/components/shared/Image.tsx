@@ -13,6 +13,7 @@ export const ButtonImage = ({ disabled, onClick, ...props }: ButtonImageProps) =
       background-color: transparent;
       border: none;
       cursor: pointer;
+      padding: 0;
     `}
     disabled={disabled}
     onClick={onClick}

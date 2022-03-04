@@ -38,13 +38,16 @@ const styles = {
       : null,
   menu: css`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 45px;
+    top: 0;
+    left: -105px;
     background-color: white;
     z-index: 100;
+    width: 100px;
+    gap: 10px;
   `,
 }
 
@@ -56,7 +59,7 @@ export const Account = () => {
   const handleOpenMenu = () => {
     if (isMenuOpen) {
       const el = document.querySelector(`[data-id="account-menu"]`)
-      el?.classList.add('animate__bounceOut')
+      el?.classList.add('animate__flipOutX')
 
       setTimeout(() => setIsMenuOpen(false), 500)
     }
@@ -64,7 +67,7 @@ export const Account = () => {
     setIsMenuOpen(true)
   }
 
-  const animations = 'animate__animated animate__bounceIn'
+  const animations = 'animate__animated animate__flipInX'
 
   return (
     <div css={styles.root}>

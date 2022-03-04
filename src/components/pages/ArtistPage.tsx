@@ -100,41 +100,47 @@ export const ArtistPage = ({ artist }: Props) => {
     <div>
       {albumsByReleaseType.album.some((album) => !album.isViewed) && <Subheader name='albums' />}
 
-      {albumsByReleaseType.album.map((album) => (
-        <div key={album.id} css={styles.albumContainer(newlyViewedAlbums[album.id])}>
-          {!album.isViewed && <Album album={album} onClick={() => toggleAlbumMenu(album.id)} />}
-          {albumMenus[album.id] && (
-            <AlbumMenu
-              css={styles.menu}
-              className={animations}
-              album={album}
-              artist={artist}
-              onToggleMenuVisibility={() => toggleAlbumMenu(album.id)}
-              onShadeViewedAlbum={handleShadeViewedAlbum}
-            />
-          )}
-        </div>
-      ))}
+      {albumsByReleaseType.album.map(
+        (album) =>
+          !album.isViewed && (
+            <div key={album.id} css={styles.albumContainer(newlyViewedAlbums[album.id])}>
+              <Album album={album} onClick={() => toggleAlbumMenu(album.id)} />
+              {albumMenus[album.id] && (
+                <AlbumMenu
+                  css={styles.menu}
+                  className={animations}
+                  album={album}
+                  artist={artist}
+                  onToggleMenuVisibility={() => toggleAlbumMenu(album.id)}
+                  onShadeViewedAlbum={handleShadeViewedAlbum}
+                />
+              )}
+            </div>
+          )
+      )}
 
       {albumsByReleaseType.single.some((single) => !single.isViewed) && (
         <Subheader name='singles' />
       )}
 
-      {albumsByReleaseType.single.map((single) => (
-        <div key={single.id} css={styles.albumContainer(newlyViewedAlbums[single.id])}>
-          {!single.isViewed && <Album album={single} onClick={() => toggleAlbumMenu(single.id)} />}
-          {albumMenus[single.id] && (
-            <AlbumMenu
-              css={styles.menu}
-              className={animations}
-              album={single}
-              artist={artist}
-              onToggleMenuVisibility={() => toggleAlbumMenu(single.id)}
-              onShadeViewedAlbum={handleShadeViewedAlbum}
-            />
-          )}
-        </div>
-      ))}
+      {albumsByReleaseType.single.map(
+        (single) =>
+          !single.isViewed && (
+            <div key={single.id} css={styles.albumContainer(newlyViewedAlbums[single.id])}>
+              <Album album={single} onClick={() => toggleAlbumMenu(single.id)} />
+              {albumMenus[single.id] && (
+                <AlbumMenu
+                  css={styles.menu}
+                  className={animations}
+                  album={single}
+                  artist={artist}
+                  onToggleMenuVisibility={() => toggleAlbumMenu(single.id)}
+                  onShadeViewedAlbum={handleShadeViewedAlbum}
+                />
+              )}
+            </div>
+          )
+      )}
     </div>
   )
 }
