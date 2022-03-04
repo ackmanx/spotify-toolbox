@@ -20,7 +20,7 @@ interface Props {
   artist: _Artist
 }
 
-export type AlbumsByReleaseType = Record<string, AlbumWithViewed[]>
+export type AlbumsByReleaseType = Record<'album' | 'single', AlbumWithViewed[]>
 
 const ArtistNextPage: NextPage<Props> = ({ artist }) => {
   useAccessTokenTimer()

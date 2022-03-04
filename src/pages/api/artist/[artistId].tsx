@@ -64,5 +64,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     { single: [], album: [] }
   )
 
+  albumsByReleaseType.album.sort((a, b) => (a.releaseDate < b.releaseDate ? 1 : -1))
+  albumsByReleaseType.single.sort((a, b) => (a.releaseDate < b.releaseDate ? 1 : -1))
+
   res.send(albumsByReleaseType)
 }

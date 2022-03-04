@@ -6,7 +6,7 @@ export interface _Album {
   _id: string
   id: string
   artistId: string
-  type: string
+  type: 'album' | 'single'
   name: string
   releaseDate: string
   coverArt?: string
@@ -37,7 +37,7 @@ export const buildAlbum = (
   newAlbum._id = album.id
   newAlbum.id = album.id
   newAlbum.artistId = artistId
-  newAlbum.type = album.album_type
+  newAlbum.type = album.album_type as _Album['type'] //because I'm only querying Spotify for single/album
   newAlbum.name = album.name
   newAlbum.releaseDate = album.release_date
   newAlbum.coverArt = album.images.find((image) => image.width === image.height)?.url
