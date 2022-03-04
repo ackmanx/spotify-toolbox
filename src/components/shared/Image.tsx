@@ -5,15 +5,19 @@ import NextImage from 'next/image'
 import NextLink from 'next/link'
 import { ReactNode } from 'react'
 
-type ButtonImageProps = ImageProps & { disabled?: boolean; onClick(event: any): void }
+type ButtonImageProps = ImageProps & {
+  disabled?: boolean
+  onClick(event: any): void
+  disablePadding?: boolean
+}
 
-export const ButtonImage = ({ disabled, onClick, ...props }: ButtonImageProps) => (
+export const ButtonImage = ({ disabled, onClick, disablePadding, ...props }: ButtonImageProps) => (
   <button
     css={css`
       background-color: transparent;
       border: none;
       cursor: pointer;
-      padding: 0;
+      padding: ${disablePadding ? '0px' : 'revert'};
     `}
     disabled={disabled}
     onClick={onClick}

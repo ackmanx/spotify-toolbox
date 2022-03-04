@@ -86,6 +86,7 @@ export const Account = () => {
                 src={signOutIcon}
                 width={40}
                 height={40}
+                disablePadding
                 onClick={() =>
                   signOut({
                     callbackUrl: window.location.origin,
@@ -93,9 +94,21 @@ export const Account = () => {
                 }
               />
             ) : (
-              <ButtonImage src={signInIcon} width={40} height={40} onClick={() => signIn()} />
+              <ButtonImage
+                src={signInIcon}
+                width={40}
+                height={40}
+                disablePadding
+                onClick={() => signIn()}
+              />
             )}
-            <ButtonImage src={followIcon} width={40} height={40} onClick={() => console.log('')} />
+            <ButtonImage
+              src={followIcon}
+              width={40}
+              height={40}
+              disablePadding
+              onClick={() => console.log('')}
+            />
           </div>
         )}
       </div>
