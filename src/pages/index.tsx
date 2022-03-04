@@ -20,7 +20,7 @@ const RootNextPage: NextPage = () => {
         <title>Toolbox</title>
       </Head>
       <ToastContainer />
-      <AppHeader />
+      <AppHeader title='Genres' />
       <main
         css={css`
           text-align: center;

@@ -20,11 +20,13 @@ const styles = {
   root: css`
     margin: 20px;
     font-size: 24px;
+    background-color: #f5f5f5;
 
     a {
       display: flex;
       align-items: center;
       gap: 20px;
+      padding: 30px;
     }
   `,
 }

@@ -32,7 +32,7 @@ const ArtistNextPage: NextPage<Props> = ({ artist }) => {
       <Head>
         <title>Toolbox - {artist.name}</title>
       </Head>
-      <AppHeader title={artist.name} artists={[artist]} />
+      <AppHeader title={artist.name} artists={[artist]} isRefreshable />
       <main
         css={css`
           text-align: center;

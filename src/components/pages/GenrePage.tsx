@@ -29,7 +29,7 @@ export const GenrePage = ({ genre }: Props) => {
 
   return (
     <>
-      <AppHeader title={genre} artists={artists} />
+      <AppHeader title={genre} artists={artists} isRefreshable />
       <main
         css={css`
           text-align: center;

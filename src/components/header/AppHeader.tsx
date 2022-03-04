@@ -12,6 +12,7 @@ interface Props {
   // Need to know all the artists when on genre page so can pass the IDs to the server to update
   artists?: _Artist[]
   title?: string
+  isRefreshable?: boolean
 }
 
 const styles = {
@@ -37,7 +38,7 @@ const styles = {
   `,
 }
 
-export const AppHeader = ({ artists = [], title }: Props) => {
+export const AppHeader = ({ artists = [], title, isRefreshable }: Props) => {
   const router = useRouter()
   const artistIDs = artists.map((artist) => artist.id)
 
@@ -49,7 +50,7 @@ export const AppHeader = ({ artists = [], title }: Props) => {
         {title && (
           <>
             <h3>{title}</h3>
-            <RefreshButton artistIDs={artistIDs} />
+            {isRefreshable && <RefreshButton artistIDs={artistIDs} />}
           </>
         )}
       </div>
