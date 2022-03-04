@@ -1,22 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { useSession } from 'next-auth/react'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
+import { Genre } from '../genre/genre'
 import { Subheader } from '../header/Subheader'
 import { CoolCat } from '../shared/CoolCat'
 
 const styles = {
-  root: css`
-    a {
-      border: 1px solid black;
-      margin: 10px;
-      width: 200px;
-      height: 100px;
-      display: inline-block;
-      font-size: 24px;
-    }
+  genres: css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   `,
 }
 
@@ -46,15 +41,15 @@ export const RootPage = () => {
   }
 
   return (
-    <div css={styles.root}>
+    <div>
       <Subheader name='genres' />
 
       {genres.length !== 0 ? (
-        genres.map((genre) => (
-          <Link key={genre} href={`/genre/${genre}`}>
-            {genre}
-          </Link>
-        ))
+        <div css={styles.genres}>
+          {genres.map((genre) => (
+            <Genre key={genre} genre={genre} />
+          ))}
+        </div>
       ) : (
         <CoolCat
           header="It looks like you've got no followed artists."

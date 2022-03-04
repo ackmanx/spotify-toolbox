@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 
 import { _Artist } from '../../mongoose/Artist'
-import { Artist } from '../artists/Artist'
+import { Artist } from '../artist/Artist'
 import { AppHeader } from '../header/AppHeader'
 import { Subheader } from '../header/Subheader'
 

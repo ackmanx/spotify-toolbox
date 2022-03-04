@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import { ImageProps } from 'next/dist/client/image'
 import NextImage from 'next/image'
 import NextLink from 'next/link'
+import { ReactNode } from 'react'
 
 type ButtonImageProps = ImageProps & { disabled?: boolean; onClick(event: any): void }
 
@@ -23,13 +24,14 @@ export const ButtonImage = ({ disabled, onClick, ...props }: ButtonImageProps) =
 )
 
 interface ImageLinkProps {
+  children?: ReactNode
   href: string
   imageSrc: string | StaticImageData
   width: number
   height: number
 }
 
-export const ImageLink = ({ href, imageSrc, width, height }: ImageLinkProps) =>
+export const ImageLink = ({ children, href, imageSrc, width, height }: ImageLinkProps) =>
   href.startsWith('http') ? (
     <a href={href} target='_blank' rel='noreferrer'>
       <NextImage src={imageSrc} width={width} height={height} />
@@ -38,6 +40,7 @@ export const ImageLink = ({ href, imageSrc, width, height }: ImageLinkProps) =>
     <NextLink href={href}>
       <a>
         <NextImage src={imageSrc} width={width} height={height} />
+        {children}
       </a>
     </NextLink>
   )
