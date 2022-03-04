@@ -53,7 +53,7 @@ export const RefreshButton = ({ artistIDs }: Props) => {
             onClick={handleRefresh}
             disabled={isRefreshing}
           />
-          {isRefreshing && artistIDs.length < 1 && (
+          {isRefreshing && artistIDs.length > 1 && (
             <>
               {numRefreshingArtist}/{artistIDs.length}
             </>
