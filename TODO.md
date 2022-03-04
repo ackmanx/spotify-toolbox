@@ -1,14 +1,12 @@
 # Bug
 
-### Sort albums by release date
-
 ### Not every artist has an album/single because they may only have "appears on" which I'm not tracking
 
 - Example: K9999
 - This causes the app to always show the artist as having unviewed albums but the viewed albums for that artist is empty
 - This implies we've never looked at them before and we should
 
-### If a user tires to view an artist that has no albums and their token is expired, make a nicer error
+### If a user tires to view an artist that has no albums fetched yet and their token is expired, make a nicer error
 
 ### Artist/album art is not always the right proportion
 
@@ -49,10 +47,9 @@
 ### Should artistId be stored in the album collection?
 
 - There are often multiple artists and the albums can be published on both of their artist pages
+- What is the impact of having artistId on an album?
 
 # Tech Debt
-
-### Remove misc genre and update more unknown ones
 
 ### Standardize error handling
 
