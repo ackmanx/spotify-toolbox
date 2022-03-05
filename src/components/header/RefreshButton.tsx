@@ -21,10 +21,18 @@ export const RefreshButton = ({ artistIDs }: Props) => {
     try {
       for (let i = 0; i < artistIDs.length; i++) {
         setNumRefreshingArtist(i + 1)
-        const response = await fetch(`/api/artist/refresh/${artistIDs[i]}`)
+        const followedArtistsResponse = await fetch(`/api/user/followed-artists`)
 
-        if (!response.ok) {
-          const error = await response.json()
+        if (!followedArtistsResponse.ok) {
+          const error = await followedArtistsResponse.json()
+          toast.error(error.message, { position: 'top-center', autoClose: false })
+          return
+        }
+
+        const refreshedArtistsResponse = await fetch(`/api/artist/refresh/${artistIDs[i]}`)
+
+        if (!refreshedArtistsResponse.ok) {
+          const error = await refreshedArtistsResponse.json()
           toast.error(error.message, { position: 'top-center', autoClose: false })
           return
         }

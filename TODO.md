@@ -1,11 +1,5 @@
 # Bug
 
-### Not every artist has an album/single because they may only have "appears on" which I'm not tracking
-
-- Example: K9999
-- This causes the app to always show the artist as having unviewed albums but the viewed albums for that artist is empty
-- This implies we've never looked at them before and we should
-
 ### If a user tires to view an artist that has no albums fetched yet and their token is expired, make a nicer error
 
 ### Artist/album art is not always the right proportion
@@ -16,8 +10,6 @@
 # Feature
 
 ### Refresh token without signing out/in
-
-### Update followed artists
 
 ### User-generated genres with editor to update
 

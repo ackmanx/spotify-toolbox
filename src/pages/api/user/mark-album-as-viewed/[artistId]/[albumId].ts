@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 
-import dbConnect from '../../../../lib/db'
-import { _Album, mAlbum } from '../../../../mongoose/Album'
-import { _User, mUser } from '../../../../mongoose/User'
-import { One } from '../../../../mongoose/types'
+import dbConnect from '../../../../../lib/db'
+import { _Album, mAlbum } from '../../../../../mongoose/Album'
+import { _User, mUser } from '../../../../../mongoose/User'
+import { One } from '../../../../../mongoose/types'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })

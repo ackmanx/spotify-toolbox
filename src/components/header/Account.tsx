@@ -1,14 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { signIn, signOut, useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
 import { useContext, useState } from 'react'
 
 import { AuthContext } from '../../AuthContext'
 import { ButtonImage } from '../shared/Image'
 import NoUserPicIcon from '../shared/images/person-placeholder.png'
-import followIcon from './images/following.png'
-import menuIcon from './images/logo.png'
 import signInIcon from './images/sign-in.png'
 import signOutIcon from './images/sign-out.png'
 
@@ -41,12 +38,12 @@ const styles = {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    width: 50px; //width = number of icons in account menu * 50
     position: absolute;
     top: 0;
-    left: -105px;
+    left: -55px; //width + 5
     background-color: white;
     z-index: 100;
-    width: 100px;
     gap: 10px;
   `,
 }
@@ -102,13 +99,6 @@ export const Account = () => {
                 onClick={() => signIn()}
               />
             )}
-            <ButtonImage
-              src={followIcon}
-              width={40}
-              height={40}
-              disablePadding
-              onClick={() => console.log('')}
-            />
           </div>
         )}
       </div>
