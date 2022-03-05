@@ -29,6 +29,10 @@ const styles = {
       transform: scale(108%);
       transition: transform 200ms;
     }
+
+    img {
+      object-fit: cover;
+    }
   `,
 }
 

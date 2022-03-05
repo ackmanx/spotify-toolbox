@@ -2,11 +2,6 @@
 
 ### If a user tires to view an artist that has no albums fetched yet and their token is expired, make a nicer error
 
-### Artist/album art is not always the right proportion
-
-- Example: Mihka!
-- Sometimes we show squished, and other times we show default no-image-found image
-
 # Feature
 
 ### Refresh token without signing out/in
