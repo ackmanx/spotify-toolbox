@@ -27,7 +27,7 @@ const styles = {
     cursor: pointer;
 
     &:hover {
-      transform: scale(108%);
+      transform: scale(105%);
       transition: transform 200ms;
     }
 
