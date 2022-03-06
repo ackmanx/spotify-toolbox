@@ -33,11 +33,6 @@ const styles = {
       cursor: pointer;
     }
   `,
-  top: css`
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-  `,
   icon: css`
     transform: scale(100%);
     transition: transform 0.1s linear;
@@ -46,11 +41,6 @@ const styles = {
       transform: scale(110%);
       transition: transform 0.1s linear;
     }
-  `,
-  bottom: css`
-    display: flex;
-    margin-bottom: 5px;
-    gap: 10px;
   `,
 }
 
@@ -64,6 +54,33 @@ export const AlbumMenu = ({
   const ref = useRef(null)
   const [markViewedProcessing, setMarkViewedProcessing] = useState(false)
 
+  const handleMarkAsViewed = async (event) => {
+    event.stopPropagation() //todo majerus: do i need this
+    setMarkViewedProcessing(true)
+
+    await fetch(`/api/user/mark-album-as-viewed/${artist.id}/${album.id}`)
+
+    onToggleMenuVisibility()
+    onShadeViewedAlbum(album.id)
+  }
+
+  const handleAddToPlaylist = async (event) => {
+    event.stopPropagation() //todo majerus: do i need this
+    setMarkViewedProcessing(true)
+
+    const addToPlaylistResponse = await fetch(`/api/playlist/add-album/${album.id}`)
+    const body = await addToPlaylistResponse.json()
+
+    if (!addToPlaylistResponse.ok) {
+      toast.error(body.message, { position: 'top-center', autoClose: false })
+      return
+    }
+
+    await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
+    onToggleMenuVisibility()
+    onShadeViewedAlbum(album.id)
+  }
+
   return (
     <div
       css={styles.root}
@@ -71,69 +88,33 @@ export const AlbumMenu = ({
       data-id={album.id}
       onClick={onToggleMenuVisibility}
     >
-      <div css={styles.top}>
-        <CSSTransition
-          nodeRef={ref}
-          classNames='mark_viewed'
-          in={markViewedProcessing}
-          timeout={99999}
-        >
-          <div ref={ref} css={styles.icon}>
-            <ButtonImage
-              src={MarkAsViewedIcon}
-              width={50}
-              height={50}
-              onClick={async (event) => {
-                event.stopPropagation()
-                setMarkViewedProcessing(true)
-                await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
-                onToggleMenuVisibility()
-                onShadeViewedAlbum(album.id)
-              }}
-            />
-          </div>
-        </CSSTransition>
-      </div>
-      <div css={styles.bottom}>
-        <div css={styles.icon}>
-          <ImageLink href={album.spotifyUri} imageSrc={OpenSpotifyIcon} width={35} height={35} />
+      <CSSTransition
+        nodeRef={ref}
+        classNames='mark_viewed'
+        in={markViewedProcessing}
+        timeout={99999}
+      >
+        <div ref={ref} css={styles.icon}>
+          <ButtonImage src={MarkAsViewedIcon} width={50} height={50} onClick={handleMarkAsViewed} />
         </div>
-        <div css={styles.icon}>
-          <ImageLink href={album.spotifyWebUrl} imageSrc={OpenWebIcon} width={35} height={35} />
+      </CSSTransition>
+      <ImageLink href={album.spotifyUri} imageSrc={OpenSpotifyIcon} width={35} height={35} />
+      <ImageLink href={album.spotifyWebUrl} imageSrc={OpenWebIcon} width={35} height={35} />
+      <CSSTransition
+        nodeRef={ref}
+        classNames='mark_viewed'
+        in={markViewedProcessing}
+        timeout={99999}
+      >
+        <div ref={ref} css={styles.icon}>
+          <ButtonImage
+            src={AddToPlaylistIcon}
+            width={35}
+            height={35}
+            onClick={handleAddToPlaylist}
+          />
         </div>
-        <div css={styles.icon}>
-          <CSSTransition
-            nodeRef={ref}
-            classNames='mark_viewed'
-            in={markViewedProcessing}
-            timeout={99999}
-          >
-            <div ref={ref} css={styles.icon}>
-              <ButtonImage
-                src={AddToPlaylistIcon}
-                width={35}
-                height={35}
-                onClick={async (event) => {
-                  event.stopPropagation()
-                  setMarkViewedProcessing(true)
-
-                  const addToPlaylistResponse = await fetch(`/api/playlist/add-album/${album.id}`)
-                  const body = await addToPlaylistResponse.json()
-
-                  if (!addToPlaylistResponse.ok) {
-                    toast.error(body.message, { position: 'top-center', autoClose: false })
-                    return
-                  }
-
-                  await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
-                  onToggleMenuVisibility()
-                  onShadeViewedAlbum(album.id)
-                }}
-              />
-            </div>
-          </CSSTransition>
-        </div>
-      </div>
+      </CSSTransition>
     </div>
   )
 }
