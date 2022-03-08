@@ -8,7 +8,7 @@ import { _Album } from '../../mongoose/Album'
 import { _Artist } from '../../mongoose/Artist'
 import { ButtonImage, ImageLink } from '../shared/Image'
 import AddToPlaylistIcon from './images/add-to-playlist.png'
-import MarkAsViewedIcon from './images/mark-as-viewed.png'
+import MarkAsViewedIcon from './images/mark-album-as-viewed.png'
 import OpenSpotifyIcon from './images/open-in-spotify.png'
 import OpenWebIcon from './images/open-in-web.png'
 
@@ -54,7 +54,7 @@ export const AlbumMenu = ({
   const ref = useRef(null)
   const [markViewedProcessing, setMarkViewedProcessing] = useState(false)
 
-  const handleMarkAsViewed = async (event) => {
+  const handleMarkAsViewed = async (event: any) => {
     event.stopPropagation() //todo majerus: do i need this
     setMarkViewedProcessing(true)
 
@@ -64,7 +64,7 @@ export const AlbumMenu = ({
     onShadeViewedAlbum(album.id)
   }
 
-  const handleAddToPlaylist = async (event) => {
+  const handleAddToPlaylist = async (event: any) => {
     event.stopPropagation() //todo majerus: do i need this
     setMarkViewedProcessing(true)
 
@@ -76,7 +76,7 @@ export const AlbumMenu = ({
       return
     }
 
-    await fetch(`/api/mark-as-viewed/${artist.id}/${album.id}`)
+    await fetch(`/api/user/mark-album-as-viewed/${artist.id}/${album.id}`)
     onToggleMenuVisibility()
     onShadeViewedAlbum(album.id)
   }
