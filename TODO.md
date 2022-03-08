@@ -2,6 +2,8 @@
 
 ### If a user tires to view an artist that has no albums fetched yet and their token is expired, make a nicer error
 
+### No error message for 404 on mark as viewed but it looks like it works
+
 # Feature
 
 ### Refresh token without signing out/in
