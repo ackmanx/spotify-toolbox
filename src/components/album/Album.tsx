@@ -37,6 +37,7 @@ export const Album = ({ album, onClick }: Props) => {
         width={300}
         height={300}
         onClick={onClick}
+        unoptimized
       />
       <h3 css={styles.header}>{album.name}</h3>
       {album.releaseDate}

@@ -5,6 +5,12 @@ import NextImage from 'next/image'
 import NextLink from 'next/link'
 import { ReactNode } from 'react'
 
+/*
+ * Images here use the `unoptimized` prop to tell Vercel not to optimize them automatically
+ * This on-by-default service has limits and pricing after those limits
+ * https://vercel.com/docs/concepts/image-optimization/limits-and-pricing
+ */
+
 type ButtonImageProps = ImageProps & {
   disabled?: boolean
   onClick(event: any): void
@@ -39,12 +45,12 @@ interface ImageLinkProps {
 export const ImageLink = ({ children, href, imageSrc, width, height }: ImageLinkProps) =>
   href.startsWith('http') ? (
     <a href={href} target='_blank' rel='noreferrer'>
-      <NextImage src={imageSrc} width={width} height={height} />
+      <NextImage src={imageSrc} width={width} height={height} unoptimized />
     </a>
   ) : (
     <NextLink href={href}>
       <a>
-        <NextImage src={imageSrc} width={width} height={height} />
+        <NextImage src={imageSrc} width={width} height={height} unoptimized />
         {children}
       </a>
     </NextLink>
