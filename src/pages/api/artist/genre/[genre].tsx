@@ -29,11 +29,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     genre,
   })
 
-  const artistsWithUnviewedAlbums = mFollowedArtistsInDB.filter(
-    (artist) =>
+  const artistsWithUnviewedAlbums = mFollowedArtistsInDB.filter((artist) => {
+    if (artist.albumIDs.some((albumId) => !isViewed(user.viewedAlbums, artist.id, albumId))) {
+      console.log(777, `${artist.name} has unviewed albums`)
+      const unviewed = artist.albumIDs.filter(
+        (albumId) => !isViewed(user.viewedAlbums, artist.id, albumId)
+      )
+      console.log(777, `${unviewed.length} are unviewed:`)
+      console.log(777, unviewed)
+    }
+
+    return (
       artist.albumIDs.length === 0 ||
       artist.albumIDs.some((albumId) => !isViewed(user.viewedAlbums, artist.id, albumId))
-  )
+    )
+  })
 
   res.send(artistsWithUnviewedAlbums)
 }

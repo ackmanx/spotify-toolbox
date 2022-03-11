@@ -9,18 +9,13 @@ import { AppHeader } from '../../components/header/AppHeader'
 import { ArtistPage } from '../../components/pages/ArtistPage'
 import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
 import dbConnect from '../../lib/db'
-import { _Album } from '../../mongoose/Album'
 import { _Artist, mArtist } from '../../mongoose/Artist'
 import { One } from '../../mongoose/types'
 import { forceSerialization } from '../../utils/force-serialization'
 
-export type AlbumWithViewed = _Album & { isViewed: boolean }
-
 interface Props {
   artist: _Artist
 }
-
-export type AlbumsByReleaseType = Record<'album' | 'single', AlbumWithViewed[]>
 
 const ArtistNextPage: NextPage<Props> = ({ artist }) => {
   useAccessTokenTimer()
