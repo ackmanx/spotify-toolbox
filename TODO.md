@@ -14,6 +14,8 @@ https://www.ialreadysawthat.com/artist/37awA8DFCAnCCL7aqYbDnD
 
 # Feature
 
+### Mark all albums as viewed for an artist (helpful with Singles)
+
 ### Refresh token without signing out/in
 
 ### User-generated genres with editor to update
