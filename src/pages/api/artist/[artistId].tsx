@@ -5,7 +5,7 @@ import { getSession } from 'next-auth/react'
 import dbConnect from '../../../lib/db'
 import { AlbumsByReleaseType, _Album, buildAlbum, mAlbum } from '../../../mongoose/Album'
 import { _Artist, mArtist, sendArtistNotFoundError } from '../../../mongoose/Artist'
-import { mUser, sendUserNotFoundError } from '../../../mongoose/User'
+import { mUser, sendAccessTokenExpiredError, sendUserNotFoundError } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
 import { isViewed } from '../../../utils/array'
 import { SpotifyHelper } from '../../../utils/server/spotify-helper'
@@ -20,6 +20,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   if (!user) {
     sendUserNotFoundError(res)
+    return
+  }
+
+  if (session?.isExpired) {
+    sendAccessTokenExpiredError(res)
     return
   }
 
