@@ -23,16 +23,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return
   }
 
-  if (session?.isExpired) {
-    sendAccessTokenExpiredError(res)
-    return
-  }
-
   const artistId = Array.isArray(req.query.artistId) ? req.query.artistId[0] : req.query.artistId
 
   let albumsInDB: Many<_Album> = await mAlbum.find({ artistId })
 
   if (albumsInDB.length === 0) {
+    if (session?.isExpired) {
+      sendAccessTokenExpiredError(res)
+      return
+    }
+
     const sAlbumsForArtist = await SpotifyHelper.albumsForArtist(req, artistId)
     const mAlbums = sAlbumsForArtist.map((album) => buildAlbum(album, artistId))
     const albumIDs = mAlbums.map((album) => album.id)
