@@ -21,7 +21,7 @@ const GenreNextPage: NextPage<Props> = ({ genre }) => {
   return (
     <>
       <Head>
-        <title>Toolbox - {genre}</title>
+        <title>{genre}</title>
       </Head>
       <ToastContainer />
       <GenrePage genre={genre} />

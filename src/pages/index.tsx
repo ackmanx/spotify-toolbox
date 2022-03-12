@@ -17,7 +17,7 @@ const RootNextPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Toolbox</title>
+        <title>Genres</title>
       </Head>
       <ToastContainer />
       <AppHeader title='Genres' />

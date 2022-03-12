@@ -25,7 +25,7 @@ const ArtistNextPage: NextPage<Props> = ({ artist }) => {
   return (
     <>
       <Head>
-        <title>Toolbox - {artist.name}</title>
+        <title>{artist.name}</title>
       </Head>
       <AppHeader title={artist.name} artists={[artist]} isRefreshable />
       <main
