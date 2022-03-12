@@ -8,7 +8,13 @@
 
 https://www.ialreadysawthat.com/artist/0hprEC0nsWuQPSHag1O2Vi
 
+### Artist still showing up in genre's artist list even though no albums
+
+https://www.ialreadysawthat.com/artist/37awA8DFCAnCCL7aqYbDnD
+
 # Feature
+
+### Mark all albums as viewed for an artist (helpful with Singles)
 
 ### Refresh token without signing out/in
 

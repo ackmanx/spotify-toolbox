@@ -29,6 +29,8 @@ const AlbumSchema = new Schema<_Album>({
 
 export const mAlbum: Model<_Album> = mongoose.models.Album ?? mongoose.model('Album', AlbumSchema)
 
+export type AlbumsByReleaseType = Record<'album' | 'single', _Album[]>
+
 export const buildAlbum = (
   album: AlbumObjectSimplified,
   artistId: string

@@ -3,13 +3,12 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 
 import dbConnect from '../../../lib/db'
-import { _Album, buildAlbum, mAlbum } from '../../../mongoose/Album'
+import { AlbumsByReleaseType, _Album, buildAlbum, mAlbum } from '../../../mongoose/Album'
 import { _Artist, mArtist, sendArtistNotFoundError } from '../../../mongoose/Artist'
 import { mUser, sendUserNotFoundError } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
 import { isViewed } from '../../../utils/array'
 import { SpotifyHelper } from '../../../utils/server/spotify-helper'
-import { AlbumsByReleaseType } from '../../artist/[artistId]'
 
 type ResBody = AlbumsByReleaseType | { success: boolean; message?: string }
 
@@ -50,10 +49,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const albumsByReleaseType = albumsInDB.reduce(
     (albums: AlbumsByReleaseType, album: HydratedDocument<_Album>) => {
-      albums[album.type].push({
-        ...album.toObject(),
-        isViewed: isViewed(user.viewedAlbums, artistId, album.id),
-      })
+      if (!isViewed(user.viewedAlbums, artistId, album.id)) {
+        albums[album.type].push({
+          ...album.toObject(),
+        })
+      }
       return albums
     },
     { single: [], album: [] }
