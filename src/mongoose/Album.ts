@@ -1,4 +1,5 @@
 import mongoose, { HydratedDocument, Model, Schema } from 'mongoose'
+import { NextApiResponse } from 'next'
 
 import AlbumObjectSimplified = SpotifyApi.AlbumObjectSimplified
 
@@ -45,4 +46,11 @@ export const buildAlbum = (
   newAlbum.spotifyUri = album.uri
 
   return newAlbum
+}
+
+export const sendAlbumNotFoundError = (res: NextApiResponse) => {
+  res.status(401).send({
+    success: false,
+    message: 'Album not found in database. How is that even possible?',
+  })
 }

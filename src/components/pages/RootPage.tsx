@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { Genre } from '../genre/Genre'
 import { Subheader } from '../header/Subheader'
 import { CoolCat } from '../shared/CoolCat'
+import { apiFetch } from '../shared/apiFetch'
 
 const styles = {
   root: css`
@@ -26,14 +27,11 @@ export const RootPage = () => {
 
   useEffect(() => {
     async function doStuff() {
-      const res = await fetch('/api/genres/all')
-      const body = await res.json()
+      const result = await apiFetch('/genres/all')
 
-      if (!res.ok) {
-        return
-      }
+      console.log(777, result)
 
-      setGenres(body)
+      setGenres(result)
       setIsLoading(false)
     }
 

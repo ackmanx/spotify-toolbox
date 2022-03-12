@@ -3,8 +3,13 @@ import { getSession } from 'next-auth/react'
 
 import dbConnect from '../../../../lib/db'
 import { _Album, buildAlbum, mAlbum } from '../../../../mongoose/Album'
-import { _Artist, buildArtist, mArtist } from '../../../../mongoose/Artist'
-import { _User, mUser } from '../../../../mongoose/User'
+import { _Artist, buildArtist, mArtist, sendArtistNotFoundError } from '../../../../mongoose/Artist'
+import {
+  _User,
+  mUser,
+  sendAccessTokenExpiredError,
+  sendUserNotFoundError,
+} from '../../../../mongoose/User'
 import { Many, One } from '../../../../mongoose/types'
 import { filterNonNull, removeDuplicates } from '../../../../utils/array'
 import { SpotifyHelper } from '../../../../utils/server/spotify-helper'
@@ -18,17 +23,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const user: One<_User> = await mUser.findOne({ userId: session?.userId })
 
   if (!user) {
-    res
-      .status(401)
-      .send({ success: false, message: 'User not found in database. How are you even logged in?' })
+    sendUserNotFoundError(res)
     return
   }
 
   if (session?.isExpired) {
-    return res.status(401).send({
-      success: false,
-      message: 'Your Spotify access token is expired. Please sign out then back in.',
-    })
+    sendAccessTokenExpiredError(res)
+    return
   }
 
   const mArtistToUpdate: One<_Artist> = await mArtist.findOne({
@@ -36,11 +37,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   })
 
   if (!mArtistToUpdate) {
-    return res.status(404).send({
-      success: false,
-      message:
-        'The artist you are trying to refresh is not in the DB. Not sure how you are even here.',
-    })
+    sendArtistNotFoundError(res)
+    return
   }
 
   // Make sure there's an entry for this artist in our viewedAlbums

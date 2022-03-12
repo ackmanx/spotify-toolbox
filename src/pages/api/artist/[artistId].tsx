@@ -4,8 +4,8 @@ import { getSession } from 'next-auth/react'
 
 import dbConnect from '../../../lib/db'
 import { _Album, buildAlbum, mAlbum } from '../../../mongoose/Album'
-import { _Artist, mArtist } from '../../../mongoose/Artist'
-import { mUser, sendUserError } from '../../../mongoose/User'
+import { _Artist, mArtist, sendArtistNotFoundError } from '../../../mongoose/Artist'
+import { mUser, sendUserNotFoundError } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
 import { isViewed } from '../../../utils/array'
 import { SpotifyHelper } from '../../../utils/server/spotify-helper'
@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const user = await mUser.findOne({ userId: session?.userId })
 
   if (!user) {
-    sendUserError(res)
+    sendUserNotFoundError(res)
     return
   }
 
@@ -36,10 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const artist: One<_Artist> = await mArtist.findOne({ id: artistId })
 
     if (!artist) {
-      res.status(401).send({
-        success: false,
-        message: 'Artist not found in database. How did you even get here?',
-      })
+      sendArtistNotFoundError(res)
       return
     }
 

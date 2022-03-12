@@ -1,4 +1,5 @@
 import mongoose, { Model, Schema } from 'mongoose'
+import { NextApiResponse } from 'next'
 
 import { guessGenre } from '../utils/server/guess-genre'
 
@@ -35,4 +36,11 @@ export const buildArtist = (artist: ArtistObjectFull) => {
   model.genre = guessGenre(artist.genres)
 
   return model
+}
+
+export const sendArtistNotFoundError = (res: NextApiResponse) => {
+  res.status(401).send({
+    success: false,
+    message: 'Artist not found in database. How is that even possible?',
+  })
 }

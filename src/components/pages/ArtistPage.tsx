@@ -7,6 +7,7 @@ import { AlbumsByReleaseType } from '../../pages/artist/[artistId]'
 import { Album } from '../album/Album'
 import { AlbumMenu } from '../album/AlbumMenu'
 import { Subheader } from '../header/Subheader'
+import { apiFetch } from '../shared/apiFetch'
 
 interface Props {
   artist: _Artist
@@ -50,8 +51,7 @@ export const ArtistPage = ({ artist }: Props) => {
 
   useEffect(() => {
     async function doStuff() {
-      const res = await fetch(`/api/artist/${artistId}`)
-      const body = await res.json()
+      const body = await apiFetch(`/artist/${artistId}`)
       setAlbumsByReleaseType(body)
     }
 

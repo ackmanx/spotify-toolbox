@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react'
 import dbConnect from '../../../../lib/db'
 import { _Album, mAlbum } from '../../../../mongoose/Album'
 import { _Artist, buildArtist, mArtist } from '../../../../mongoose/Artist'
-import { _User, mUser } from '../../../../mongoose/User'
+import { _User, mUser, sendUserNotFoundError } from '../../../../mongoose/User'
 import { Many, One } from '../../../../mongoose/types'
 import { removeDuplicates } from '../../../../utils/array'
 import { SpotifyHelper } from '../../../../utils/server/spotify-helper'
@@ -21,10 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const user: One<_User> = await mUser.findOne({ userId: session?.userId })
 
   if (!user) {
-    res.status(401).send({
-      success: false,
-      message: 'User not found in database. Not sure how this is even possible?',
-    })
+    sendUserNotFoundError(res)
     return
   }
 

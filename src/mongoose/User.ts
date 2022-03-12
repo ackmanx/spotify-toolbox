@@ -27,8 +27,15 @@ const UserSchema = new Schema<_User>({
 
 export const mUser: Model<_User> = mongoose.models.User ?? mongoose.model('User', UserSchema)
 
-export const sendUserError = (res: NextApiResponse) => {
+export const sendUserNotFoundError = (res: NextApiResponse) => {
   res
     .status(401)
     .send({ success: false, message: 'User not found in database. How are you even logged in?' })
+}
+
+export const sendAccessTokenExpiredError = (res: NextApiResponse) => {
+  res.status(401).send({
+    success: false,
+    message: 'Your Spotify access token is expired. Please sign out then back in.',
+  })
 }

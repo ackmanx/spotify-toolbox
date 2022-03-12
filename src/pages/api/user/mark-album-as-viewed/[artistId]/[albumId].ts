@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 
 import dbConnect from '../../../../../lib/db'
-import { _Album, mAlbum } from '../../../../../mongoose/Album'
-import { _User, mUser } from '../../../../../mongoose/User'
+import { _Album, mAlbum, sendAlbumNotFoundError } from '../../../../../mongoose/Album'
+import { _User, mUser, sendUserNotFoundError } from '../../../../../mongoose/User'
 import { One } from '../../../../../mongoose/types'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -17,11 +17,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const user: One<_User> = await mUser.findOne({ userId: session?.userId })
   const album: One<_Album> = await mAlbum.findOne({ id: albumToMark })
 
-  if (!user || !album) {
-    res.status(401).send({
-      success: false,
-      message: 'User/Album not found in database. Not sure how this is even possible?',
-    })
+  if (!user) {
+    sendUserNotFoundError(res)
+    return
+  }
+
+  if (!album) {
+    sendAlbumNotFoundError(res)
     return
   }
 
