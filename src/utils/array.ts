@@ -13,3 +13,14 @@ export function removeDuplicates(source: any[], overlap: string[]) {
 export function isViewed(viewedAlbums: _ViewedAlbums, artistId: string, albumId: string) {
   return viewedAlbums[artistId]?.find((album) => album.id === albumId) !== undefined
 }
+
+/*
+ * Sorts IN PLACE
+ */
+export function sortBy(arr: any[], fieldName: string, direction: 'asc' | 'desc' = 'asc') {
+  if (direction === 'asc') {
+    return arr.sort((a, b) => (a[fieldName] > b[fieldName] ? 1 : -1))
+  }
+
+  return arr.sort((a, b) => (a[fieldName] < b[fieldName] ? 1 : -1))
+}

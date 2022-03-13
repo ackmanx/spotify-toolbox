@@ -7,7 +7,7 @@ import { AlbumsByReleaseType, _Album, buildAlbum, mAlbum } from '../../../mongoo
 import { _Artist, mArtist, sendArtistNotFoundError } from '../../../mongoose/Artist'
 import { mUser, sendAccessTokenExpiredError, sendUserNotFoundError } from '../../../mongoose/User'
 import { Many, One } from '../../../mongoose/types'
-import { isViewed } from '../../../utils/array'
+import { isViewed, sortBy } from '../../../utils/array'
 import { SpotifyHelper } from '../../../utils/server/spotify-helper'
 
 type ResBody = AlbumsByReleaseType | { success: boolean; message?: string }
@@ -64,8 +64,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     { single: [], album: [] }
   )
 
-  albumsByReleaseType.album.sort((a, b) => (a.releaseDate < b.releaseDate ? 1 : -1))
-  albumsByReleaseType.single.sort((a, b) => (a.releaseDate < b.releaseDate ? 1 : -1))
+  sortBy(albumsByReleaseType.album, 'releaseDate', 'desc')
+  sortBy(albumsByReleaseType.single, 'releaseDate', 'desc')
 
   res.send(albumsByReleaseType)
 }

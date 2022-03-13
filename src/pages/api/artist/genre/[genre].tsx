@@ -5,7 +5,7 @@ import dbConnect from '../../../../lib/db'
 import { _Artist, mArtist } from '../../../../mongoose/Artist'
 import { mUser, sendUserNotFoundError } from '../../../../mongoose/User'
 import { Many } from '../../../../mongoose/types'
-import { isViewed } from '../../../../utils/array'
+import { isViewed, sortBy } from '../../../../utils/array'
 
 type ResBody = Many<_Artist> | { success: boolean; message?: string }
 
@@ -32,6 +32,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       artist.albumIDs.length === 0 ||
       artist.albumIDs.some((albumId) => !isViewed(user.viewedAlbums, artist.id, albumId))
   )
+
+  sortBy(artistsWithUnviewedAlbums, 'name')
 
   res.send(artistsWithUnviewedAlbums)
 }
