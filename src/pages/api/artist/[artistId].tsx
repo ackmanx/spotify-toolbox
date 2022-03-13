@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const artistId = Array.isArray(req.query.artistId) ? req.query.artistId[0] : req.query.artistId
 
-  let albumsInDB: Many<_Album> = await mAlbum.find({ artistId })
+  let albumsInDB: Many<_Album> = await mAlbum.find({ artistIds: { $in: artistId } })
 
   if (albumsInDB.length === 0) {
     if (session?.isExpired) {
@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     const sAlbumsForArtist = await SpotifyHelper.albumsForArtist(req, artistId)
-    const mAlbums = sAlbumsForArtist.map((album) => buildAlbum(album, artistId))
+    const mAlbums = sAlbumsForArtist.map((album) => buildAlbum(album))
     const albumIDs = mAlbums.map((album) => album.id)
 
     const artist: One<_Artist> = await mArtist.findOne({ id: artistId })

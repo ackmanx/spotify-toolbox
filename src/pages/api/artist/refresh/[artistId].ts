@@ -83,7 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const mAlbumsInDB_IDs: string[] = mAlbumsInDB.map((album) => album.id)
 
   const mAlbumsToSave: Many<_Album> = removeDuplicates(sAlbumsForArtist, mAlbumsInDB_IDs).map(
-    (album) => buildAlbum(album, mArtistToUpdate.id)
+    (album) => buildAlbum(album)
   )
 
   if (mAlbumsToSave.length) {
