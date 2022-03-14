@@ -4,6 +4,8 @@
 
 ### No error message for 404 on mark as viewed but it looks like it works
 
+### What happened to the x/x counts when refreshing an artist or genre
+
 ### Duplicate album removal not working on artist refresh here
 
 https://www.ialreadysawthat.com/artist/0hprEC0nsWuQPSHag1O2Vi
