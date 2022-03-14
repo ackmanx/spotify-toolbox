@@ -1,4 +1,6 @@
 # Bug
+### 500 Error
+https://www.ialreadysawthat.com/artist/1V3VTM7VspiQjcmRhC010n
 
 ### If a user tires to view an artist that has no albums fetched yet and their token is expired, make a nicer error
 
