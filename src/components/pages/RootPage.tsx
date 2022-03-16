@@ -29,8 +29,6 @@ export const RootPage = () => {
     async function doStuff() {
       const result = await apiFetch('/genres/all')
 
-      console.log(777, result)
-
       setGenres(result)
       setIsLoading(false)
     }

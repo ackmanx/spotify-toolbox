@@ -14,22 +14,29 @@ const RootNextPage: NextPage = () => {
   useAccessTokenTimer()
   const { status } = useSession()
 
+  if (status === 'loading') {
+    return null
+  }
+
+  const isLoggedIn = status !== 'unauthenticated'
+
   return (
     <>
       <Head>
         <title>Genres</title>
       </Head>
       <ToastContainer />
-      <AppHeader title='Genres' />
+      <AppHeader title={isLoggedIn ? 'Genres' : ''} />
       <main
         css={css`
           text-align: center;
         `}
       >
-        {status === 'unauthenticated' && (
+        {isLoggedIn ? (
+          <RootPage />
+        ) : (
           <CoolCat header='It looks like you are not signed in.' subheader='Try harder.' />
         )}
-        <RootPage />
       </main>
     </>
   )
