@@ -10,7 +10,11 @@ https://www.ialreadysawthat.com/artist/0hprEC0nsWuQPSHag1O2Vi
 
 ### Artist still showing up in genre's artist list even though no albums
 
+I Thought I fixed th is
+
 https://www.ialreadysawthat.com/artist/37awA8DFCAnCCL7aqYbDnD
+
+https://www.ialreadysawthat.com/artist/5JpmFYHmzG3e2GUKL8gEx4
 
 # Feature
 
