@@ -1,8 +1,12 @@
 # Bug
+### 500 Error
+https://www.ialreadysawthat.com/artist/1V3VTM7VspiQjcmRhC010n
 
 ### If a user tires to view an artist that has no albums fetched yet and their token is expired, make a nicer error
 
 ### No error message for 404 on mark as viewed but it looks like it works
+
+### What happened to the x/x counts when refreshing an artist or genre
 
 ### Duplicate album removal not working on artist refresh here
 
