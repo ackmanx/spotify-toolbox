@@ -11,14 +11,14 @@ export const apiFetch = async (url: string) => {
     toast.error(error.message, { position: 'top-center', autoClose: false })
   }
 
-  console.log(777, body)
+  console.log(777, 'API Fetch:', body)
 
   if (!res.ok) {
-    console.log(777, 'not ok!')
+    console.log(777, 'API Fetch:', 'not ok!')
     toast.error(body?.message ?? body, { position: 'top-center', autoClose: false })
     return
   }
 
-  console.log(777, ' ok!')
+  console.log(777, 'API Fetch:', ' ok!')
   return body
 }
