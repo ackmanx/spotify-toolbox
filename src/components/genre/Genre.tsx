@@ -54,7 +54,7 @@ const genreToIcon: Record<string, StaticImageData> = {
 
 export const Genre = ({ genre }: Props) => (
   <div css={styles.root}>
-    <ImageLink href={`/genre/${genre}`} imageSrc={genreToIcon[genre]} width={50} height={50}>
+    <ImageLink href={`/app/genre/${genre}`} imageSrc={genreToIcon[genre]} width={50} height={50}>
       {genre}
     </ImageLink>
   </div>

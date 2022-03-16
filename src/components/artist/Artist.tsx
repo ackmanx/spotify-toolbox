@@ -41,7 +41,7 @@ export const Artist = ({ artist }: Props) => {
     <div css={styles.root}>
       <div css={styles.image}>
         <ImageLink
-          href={`/artist/${artist.id}`}
+          href={`/app/artist/${artist.id}`}
           imageSrc={artist.coverArt || ArtistPlaceholder}
           width={300}
           height={300}

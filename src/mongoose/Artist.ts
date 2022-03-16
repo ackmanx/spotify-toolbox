@@ -6,12 +6,16 @@ import { guessGenre } from '../utils/server/guess-genre'
 import ArtistObjectFull = SpotifyApi.ArtistObjectFull
 
 export interface _Artist {
+  //The document's ID will be Spotify's artist ID
   _id: string
+  //Spotify artist ID
   id: string
   name: string
   coverArt?: string
   genre: string
   albumIDs: string[]
+  //First load will get all the albums for an artist and insert into ablum collection
+  isFirstLoadCompleted: boolean
 }
 
 const ArtistSchema = new Schema<_Artist>({
@@ -21,6 +25,7 @@ const ArtistSchema = new Schema<_Artist>({
   coverArt: String,
   genre: String,
   albumIDs: [String],
+  isFirstLoadCompleted: Boolean,
 })
 
 export const mArtist: Model<_Artist> =
