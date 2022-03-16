@@ -5,13 +5,13 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
-import { AppHeader } from '../../components/header/AppHeader'
-import { ArtistPage } from '../../components/pages/ArtistPage'
-import { useAccessTokenTimer } from '../../hooks/useAccessTokenTimer'
-import dbConnect from '../../lib/db'
-import { _Artist, mArtist } from '../../mongoose/Artist'
-import { One } from '../../mongoose/types'
-import { forceSerialization } from '../../utils/force-serialization'
+import { AppHeader } from '../../../components/header/AppHeader'
+import { ArtistPage } from '../../../components/pages/ArtistPage'
+import { useAccessTokenTimer } from '../../../hooks/useAccessTokenTimer'
+import dbConnect from '../../../lib/db'
+import { _Artist, mArtist } from '../../../mongoose/Artist'
+import { One } from '../../../mongoose/types'
+import { forceSerialization } from '../../../utils/force-serialization'
 
 interface Props {
   artist: _Artist

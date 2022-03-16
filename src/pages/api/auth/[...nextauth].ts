@@ -23,7 +23,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     theme: {
       colorScheme: 'light',
       brandColor: '#000000',
-      logo: '/logo.png',
+      logo: '/static/logo.png',
     },
     providers: [
       SpotifyProvider({

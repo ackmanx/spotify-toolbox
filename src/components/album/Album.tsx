@@ -2,11 +2,11 @@
 import { css } from '@emotion/react'
 import NextImage from 'next/image'
 
-import { AlbumWithViewed } from '../../pages/artist/[artistId]'
+import { _Album } from '../../mongoose/Album'
 import AlbumPlaceholder from './images/album-placeholder.png'
 
 interface Props {
-  album: AlbumWithViewed
+  album: _Album
   onClick(): void
 }
 
