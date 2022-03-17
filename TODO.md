@@ -1,6 +1,10 @@
 # Bug
+
 ### 500 Error
+
 https://www.ialreadysawthat.com/artist/1V3VTM7VspiQjcmRhC010n
+
+### No albums left to view for an artist should show a message
 
 ### If a user tires to view an artist that has no albums fetched yet and their token is expired, make a nicer error
 

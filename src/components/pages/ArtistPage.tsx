@@ -2,8 +2,8 @@
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 
+import { _Album } from '../../mongoose/Album'
 import { _Artist } from '../../mongoose/Artist'
-import { AlbumsByReleaseType } from '../../pages/app/artist/[artistId]'
 import { Album } from '../album/Album'
 import { AlbumMenu } from '../album/AlbumMenu'
 import { Subheader } from '../header/Subheader'
@@ -12,6 +12,8 @@ import { apiFetch } from '../shared/apiFetch'
 interface Props {
   artist: _Artist
 }
+
+type AlbumsByReleaseType = Record<'album' | 'single', (_Album & { isViewed: boolean })[]>
 
 const styles = {
   header: css`
