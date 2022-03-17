@@ -7,6 +7,7 @@ import { _Artist } from '../../mongoose/Artist'
 import { Album } from '../album/Album'
 import { AlbumMenu } from '../album/AlbumMenu'
 import { Subheader } from '../header/Subheader'
+import { CoolCat } from '../shared/CoolCat'
 import { apiFetch } from '../shared/apiFetch'
 
 interface Props {
@@ -100,6 +101,10 @@ export const ArtistPage = ({ artist }: Props) => {
 
   return (
     <div>
+      {albumsByReleaseType.album.length === 0 && albumsByReleaseType.single.length === 0 && (
+        <CoolCat header='No new albums. Nothing to see here.' subheader='' />
+      )}
+
       {albumsByReleaseType.album.some((album) => !album.isViewed) && <Subheader name='albums' />}
 
       {albumsByReleaseType.album.map(

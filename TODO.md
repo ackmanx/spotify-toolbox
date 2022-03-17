@@ -1,14 +1,12 @@
 # Bug
 
-### 500 Error
+### Rapid firing marks as viewed causes some of them not to persist, even though the api call comes back as a success
 
-https://www.ialreadysawthat.com/artist/1V3VTM7VspiQjcmRhC010n
+Exampe: https://www.ialreadysawthat.com/artist/1h6Cn3P4NGzXbaXidqURXs
 
-### No albums left to view for an artist should show a message
+Go in the DB and delete this's artists viewed and try again to replicate
 
 ### If a user tires to view an artist that has no albums fetched yet and their token is expired, make a nicer error
-
-### No error message for 404 on mark as viewed but it looks like it works
 
 ### What happened to the x/x counts when refreshing an artist or genre
 
