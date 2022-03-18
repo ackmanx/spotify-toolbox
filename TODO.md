@@ -8,7 +8,11 @@ Go in the DB and delete this's artists viewed and try again to replicate
 
 ### If a user tires to view an artist that has no albums fetched yet and their token is expired, make a nicer error
 
-### What happened to the x/x counts when refreshing an artist or genre
+### Refreshing a genre only refreshes all artists on the screen
+
+Because of this, only artists with unviewed albums will be refreshed, I think
+
+We need to know all artists, even if they don't have albums.
 
 ### Duplicate album removal not working on artist refresh here
 
