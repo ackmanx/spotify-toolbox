@@ -96,10 +96,17 @@ export const AlbumMenu = ({
       >
         <div ref={ref} css={styles.icon}>
           <ButtonImage src={MarkAsViewedIcon} width={50} height={50} onClick={handleMarkAsViewed} />
+          Mark as Viewed
         </div>
       </CSSTransition>
-      <ImageLink href={album.spotifyUri} imageSrc={OpenSpotifyIcon} width={35} height={35} />
-      <ImageLink href={album.spotifyWebUrl} imageSrc={OpenWebIcon} width={35} height={35} />
+      <div ref={ref} css={styles.icon}>
+        <ImageLink href={album.spotifyUri} imageSrc={OpenSpotifyIcon} width={35} height={35} />
+        Open in Spotify
+      </div>
+      <div ref={ref} css={styles.icon}>
+        <ImageLink href={album.spotifyWebUrl} imageSrc={OpenWebIcon} width={35} height={35} />
+        Open in Web
+      </div>
       <CSSTransition
         nodeRef={ref}
         classNames='mark_viewed'
@@ -113,6 +120,7 @@ export const AlbumMenu = ({
             height={35}
             onClick={handleAddToPlaylist}
           />
+          Add to Playlist
         </div>
       </CSSTransition>
     </div>
