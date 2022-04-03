@@ -7,6 +7,7 @@ import { _Artist } from '../../mongoose/Artist'
 import { ButtonImage } from '../shared/Image'
 import { Account } from './Account'
 import { BulkAddToPlaylistButton } from './BulkAddToPlaylistButton'
+import { BulkMarkAsViewedButton } from './BulkMarkAsViewedButton'
 import { RefreshButton } from './RefreshButton'
 import AppLogo from './images/logo.png'
 
@@ -62,7 +63,12 @@ export const AppHeader = ({
           <>
             <h3>{title}</h3>
             {isRefreshable && <RefreshButton artistIDs={artistIDs} />}
-            {isArtistPage && <BulkAddToPlaylistButton albumIDs={albumIDs} />}
+            {isArtistPage && (
+              <>
+                <BulkAddToPlaylistButton artistID={artistIDs[0]} albumIDs={albumIDs} />
+                <BulkMarkAsViewedButton artistID={artistIDs[0]} albumIDs={albumIDs} />
+              </>
+            )}
           </>
         )}
       </div>
