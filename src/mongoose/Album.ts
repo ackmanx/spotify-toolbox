@@ -31,6 +31,11 @@ export const mAlbum: Model<_Album> = mongoose.models.Album ?? mongoose.model('Al
 
 export type AlbumsByReleaseType = Record<'album' | 'single', _Album[]>
 
+export type AlbumsByReleaseType_WithIsViewed = Record<
+  'album' | 'single',
+  (_Album & { isViewed: boolean })[]
+>
+
 export const buildAlbum = (album: AlbumObjectSimplified): HydratedDocument<_Album> => {
   const newAlbum = new mAlbum()
 

@@ -1,20 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { _Album } from '../../mongoose/Album'
+import { AlbumsByReleaseType_WithIsViewed } from '../../mongoose/Album'
 import { _Artist } from '../../mongoose/Artist'
 import { Album } from '../album/Album'
 import { AlbumMenu } from '../album/AlbumMenu'
 import { Subheader } from '../header/Subheader'
 import { CoolCat } from '../shared/CoolCat'
-import { apiFetch } from '../shared/apiFetch'
 
 interface Props {
   artist: _Artist
+  albumsByReleaseType: AlbumsByReleaseType_WithIsViewed
 }
-
-type AlbumsByReleaseType = Record<'album' | 'single', (_Album & { isViewed: boolean })[]>
 
 const styles = {
   header: css`
@@ -46,20 +44,9 @@ const styles = {
   `,
 }
 
-export const ArtistPage = ({ artist }: Props) => {
+export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
   const [albumMenus, setAlbumMenus] = useState<Record<string, boolean>>({})
   const [newlyViewedAlbums, setNewlyViewedAlbums] = useState<Record<string, boolean>>({})
-  const [albumsByReleaseType, setAlbumsByReleaseType] = useState<AlbumsByReleaseType>()
-  const artistId = artist.id
-
-  useEffect(() => {
-    async function doStuff() {
-      const body = await apiFetch(`/artist/${artistId}`)
-      setAlbumsByReleaseType(body)
-    }
-
-    doStuff()
-  }, [artistId])
 
   if (!albumsByReleaseType) {
     return null

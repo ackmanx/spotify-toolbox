@@ -2,16 +2,21 @@
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 
+import { AlbumsByReleaseType } from '../../mongoose/Album'
 import { _Artist } from '../../mongoose/Artist'
 import { ButtonImage } from '../shared/Image'
 import { Account } from './Account'
+import { BulkAddToPlaylistButton } from './BulkAddToPlaylistButton'
 import { RefreshButton } from './RefreshButton'
 import AppLogo from './images/logo.png'
 
 interface Props {
-  // Need to know all the artists when on genre page so can pass the IDs to the server to update
+  // Necessary for refreshing artist on genre and artist pages
   artists?: _Artist[]
+  // Necessary for bulk operations on an artist page
+  albumIDs: string[]
   title?: string
+  isArtistPage?: boolean
   isRefreshable?: boolean
 }
 
@@ -38,7 +43,13 @@ const styles = {
   `,
 }
 
-export const AppHeader = ({ artists = [], title, isRefreshable }: Props) => {
+export const AppHeader = ({
+  artists = [],
+  albumIDs,
+  title,
+  isRefreshable,
+  isArtistPage,
+}: Props) => {
   const router = useRouter()
   const artistIDs = artists.map((artist) => artist.id)
 
@@ -51,6 +62,7 @@ export const AppHeader = ({ artists = [], title, isRefreshable }: Props) => {
           <>
             <h3>{title}</h3>
             {isRefreshable && <RefreshButton artistIDs={artistIDs} />}
+            {isArtistPage && <BulkAddToPlaylistButton albumIDs={albumIDs} />}
           </>
         )}
       </div>
