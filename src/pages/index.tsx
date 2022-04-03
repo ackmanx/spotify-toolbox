@@ -23,7 +23,7 @@ const RootNextPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Genres</title>
+        <title>I Already Saw That</title>
       </Head>
       <ToastContainer />
       <AppHeader title='I Already Saw That' />
