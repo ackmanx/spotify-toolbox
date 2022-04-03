@@ -9,13 +9,14 @@ import { Account } from './Account'
 import { BulkAddToPlaylistButton } from './BulkAddToPlaylistButton'
 import { BulkMarkAsViewedButton } from './BulkMarkAsViewedButton'
 import { RefreshButton } from './RefreshButton'
+import BackIcon from './images/back.png'
 import AppLogo from './images/logo.png'
 
 interface Props {
   // Necessary for refreshing artist on genre and artist pages
   artists?: _Artist[]
   // Necessary for bulk operations on an artist page
-  albumIDs: string[]
+  albumIDs?: string[]
   title?: string
   isArtistPage?: boolean
   isRefreshable?: boolean
@@ -42,6 +43,13 @@ const styles = {
     display: flex;
     align-items: end;
   `,
+  leftGroup: css`
+    display: flex;
+    align-items: center;
+  `,
+  backButton: css`
+    margin-top: 10px;
+  `,
 }
 
 export const AppHeader = ({
@@ -56,7 +64,14 @@ export const AppHeader = ({
 
   return (
     <header css={styles.root}>
-      <ButtonImage src={AppLogo} width={60} height={60} onClick={() => router.push('/')} />
+      <div css={styles.leftGroup}>
+        <ButtonImage src={AppLogo} width={60} height={60} onClick={() => router.push('/')} />
+        {router.pathname !== '/' && (
+          <div css={styles.backButton}>
+            <ButtonImage src={BackIcon} width={24} height={24} onClick={() => router.back()} />
+          </div>
+        )}
+      </div>
 
       <div css={styles.centerGroup}>
         {title && (

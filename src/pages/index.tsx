@@ -26,7 +26,7 @@ const RootNextPage: NextPage = () => {
         <title>Genres</title>
       </Head>
       <ToastContainer />
-      <AppHeader title={isLoggedIn ? 'Genres' : ''} />
+      <AppHeader title='I Already Saw That' />
       <main
         css={css`
           text-align: center;
