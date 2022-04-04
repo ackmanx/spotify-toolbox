@@ -44,7 +44,7 @@ const styles = {
   `,
 }
 
-export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
+export const AlbumsForArtistPage = ({ artist, albumsByReleaseType }: Props) => {
   const [albumMenus, setAlbumMenus] = useState<Record<string, boolean>>({})
   const [newlyViewedAlbums, setNewlyViewedAlbums] = useState<Record<string, boolean>>({})
 

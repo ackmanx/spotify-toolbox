@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 
 import { AppHeader } from '../../../components/app-header/AppHeader'
-import { ArtistPage } from '../../../components/pages/ArtistPage'
+import { AlbumsForArtistPage } from '../../../components/pages/AlbumsForArtistPage'
 import { apiFetch } from '../../../components/shared/apiFetch'
 import { useAccessTokenTimer } from '../../../hooks/useAccessTokenTimer'
 import dbConnect from '../../../lib/db'
@@ -66,7 +66,7 @@ const ArtistNextPage: NextPage<Props> = ({ artist }) => {
       >
         <ToastContainer />
 
-        <ArtistPage artist={artist} albumsByReleaseType={albumsByReleaseType} />
+        <AlbumsForArtistPage artist={artist} albumsByReleaseType={albumsByReleaseType} />
       </main>
     </>
   )

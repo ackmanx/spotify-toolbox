@@ -11,7 +11,7 @@ interface Props {
   genre: string
 }
 
-export const GenrePage = ({ genre }: Props) => {
+export const ArtistsInGenrePage = ({ genre }: Props) => {
   const [artists, setArtists] = useState<_Artist[]>([])
 
   useEffect(() => {

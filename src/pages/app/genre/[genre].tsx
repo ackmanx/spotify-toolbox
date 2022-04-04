@@ -6,7 +6,7 @@ import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
 import { AppHeader } from '../../../components/app-header/AppHeader'
-import { GenrePage } from '../../../components/pages/GenrePage'
+import { ArtistsInGenrePage } from '../../../components/pages/ArtistsInGenrePage'
 import { useAccessTokenTimer } from '../../../hooks/useAccessTokenTimer'
 
 interface Props {
@@ -24,7 +24,7 @@ const GenreNextPage: NextPage<Props> = ({ genre }) => {
         <title>{genre}</title>
       </Head>
       <ToastContainer />
-      <GenrePage genre={genre} />
+      <ArtistsInGenrePage genre={genre} />
     </>
   )
 }
