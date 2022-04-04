@@ -36,7 +36,7 @@ const styles = {
   `,
 }
 
-export const Artist = ({ artist }: Props) => {
+export const ArtistCard = ({ artist }: Props) => {
   return (
     <div css={styles.root}>
       <div css={styles.image}>

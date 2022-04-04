@@ -29,7 +29,7 @@ const styles = {
   `,
 }
 
-export const Album = ({ album, onClick }: Props) => {
+export const AlbumCard = ({ album, onClick }: Props) => {
   return (
     <div css={styles.root} key={album.id}>
       <NextImage

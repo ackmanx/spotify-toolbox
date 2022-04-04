@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { _Artist } from '../../mongoose/Artist'
 import { AppHeader } from '../app-header/AppHeader'
 import { Subheader } from '../app-header/Subheader'
-import { Artist } from '../cards/artist/Artist'
+import { ArtistCard } from '../cards/artist/ArtistCard'
 
 interface Props {
   genre: string
@@ -38,7 +38,7 @@ export const GenrePage = ({ genre }: Props) => {
         <Subheader name='artists' />
 
         {artists.map((artist) => (
-          <Artist key={artist.id} artist={artist} />
+          <ArtistCard key={artist.id} artist={artist} />
         ))}
       </main>
     </>

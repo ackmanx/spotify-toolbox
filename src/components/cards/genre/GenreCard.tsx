@@ -52,7 +52,7 @@ const genreToIcon: Record<string, StaticImageData> = {
   unknown: UnknownIcon,
 }
 
-export const Genre = ({ genre }: Props) => (
+export const GenreCard = ({ genre }: Props) => (
   <div css={styles.root}>
     <ImageLink href={`/app/genre/${genre}`} imageSrc={genreToIcon[genre]} width={50} height={50}>
       {genre}

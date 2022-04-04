@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 import { Subheader } from '../app-header/Subheader'
-import { Genre } from '../cards/genre/Genre'
+import { GenreCard } from '../cards/genre/GenreCard'
 import { CoolCat } from '../shared/CoolCat'
 import { apiFetch } from '../shared/apiFetch'
 
@@ -44,7 +44,7 @@ export const RootPage = () => {
     <div css={styles.root}>
       <div css={styles.genreContainer}>
         {genres.length !== 0 ? (
-          genres.map((genre) => <Genre key={genre} genre={genre} />)
+          genres.map((genre) => <GenreCard key={genre} genre={genre} />)
         ) : (
           <CoolCat
             header="It looks like you've got no followed artists."

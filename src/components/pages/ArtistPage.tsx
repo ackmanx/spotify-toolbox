@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { AlbumsByReleaseType_WithIsViewed } from '../../mongoose/Album'
 import { _Artist } from '../../mongoose/Artist'
 import { Subheader } from '../app-header/Subheader'
-import { Album } from '../cards/album/Album'
+import { AlbumCard } from '../cards/album/AlbumCard'
 import { AlbumMenu } from '../cards/album/AlbumMenu'
 import { CoolCat } from '../shared/CoolCat'
 
@@ -98,7 +98,7 @@ export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
         (album) =>
           !album.isViewed && (
             <div key={album.id} css={styles.albumContainer(newlyViewedAlbums[album.id])}>
-              <Album album={album} onClick={() => toggleAlbumMenu(album.id)} />
+              <AlbumCard album={album} onClick={() => toggleAlbumMenu(album.id)} />
               {albumMenus[album.id] && (
                 <AlbumMenu
                   css={styles.menu}
@@ -121,7 +121,7 @@ export const ArtistPage = ({ artist, albumsByReleaseType }: Props) => {
         (single) =>
           !single.isViewed && (
             <div key={single.id} css={styles.albumContainer(newlyViewedAlbums[single.id])}>
-              <Album album={single} onClick={() => toggleAlbumMenu(single.id)} />
+              <AlbumCard album={single} onClick={() => toggleAlbumMenu(single.id)} />
               {albumMenus[single.id] && (
                 <AlbumMenu
                   css={styles.menu}
