@@ -28,7 +28,6 @@ const styles = {
             border: 2px dashed red;
             position: absolute;
             border-radius: 100%;
-            left: 2px;
             top: -3px;
           }
         `
