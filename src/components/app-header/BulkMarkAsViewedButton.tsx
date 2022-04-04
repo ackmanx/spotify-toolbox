@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
 
-import AddToPlaylistIcon from '../album/images/add-to-playlist.png'
+import MarkAsViewedIcon from '../cards/album/images/mark-album-as-viewed.png'
 import { ButtonImage } from '../shared/Image'
 
 interface Props {
@@ -11,25 +11,17 @@ interface Props {
   artistID: string
 }
 
-export const BulkAddToPlaylistButton = ({ artistID, albumIDs }: Props) => {
+export const BulkMarkAsViewedButton = ({ artistID, albumIDs }: Props) => {
   const [isAdding, setIsAdding] = useState(false)
   const [numAlbumAdding, setNumAlbumAdding] = useState(0)
   const refreshRef = useRef(null)
 
-  const handleBulkAdd = async (event: any) => {
+  const handleBulkMarkAsViewed = async (event: any) => {
     setIsAdding(true)
 
     try {
       for (let i = 0; i < albumIDs.length; i++) {
         setNumAlbumAdding(i + 1)
-
-        const addToPlaylistResponse = await fetch(`/api/playlist/add-album/${albumIDs[i]}`)
-
-        if (!addToPlaylistResponse.ok) {
-          const error = await addToPlaylistResponse.json()
-          toast.error(error.message, { position: 'top-center', autoClose: false })
-          return
-        }
 
         const markAsViewedResponse = await fetch(
           `/api/user/mark-album-as-viewed/${artistID}/${albumIDs[i]}`
@@ -54,10 +46,10 @@ export const BulkAddToPlaylistButton = ({ artistID, albumIDs }: Props) => {
       <CSSTransition nodeRef={refreshRef} classNames='refresh_icon' in={isAdding} timeout={99999}>
         <div ref={refreshRef}>
           <ButtonImage
-            src={AddToPlaylistIcon}
+            src={MarkAsViewedIcon}
             width={20}
             height={20}
-            onClick={handleBulkAdd}
+            onClick={handleBulkMarkAsViewed}
             disabled={isAdding}
           />
           {isAdding && albumIDs.length > 1 && (

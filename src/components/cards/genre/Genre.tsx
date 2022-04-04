@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 
-import { ImageLink } from '../shared/Image'
+import { ImageLink } from '../../shared/Image'
 import BitpopIcon from './images/bitpop.png'
 import ChineseIcon from './images/chinese.png'
 import ClubIcon from './images/club.png'

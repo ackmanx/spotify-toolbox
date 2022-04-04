@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
-import { AppHeader } from '../components/header/AppHeader'
+import { AppHeader } from '../components/app-header/AppHeader'
 import { RootPage } from '../components/pages/RootPage'
 import { CoolCat } from '../components/shared/CoolCat'
 import { useAccessTokenTimer } from '../hooks/useAccessTokenTimer'

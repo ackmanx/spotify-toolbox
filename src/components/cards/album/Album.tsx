@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import NextImage from 'next/image'
 
-import { _Album } from '../../mongoose/Album'
+import { _Album } from '../../../mongoose/Album'
 import AlbumPlaceholder from './images/album-placeholder.png'
 
 interface Props {

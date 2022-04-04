@@ -4,9 +4,9 @@ import { useState } from 'react'
 
 import { AlbumsByReleaseType_WithIsViewed } from '../../mongoose/Album'
 import { _Artist } from '../../mongoose/Artist'
-import { Album } from '../album/Album'
-import { AlbumMenu } from '../album/AlbumMenu'
-import { Subheader } from '../header/Subheader'
+import { Subheader } from '../app-header/Subheader'
+import { Album } from '../cards/album/Album'
+import { AlbumMenu } from '../cards/album/AlbumMenu'
 import { CoolCat } from '../shared/CoolCat'
 
 interface Props {

@@ -6,7 +6,7 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 
-import { AppHeader } from '../../../components/header/AppHeader'
+import { AppHeader } from '../../../components/app-header/AppHeader'
 import { ArtistPage } from '../../../components/pages/ArtistPage'
 import { apiFetch } from '../../../components/shared/apiFetch'
 import { useAccessTokenTimer } from '../../../hooks/useAccessTokenTimer'

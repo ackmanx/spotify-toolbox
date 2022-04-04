@@ -3,8 +3,8 @@ import { css } from '@emotion/react'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
-import { Genre } from '../genre/Genre'
-import { Subheader } from '../header/Subheader'
+import { Subheader } from '../app-header/Subheader'
+import { Genre } from '../cards/genre/Genre'
 import { CoolCat } from '../shared/CoolCat'
 import { apiFetch } from '../shared/apiFetch'
 
