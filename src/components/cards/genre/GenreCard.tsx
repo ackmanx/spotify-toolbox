@@ -10,32 +10,19 @@ interface Props {
 
 const styles = {
   root: css`
+    display: inline-block;
+    width: 300px;
+    height: 300px;
     margin: 20px;
-    font-size: 24px;
-    background-color: #f5f5f5;
-
-    transform: scale(100%);
-    transition: transform 200ms;
-    cursor: pointer;
-
-    &:hover {
-      transform: scale(105%);
-      transition: transform 200ms;
-    }
-
-    a {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      padding: 30px;
-    }
   `,
 }
 
 export const GenreCard = ({ genreName, coverArts }: Props) => (
   <div css={styles.root}>
-    <ImageLink href={`/app/genre/${genreName}`} imageSrc={coverArts[0]} width={50} height={50}>
-      {genreName}
-    </ImageLink>
+    <ImageLink href={`/app/genre/${genreName}`} imageSrc={coverArts[0]} width={150} height={150} />
+    <ImageLink href={`/app/genre/${genreName}`} imageSrc={coverArts[1]} width={150} height={150} />
+    <ImageLink href={`/app/genre/${genreName}`} imageSrc={coverArts[2]} width={150} height={150} />
+    <ImageLink href={`/app/genre/${genreName}`} imageSrc={coverArts[3]} width={150} height={150} />
+    <h3>{genreName}</h3>
   </div>
 )

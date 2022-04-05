@@ -40,7 +40,9 @@ export const RootPage = () => {
     return null
   }
 
-  const genreEntries = Object.entries(genres)
+  const genreEntries = Object.entries(genres).sort(([genreA], [genreB]) =>
+    genreA > genreB ? 1 : -1
+  )
 
   return (
     <div css={styles.root}>
