@@ -80,8 +80,8 @@ export const AppHeader = ({
             {isRefreshable && <RefreshButton artistIDs={artistIDs} />}
             {isArtistPage && (
               <>
-                <BulkAddToPlaylistButton artistID={artistIDs[0]} albumIDs={albumIDs} />
-                <BulkMarkAsViewedButton artistID={artistIDs[0]} albumIDs={albumIDs} />
+                <BulkAddToPlaylistButton artistID={artistIDs[0]} albumIDs={albumIDs ?? []} />
+                <BulkMarkAsViewedButton artistID={artistIDs[0]} albumIDs={albumIDs ?? []} />
               </>
             )}
           </>
