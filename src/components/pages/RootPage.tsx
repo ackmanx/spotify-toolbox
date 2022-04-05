@@ -23,7 +23,7 @@ const styles = {
 export const RootPage = () => {
   const { status } = useSession()
   const [isLoading, setIsLoading] = useState(true)
-  const [genres, setGenres] = useState<string[]>([])
+  const [genres, setGenres] = useState<Record<string, string[]>>({})
 
   useEffect(() => {
     async function doStuff() {
@@ -40,11 +40,15 @@ export const RootPage = () => {
     return null
   }
 
+  const genreEntries = Object.entries(genres)
+
   return (
     <div css={styles.root}>
       <div css={styles.genreContainer}>
-        {genres.length !== 0 ? (
-          genres.map((genre) => <GenreCard key={genre} genre={genre} />)
+        {genreEntries.length !== 0 ? (
+          genreEntries.map(([genreName, coverArts]) => (
+            <GenreCard key={genreName} genreName={genreName} coverArts={coverArts} />
+          ))
         ) : (
           <CoolCat
             header="It looks like you've got no followed artists."

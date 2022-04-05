@@ -2,18 +2,10 @@
 import { css } from '@emotion/react'
 
 import { ImageLink } from '../../shared/Image'
-import BitpopIcon from './images/bitpop.png'
-import ChineseIcon from './images/chinese.png'
-import ClubIcon from './images/club.png'
-import EbmIcon from './images/ebm.png'
-import GermanIcon from './images/german.png'
-import MiscIcon from './images/misc.png'
-import RockIcon from './images/rock.png'
-import SynthwaveIcon from './images/synthwave.png'
-import UnknownIcon from './images/unknown.png'
 
 interface Props {
-  genre: string
+  genreName: string
+  coverArts: string[]
 }
 
 const styles = {
@@ -40,22 +32,10 @@ const styles = {
   `,
 }
 
-const genreToIcon: Record<string, StaticImageData> = {
-  bitpop: BitpopIcon,
-  chinese: ChineseIcon,
-  club: ClubIcon,
-  ebm: EbmIcon,
-  german: GermanIcon,
-  misc: MiscIcon,
-  rock: RockIcon,
-  synthwave: SynthwaveIcon,
-  unknown: UnknownIcon,
-}
-
-export const GenreCard = ({ genre }: Props) => (
+export const GenreCard = ({ genreName, coverArts }: Props) => (
   <div css={styles.root}>
-    <ImageLink href={`/app/genre/${genre}`} imageSrc={genreToIcon[genre]} width={50} height={50}>
-      {genre}
+    <ImageLink href={`/app/genre/${genreName}`} imageSrc={coverArts[0]} width={50} height={50}>
+      {genreName}
     </ImageLink>
   </div>
 )
