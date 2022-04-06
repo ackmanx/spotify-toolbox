@@ -11,11 +11,7 @@ import { AlbumsForArtistPage } from '../../../components/pages/AlbumsForArtistPa
 import { apiFetch } from '../../../components/shared/apiFetch'
 import { useAccessTokenTimer } from '../../../hooks/useAccessTokenTimer'
 import dbConnect from '../../../lib/db'
-import {
-  AlbumsByReleaseType,
-  AlbumsByReleaseType_WithIsViewed,
-  _Album,
-} from '../../../mongoose/Album'
+import { AlbumsByReleaseType_WithIsViewed, _Album } from '../../../mongoose/Album'
 import { _Artist, mArtist } from '../../../mongoose/Artist'
 import { One } from '../../../mongoose/types'
 import { forceSerialization } from '../../../utils/force-serialization'
