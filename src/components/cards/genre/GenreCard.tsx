@@ -12,9 +12,10 @@ const styles = {
   root: css`
     // To allow each genre card to autowrap on the page
     display: inline-block;
-    width: 200px;
-    height: 200px;
-    margin: 30px;
+    margin: 30px 30px 10px 30px;
+    background-color: #e8e8e8;
+    padding: 20px 20px 10px 20px;
+    border-radius: 5px;
   `,
   topLeft: css`
     display: inline-block;
