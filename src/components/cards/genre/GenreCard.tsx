@@ -16,6 +16,10 @@ const styles = {
     background-color: #f0f0f0;
     padding: 20px 20px 10px 20px;
     border-radius: 5px;
+
+    img {
+      object-fit: cover;
+    }
   `,
   coverArtThumb: css`
     display: inline-block;
