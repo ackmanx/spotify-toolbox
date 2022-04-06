@@ -13,35 +13,26 @@ const styles = {
     // To allow each genre card to autowrap on the page
     display: inline-block;
     margin: 30px 30px 10px 30px;
-    background-color: #e8e8e8;
+    background-color: #f0f0f0;
     padding: 20px 20px 10px 20px;
     border-radius: 5px;
   `,
-  topLeft: css`
+  coverArtThumb: css`
+    display: inline-block;
+  `,
+  left: css`
     display: inline-block;
 
     img {
       border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
     }
   `,
-  topRight: css`
+  right: css`
     display: inline-block;
 
     img {
       border-top-right-radius: 5px;
-    }
-  `,
-  bottomLeft: css`
-    display: inline-block;
-
-    img {
-      border-bottom-left-radius: 5px;
-    }
-  `,
-  bottomRight: css`
-    display: inline-block;
-
-    img {
       border-bottom-right-radius: 5px;
     }
   `,
@@ -55,7 +46,7 @@ const coverArtSize = 100
 
 export const GenreCard = ({ genreName, coverArts }: Props) => (
   <div css={styles.root}>
-    <div css={styles.topLeft}>
+    <div css={styles.left}>
       <ImageLink
         href={`/app/genre/${genreName}`}
         imageSrc={coverArts[0]}
@@ -63,7 +54,7 @@ export const GenreCard = ({ genreName, coverArts }: Props) => (
         height={coverArtSize}
       />
     </div>
-    <div css={styles.topRight}>
+    <div css={styles.coverArtThumb}>
       <ImageLink
         href={`/app/genre/${genreName}`}
         imageSrc={coverArts[1]}
@@ -71,7 +62,7 @@ export const GenreCard = ({ genreName, coverArts }: Props) => (
         height={coverArtSize}
       />
     </div>
-    <div css={styles.bottomLeft}>
+    <div css={styles.coverArtThumb}>
       <ImageLink
         href={`/app/genre/${genreName}`}
         imageSrc={coverArts[2]}
@@ -79,7 +70,7 @@ export const GenreCard = ({ genreName, coverArts }: Props) => (
         height={coverArtSize}
       />
     </div>
-    <div css={styles.bottomRight}>
+    <div css={styles.right}>
       <ImageLink
         href={`/app/genre/${genreName}`}
         imageSrc={coverArts[3]}
