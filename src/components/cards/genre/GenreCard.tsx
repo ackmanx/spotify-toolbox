@@ -46,6 +46,7 @@ const styles = {
   `,
   name: css`
     margin: 0;
+    font-size: 28px;
   `,
 }
 
