@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
+import { AppHeader } from '../app-header/AppHeader'
 import { Subheader } from '../app-header/Subheader'
 import { GenreCard } from '../cards/genre/GenreCard'
 import { CoolCat } from '../shared/CoolCat'
@@ -36,7 +37,7 @@ export const RootPage = () => {
     doStuff()
   }, [])
 
-  if (status === 'unauthenticated' || isLoading) {
+  if (isLoading) {
     return null
   }
 
@@ -45,19 +46,28 @@ export const RootPage = () => {
   )
 
   return (
-    <div css={styles.root}>
-      <div css={styles.genreContainer}>
-        {genreEntries.length !== 0 ? (
-          genreEntries.map(([genreName, coverArts]) => (
-            <GenreCard key={genreName} genreName={genreName} coverArts={coverArts} />
-          ))
+    <div>
+      <AppHeader title='I Already Saw That' />
+      <main>
+        {status === 'unauthenticated' ? (
+          <CoolCat header='It looks like you are not signed in.' subheader='Try harder.' />
         ) : (
-          <CoolCat
-            header="It looks like you've got no followed artists."
-            subheader='Level up and try again.'
-          />
+          <div css={styles.root}>
+            <div css={styles.genreContainer}>
+              {genreEntries.length > 0 ? (
+                genreEntries.map(([genreName, coverArts]) => (
+                  <GenreCard key={genreName} genreName={genreName} coverArts={coverArts} />
+                ))
+              ) : (
+                <CoolCat
+                  header="It looks like you've got no followed artists."
+                  subheader='Level up and try again.'
+                />
+              )}
+            </div>
+          </div>
         )}
-      </div>
+      </main>
     </div>
   )
 }

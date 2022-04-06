@@ -37,7 +37,7 @@ const ArtistNextPage: NextPage<Props> = ({ artist }) => {
     doStuff()
   }, [artistId])
 
-  if (!artist || !albumsByReleaseType) return null
+  if (!artist || !albumsByReleaseType) return <ToastContainer />
 
   const albumIDs = Object.entries(albumsByReleaseType)
     .map(([releaseType, albums]: AlbumByReleaseTypeTuple) => albums.map((album) => album.id))
@@ -60,8 +60,6 @@ const ArtistNextPage: NextPage<Props> = ({ artist }) => {
           text-align: center;
         `}
       >
-        <ToastContainer />
-
         <AlbumsForArtistPage artist={artist} albumsByReleaseType={albumsByReleaseType} />
       </main>
     </>

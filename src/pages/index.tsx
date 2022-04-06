@@ -18,26 +18,13 @@ const RootNextPage: NextPage = () => {
     return null
   }
 
-  const isLoggedIn = status !== 'unauthenticated'
-
   return (
     <>
       <Head>
         <title>I Already Saw That</title>
       </Head>
       <ToastContainer />
-      <AppHeader title='I Already Saw That' />
-      <main
-        css={css`
-          text-align: center;
-        `}
-      >
-        {isLoggedIn ? (
-          <RootPage />
-        ) : (
-          <CoolCat header='It looks like you are not signed in.' subheader='Try harder.' />
-        )}
-      </main>
+      <RootPage />
     </>
   )
 }
