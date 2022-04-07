@@ -9,10 +9,6 @@ interface Props {
 }
 
 export const AlbumsByReleaseType = ({ artist, albumsByReleaseType }: Props) => {
-  if (!albumsByReleaseType) {
-    return null
-  }
-
   return (
     <div>
       <ReleaseTypeListing artist={artist} albums={albumsByReleaseType.album} name='albums' />

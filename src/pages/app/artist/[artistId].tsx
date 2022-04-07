@@ -28,6 +28,7 @@ const ArtistNextPage: NextPage<Props> = ({ artist }) => {
 
   useAccessTokenTimer()
 
+  //todo majerus: this junk should go in the page component
   useEffect(() => {
     async function doStuff() {
       const body = await apiFetch(`/artist/${artistId}`)
