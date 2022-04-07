@@ -3,11 +3,10 @@ import { css } from '@emotion/react'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
-import { AppHeader } from '../app-header/AppHeader'
-import { Subheader } from '../app-header/Subheader'
-import { GenreCard } from '../cards/genre/GenreCard'
-import { CoolCat } from '../shared/CoolCat'
-import { apiFetch } from '../shared/apiFetch'
+import { AppHeader } from '../../app-header/AppHeader'
+import { CoolCat } from '../../shared/CoolCat'
+import { apiFetch } from '../../shared/apiFetch'
+import { GenreCard } from './GenreCard'
 
 const styles = {
   root: css`
@@ -21,7 +20,7 @@ const styles = {
   `,
 }
 
-export const RootPage = () => {
+export const GenreListPage = () => {
   const { status } = useSession()
   const [isLoading, setIsLoading] = useState(true)
   const [genres, setGenres] = useState<Record<string, string[]>>({})
