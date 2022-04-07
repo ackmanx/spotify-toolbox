@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
 
-import MarkAsViewedIcon from '../cards/album/images/mark-album-as-viewed.png'
+import MarkAsViewedIcon from '../pages/AlbumsForArtistPage/images/mark-album-as-viewed.png'
 import { ButtonImage } from '../shared/Image'
 
 interface Props {

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 
 import { AppHeader } from '../../../components/app-header/AppHeader'
-import { AlbumsForArtistPage } from '../../../components/pages/AlbumsForArtistPage'
+import { AlbumsForArtistPage } from '../../../components/pages/AlbumsForArtistPage/AlbumsForArtistPage'
 import { apiFetch } from '../../../components/shared/apiFetch'
 import { useAccessTokenTimer } from '../../../hooks/useAccessTokenTimer'
 import dbConnect from '../../../lib/db'

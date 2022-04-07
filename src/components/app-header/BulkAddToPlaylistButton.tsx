@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
 
-import AddToPlaylistIcon from '../cards/album/images/add-to-playlist.png'
+import AddToPlaylistIcon from '../pages/AlbumsForArtistPage/images/add-to-playlist.png'
 import { ButtonImage } from '../shared/Image'
 
 interface Props {

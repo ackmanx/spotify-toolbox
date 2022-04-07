@@ -2,12 +2,12 @@
 import { css } from '@emotion/react'
 import { useState } from 'react'
 
-import { AlbumsByReleaseType_WithIsViewed } from '../../mongoose/Album'
-import { _Artist } from '../../mongoose/Artist'
-import { Subheader } from '../app-header/Subheader'
-import { AlbumCard } from '../cards/album/AlbumCard'
-import { AlbumMenu } from '../cards/album/AlbumMenu'
-import { CoolCat } from '../shared/CoolCat'
+import { AlbumsByReleaseType_WithIsViewed } from '../../../mongoose/Album'
+import { _Artist } from '../../../mongoose/Artist'
+import { Subheader } from '../../app-header/Subheader'
+import { CoolCat } from '../../shared/CoolCat'
+import { AlbumCard } from './AlbumCard'
+import { AlbumMenu } from './AlbumMenu'
 
 interface Props {
   artist: _Artist
