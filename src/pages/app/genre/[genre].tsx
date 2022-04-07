@@ -1,12 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
 import type { NextPage } from 'next'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
-import { AppHeader } from '../../../components/app-header/AppHeader'
-import { ArtistsInGenrePage } from '../../../components/pages/ArtistsInGenrePage'
+import { ArtistsInGenrePage } from '../../../components/pages/ArtistsInGenrePage/ArtistsInGenrePage'
 import { useAccessTokenTimer } from '../../../hooks/useAccessTokenTimer'
 
 interface Props {

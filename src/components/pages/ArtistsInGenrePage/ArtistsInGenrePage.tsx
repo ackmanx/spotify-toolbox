@@ -2,10 +2,10 @@
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 
-import { _Artist } from '../../mongoose/Artist'
-import { AppHeader } from '../app-header/AppHeader'
-import { Subheader } from '../app-header/Subheader'
-import { ArtistCard } from '../cards/artist/ArtistCard'
+import { _Artist } from '../../../mongoose/Artist'
+import { AppHeader } from '../../app-header/AppHeader'
+import { Subheader } from '../../app-header/Subheader'
+import { ArtistCard } from './ArtistCard'
 
 interface Props {
   genre: string
@@ -22,10 +22,6 @@ export const ArtistsInGenrePage = ({ genre }: Props) => {
 
     doStuff()
   }, [genre])
-
-  if (!artists) {
-    return null
-  }
 
   return (
     <>
