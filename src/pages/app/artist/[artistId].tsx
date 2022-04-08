@@ -1,17 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
 import type { NextPage } from 'next'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 
-import { AppHeader } from '../../../components/app-header/AppHeader'
 import { AlbumsForArtistPage } from '../../../components/pages/AlbumsForArtistPage/AlbumsForArtistPage'
-import { apiFetch } from '../../../components/shared/apiFetch'
 import { useAccessTokenTimer } from '../../../hooks/useAccessTokenTimer'
 import dbConnect from '../../../lib/db'
-import { AlbumsByReleaseType_WithIsViewed, _Album } from '../../../mongoose/Album'
 import { _Artist, mArtist } from '../../../mongoose/Artist'
 import { One } from '../../../mongoose/types'
 import { forceSerialization } from '../../../utils/force-serialization'
@@ -20,49 +15,16 @@ interface Props {
   artist: _Artist
 }
 
-type AlbumByReleaseTypeTuple = [string, (_Album & { isViewed: boolean })[]]
-
 const ArtistNextPage: NextPage<Props> = ({ artist }) => {
-  const [albumsByReleaseType, setAlbumsByReleaseType] = useState<AlbumsByReleaseType_WithIsViewed>()
-  const artistId = artist.id
-
   useAccessTokenTimer()
-
-  //todo majerus: this junk should go in the page component
-  useEffect(() => {
-    async function doStuff() {
-      const body = await apiFetch(`/artist/${artistId}`)
-      setAlbumsByReleaseType(body)
-    }
-
-    doStuff()
-  }, [artistId])
-
-  if (!artist || !albumsByReleaseType) return <ToastContainer />
-
-  const albumIDs = Object.entries(albumsByReleaseType)
-    .map(([releaseType, albums]: AlbumByReleaseTypeTuple) => albums.map((album) => album.id))
-    .flat()
 
   return (
     <>
       <Head>
         <title>{artist.name}</title>
       </Head>
-      <AppHeader
-        title={artist.name}
-        artists={[artist]}
-        albumIDs={albumIDs}
-        isRefreshable
-        isArtistPage
-      />
-      <main
-        css={css`
-          text-align: center;
-        `}
-      >
-        <AlbumsForArtistPage artist={artist} albumsByReleaseType={albumsByReleaseType} />
-      </main>
+      <ToastContainer />
+      <AlbumsForArtistPage artist={artist} />
     </>
   )
 }
