@@ -11,6 +11,12 @@ interface Props {
   genre: string
 }
 
+const styles = {
+  cards: css`
+    text-align: center;
+  `,
+}
+
 export const ArtistsInGenrePage = ({ genre }: Props) => {
   const [artists, setArtists] = useState<_Artist[]>([])
 
@@ -25,17 +31,14 @@ export const ArtistsInGenrePage = ({ genre }: Props) => {
 
   return (
     <>
-      <AppHeader title={genre} artists={artists} isRefreshable />
-      <main
-        css={css`
-          text-align: center;
-        `}
-      >
+      <AppHeader title={genre} />
+      <main>
         <Subheader name='artists' />
-
-        {artists.map((artist) => (
-          <ArtistCard key={artist.id} artist={artist} />
-        ))}
+        <div css={styles.cards}>
+          {artists.map((artist) => (
+            <ArtistCard key={artist.id} artist={artist} />
+          ))}
+        </div>
       </main>
     </>
   )

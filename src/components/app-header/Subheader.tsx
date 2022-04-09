@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 
 const styles = {
   header: css`
+    text-align: center;
     margin: 10px;
     color: #cdcdcd;
     font-size: 48px;
