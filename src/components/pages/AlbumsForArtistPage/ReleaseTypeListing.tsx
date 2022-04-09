@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { _Album } from '../../../mongoose/Album'
 import { _Artist } from '../../../mongoose/Artist'
-import { Subheader } from '../../app-header/Subheader'
+import { Subheader } from '../../shared/Subheader'
 import { AlbumCard } from './AlbumCard'
 import { AlbumMenu } from './AlbumMenu'
 

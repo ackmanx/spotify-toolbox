@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { _Artist } from '../../../mongoose/Artist'
 import { AppHeader } from '../../app-header/AppHeader'
-import { Subheader } from '../../app-header/Subheader'
+import { Subheader } from '../../shared/Subheader'
 import { ArtistCard } from './ArtistCard'
 
 interface Props {
