@@ -29,6 +29,7 @@ const styles = {
             position: absolute;
             border-radius: 100%;
             top: -3px;
+            left: 2px;
           }
         `
       : null,
