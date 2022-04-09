@@ -2,7 +2,6 @@
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 
-import { AlbumsByReleaseType } from '../../mongoose/Album'
 import { _Artist } from '../../mongoose/Artist'
 import { ButtonImage } from '../shared/Image'
 import { Account } from './Account'
@@ -27,7 +26,7 @@ const styles = {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 10px;
     position: sticky;
     top: 0;
     z-index: 100;
