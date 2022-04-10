@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { _Artist } from '../../../mongoose/Artist'
 import { AppHeader } from '../../app-header/AppHeader'
 import { Subheader } from '../../shared/Subheader'
+import { ActionBar } from './ActionBar'
 import { ArtistCard } from './ArtistCard'
 
 interface Props {
@@ -32,6 +33,7 @@ export const ArtistsInGenrePage = ({ genre }: Props) => {
   return (
     <>
       <AppHeader title={genre} />
+      <ActionBar />
       <main>
         <Subheader name='artists' />
         <div css={styles.cards}>
