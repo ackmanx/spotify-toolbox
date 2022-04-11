@@ -8,7 +8,6 @@ import { Account } from './Account'
 import { BulkAddToPlaylistButton } from './BulkAddToPlaylistButton'
 import { BulkMarkAsViewedButton } from './BulkMarkAsViewedButton'
 import { RefreshButton } from './RefreshButton'
-import BackIcon from './images/back.png'
 import AppLogo from './images/logo.png'
 
 interface Props {
@@ -46,9 +45,6 @@ const styles = {
     display: flex;
     align-items: center;
   `,
-  backButton: css`
-    margin-top: 10px;
-  `,
 }
 
 export const AppHeader = ({
@@ -65,11 +61,6 @@ export const AppHeader = ({
     <header css={styles.root}>
       <div css={styles.leftGroup}>
         <ButtonImage src={AppLogo} width={60} height={60} onClick={() => router.push('/')} />
-        {router.pathname !== '/' && (
-          <div css={styles.backButton}>
-            <ButtonImage src={BackIcon} width={24} height={24} onClick={() => router.back()} />
-          </div>
-        )}
       </div>
 
       <div css={styles.centerGroup}>

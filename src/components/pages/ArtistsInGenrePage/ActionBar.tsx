@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { useRouter } from 'next/router'
 
 interface Props {}
 
@@ -23,9 +24,15 @@ const styles = {
   `,
 }
 
-export const ActionBar = ({}: Props) => (
-  <div css={styles.root}>
-    <button css={styles.button}>Back</button>
-    <button css={styles.button}>Refresh Genre</button>
-  </div>
-)
+export const ActionBar = ({}: Props) => {
+  const router = useRouter()
+
+  return (
+    <div css={styles.root}>
+      <button css={styles.button} onClick={() => router.back()}>
+        Back
+      </button>
+      <button css={styles.button}>Refresh Genre</button>
+    </div>
+  )
+}
