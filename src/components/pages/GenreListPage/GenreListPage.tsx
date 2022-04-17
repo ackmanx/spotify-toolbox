@@ -22,27 +22,21 @@ const styles = {
 
 export const GenreListPage = () => {
   const { status } = useSession()
-  const [isLoading, setIsLoading] = useState(true)
-  const [genres, setGenres] = useState<Record<string, string[]>>({})
+  const [genres, setGenres] = useState<any[]>([])
 
   useEffect(() => {
     async function doStuff() {
+      if (status === 'unauthenticated') return
+
       const result = await apiFetch('/genres/all')
 
-      setGenres(result)
-      setIsLoading(false)
+      const sorted = Object.entries(result).sort(([genreA], [genreB]) => (genreA > genreB ? 1 : -1))
+
+      setGenres(sorted)
     }
 
     doStuff()
-  }, [])
-
-  if (isLoading) {
-    return null
-  }
-
-  const genreEntries = Object.entries(genres).sort(([genreA], [genreB]) =>
-    genreA > genreB ? 1 : -1
-  )
+  }, [status])
 
   return (
     <div>
@@ -53,8 +47,8 @@ export const GenreListPage = () => {
         ) : (
           <div css={styles.root}>
             <div css={styles.genreContainer}>
-              {genreEntries.length > 0 ? (
-                genreEntries.map(([genreName, coverArts]) => (
+              {genres.length > 0 ? (
+                genres.map(([genreName, coverArts]) => (
                   <GenreCard key={genreName} genreName={genreName} coverArts={coverArts} />
                 ))
               ) : (
