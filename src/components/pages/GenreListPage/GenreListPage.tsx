@@ -9,8 +9,10 @@ import { apiFetch } from '../../shared/apiFetch'
 import { GenreCard } from './GenreCard'
 
 const styles = {
-  root: css`
+  centerAppBody: css`
     text-align: center;
+  `,
+  root: css`
     display: flex;
     justify-content: center;
   `,
@@ -45,7 +47,7 @@ export const GenreListPage = () => {
   return (
     <div>
       <AppHeader title='I Already Saw That' />
-      <main>
+      <main css={styles.centerAppBody}>
         {status === 'unauthenticated' ? (
           <CoolCat header='It looks like you are not signed in.' subheader='Try harder.' />
         ) : (
